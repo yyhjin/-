@@ -22,7 +22,7 @@ public class Store {
     @Id
     @GeneratedValue
     @JoinColumn(name = "store_no")
-    private Long storeNo;
+    private Integer storeNo;
 
     @NotBlank
     private String storeName;

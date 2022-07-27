@@ -15,7 +15,7 @@ public class InterStore {
     @Id
     @GeneratedValue
     @Column(name = "cus_store_no")
-    private Long id;
+    private Integer id;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "customer_id")

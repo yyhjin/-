@@ -15,7 +15,7 @@ public class Item {
     @Id
     @GeneratedValue
     @Column(name = "item_no")
-    private int ItemNo;
+    private Integer ItemNo;
 
     @NotBlank
     private String item_name;

@@ -15,7 +15,7 @@ public class OrderItem {
     @Id
     @GeneratedValue
     @Column(name = "order_item_no")
-    private int orderItemNo;
+    private Integer orderItemNo;
 
     private int count;
     private int orderPrice;

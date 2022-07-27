@@ -19,7 +19,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Order {
     @Id @GeneratedValue
     @Column(name = "order_no")
-    private int orderNo;
+    private Integer orderNo;
 
     @NotBlank
     private String customerId;

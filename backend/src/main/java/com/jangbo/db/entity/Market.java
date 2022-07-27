@@ -18,7 +18,7 @@ import static javax.persistence.FetchType.*;
 public class Market {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int marketNo;
+    private Integer marketNo;
 
     @NotBlank
     private String marketName;
