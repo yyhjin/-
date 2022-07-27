@@ -1,40 +1,46 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import LoginView from '../views/LoginView.vue'
-import SelectState from '../views/SelectState.vue'
-import JoinView from '../views/JoinView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import HomeView from "../views/HomeView.vue";
+import LoginView from "../views/LoginView.vue";
+import SelectState from "../views/SelectState.vue";
+import CustomerJoinView from "../views/CustomerJoinView.vue";
+import SellerJoinView from "../views/SellerJoinView.vue";
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
-    component: HomeView
+    path: "/",
+    name: "home",
+    component: HomeView,
   },
   {
-    path: '/selectjoin',
-    name: 'selectjoin',
-    component: SelectState
+    path: "/selectjoin",
+    name: "selectjoin",
+    component: SelectState,
   },
   {
-    path: '/joinCustomer',
-    name: 'joinCustomer',
-    component: JoinView
+    path: "/joinCustomer",
+    name: "joinCustomer",
+    component: CustomerJoinView,
   },
   {
-    path: '/join',
-    name: 'join',
-    component: () => import(/* webpackChunkName: "about" */ '../views/JoinView.vue')
+    path: "/joinSeller",
+    name: "joinSeller",
+    component: SellerJoinView,
   },
   {
-    path: '/login',
-    name: 'login',
-    component: LoginView
-  }
-]
+    path: "/join",
+    name: "join",
+    component: () => import(/* webpackChunkName: "about" */ "../views/CustomerJoinView.vue"),
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: LoginView,
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;

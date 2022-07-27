@@ -34,12 +34,14 @@ export default {
     methods: {
         cl_customer(){
             console.log("소비자");
-            this.userType = "customer";
+            this.userType = "Customer";
             this.$router.push({name: 'joinCustomer', params: {userType : this.userType}});
         },
 
         cl_seller(){
             console.log("판매자");
+            this.userType = "Seller";
+            this.$router.push({name: 'joinSeller', params: {userType : this.userType}});
         }
     },
 };
