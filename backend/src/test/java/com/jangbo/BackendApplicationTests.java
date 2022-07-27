@@ -1,4 +1,4 @@
-package com.jangbo.backend;
+package com.jangbo;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
