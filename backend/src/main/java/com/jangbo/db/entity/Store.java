@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 import static javax.persistence.FetchType.LAZY;
@@ -21,13 +22,13 @@ public class Store {
     @JoinColumn(name = "store_no")
     private Long storeNo;
 
-    @NotEmpty
+    @NotBlank
     private String storeName;
-    @NotEmpty
+    @NotBlank
     private String storeCategory;
-    @NotEmpty
+    @NotBlank
     private String storePhone;
-    @NotEmpty
+    @NotBlank
     private String storeAddr;
 
     @OneToOne(fetch = LAZY)
