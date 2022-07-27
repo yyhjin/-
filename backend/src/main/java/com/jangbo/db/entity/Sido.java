@@ -6,25 +6,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 
+/**
+ * 시,도 모델 정의.
+ */
 @Entity
 @Getter
 @Setter
-public class Seller {
+public class Sido{
     @Id
     @NotEmpty
-    private String businessNumber;
+    private String sido_code;
 
     @NotEmpty
-    private String sellerId;
-    @NotEmpty
-    private String sellerName;
-    @NotEmpty
-    private String sellerPhone;
-
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String sellerPwd;
+    private String sido_name;
 }
