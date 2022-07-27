@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
@@ -18,11 +19,11 @@ public class Seller {
     @Column(name = "business_number")
     private String businessNumber;
 
-    @NotEmpty
+    @NotBlank
     private String sellerId;
-    @NotEmpty
+    @NotBlank
     private String sellerName;
-    @NotEmpty
+    @NotBlank
     private String sellerPhone;
 
     @JsonIgnore

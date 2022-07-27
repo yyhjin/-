@@ -8,17 +8,18 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Getter
 @Setter
 public class Customer{
-    @Id @NotEmpty
+    @Id
     @Column(name = "customer_id")
     private String customerId;
 
-    @NotEmpty
+    @NotBlank
     private String customerName;
 
     private String customerNickname;

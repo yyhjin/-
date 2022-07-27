@@ -5,11 +5,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 구,군 모델 정의.
@@ -19,13 +19,17 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class Gugun {
     @Id
-    @NotEmpty
-    private String sido_name;
+    @Column(name = "sido_name")
+    private String sidoName;
 
     @Id
-    @NotEmpty
-    private String gugun_name;
+    @NotBlank
+    @Column(name = "gugun_name")
+    private String gugunName;
 
-    @NotEmpty
-    private String gugun_code;
+    @NotBlank
+    private String gugunCode;
+
+    @OneToMany(mappedBy = "gugun")
+    private List<Market> markets = new ArrayList<>();
 }
