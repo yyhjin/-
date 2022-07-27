@@ -18,7 +18,8 @@ public class Store {
 
     @Id
     @GeneratedValue
-    private Long storeId;
+    @JoinColumn(name = "store_no")
+    private Long storeNo;
 
     @NotEmpty
     private String storeName;
