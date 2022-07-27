@@ -16,6 +16,11 @@ export default {
 
 
 <style>
+
+#app {
+  text-align: center;
+}
+
 nav {
   padding: 30px;
   text-align: center;
