@@ -25,7 +25,9 @@ public class Customer{
     private String customerNickname;
     private String customerAddr;
     private String customerPhone;
-    private int customerIndex = 1; //첫 주문으로 기본 값 설정
+
+    @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
+    private boolean customerIndex = true; //첫 주문으로 기본 값 설정
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)

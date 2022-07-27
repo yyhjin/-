@@ -7,7 +7,9 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
@@ -35,11 +37,17 @@ public class Store {
     @JoinColumn(name = "business_number")
     private Seller seller;
 
-    private String marketNo;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "market_no")
+    private Market market;
 
     private String storeIntro;
     private String storeSubject;
     private String storeImg;
+
+    @OneToMany(mappedBy = "store")
+    private List<Item> items = new ArrayList<>();
+
 
     //==생성 메서드==//
     public static Store createStore(String storeName, String storeCategory, String storePhone, String storeAddr) {
