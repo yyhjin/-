@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
 /**
@@ -19,9 +20,8 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class Sido{
     @Id
-    @NotEmpty
-    private String sido_code;
+    private String sidoCode;
 
-    @NotEmpty
-    private String sido_name;
+    @NotBlank
+    private String sidoName;
 }
