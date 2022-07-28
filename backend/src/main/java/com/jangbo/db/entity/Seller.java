@@ -20,8 +20,10 @@ public class Seller {
     @Column(length = 20, unique = true)
     private String sellerId;
 
+    @NotBlank
     @Column(name = "business_number",length = 15, unique = true)
     private String businessNumber;
+
     @NotBlank
     @Column(length = 15)
     private String sellerName;
@@ -30,9 +32,9 @@ public class Seller {
     @Column(length = 20)
     private String sellerPhone;
 
-    @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "store_no")
-    private Store store;
+//    @OneToOne(fetch = LAZY)
+//    @JoinColumn(name = "store_no")
+//    private Store store;
 
     @JsonIgnore
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
