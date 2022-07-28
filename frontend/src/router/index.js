@@ -4,8 +4,15 @@ import LoginView from "../views/LoginView.vue";
 import SelectState from "../views/SelectState.vue";
 import CustomerJoinView from "../views/CustomerJoinView.vue";
 import SellerJoinView from "../views/SellerJoinView.vue";
+import MarketListView from "../views/MarketListView.vue";
+import testView from "../views/test.vue";
 
 const routes = [
+  {
+    path: "/test",
+    name: "test",
+    component: testView,
+  },
   {
     path: "/",
     name: "home",
@@ -35,6 +42,11 @@ const routes = [
     path: "/login",
     name: "login",
     component: LoginView,
+  },
+  {
+    path: "/search",
+    name: "search",
+    component: MarketListView,
   },
 ];
 
