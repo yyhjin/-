@@ -20,9 +20,11 @@ public class Market {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer marketNo;
 
+    @Column(length = 75)
     @NotBlank
     private String marketName;
 
+    @Column(length = 150)
     @NotBlank
     private String marketAddr;
 

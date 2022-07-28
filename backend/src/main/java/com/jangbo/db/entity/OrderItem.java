@@ -8,18 +8,17 @@ import javax.persistence.*;
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Table(name = "ORDER_ITEM")
 @Getter
 @Setter
 public class OrderItem {
     @Id
 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderItemNo;
+    private Integer orderItemNo;
 
-    private int count;
+    private Integer count;
 
-    private int orderPrice;
+    private Integer orderPrice;
 
 //    @ManyToOne(fetch = LAZY)
 //    @JoinColumn(name = "item_no")

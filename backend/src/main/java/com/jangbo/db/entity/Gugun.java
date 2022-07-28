@@ -19,14 +19,15 @@ import java.util.List;
 @Setter
 public class Gugun {
     @Id
-    @Column(name = "sido_name")
+    @Column(length = 75)
     private String sidoName;
 
     @Id
+    @Column(length = 75)
     @NotBlank
-    @Column(name = "gugun_name")
     private String gugunName;
 
+    @Column(length = 20)
     @NotBlank
     private String gugunCode;
 
