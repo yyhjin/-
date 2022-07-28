@@ -45,6 +45,10 @@ public class Store {
     @JoinColumn(name = "market_no")
     private Market market;
 
+    @OneToOne(fetch = LAZY)
+    @JoinColumn(name = "seller_id")
+    private Seller seller;
+
     @Column(length = 300)
     private String storeIntro;
     @Column(length = 90)
