@@ -17,14 +17,7 @@ public class SellerRepository {
         em.persist(seller);
     }
 
-    public Seller findById(String sellerNo)  {
-        return em.find(Seller.class, sellerNo);
+    public Seller findById(String sellerId)  {
+        return em.find(Seller.class, sellerId);
     }
-
-    public List<Seller> findBySellerId(String sellerId) {
-        return em.createQuery("select s from Seller s where s.sellerId = :sellerId", Seller.class)
-                .setParameter("sellerId", sellerId)
-                .getResultList();
-    }
-
 }

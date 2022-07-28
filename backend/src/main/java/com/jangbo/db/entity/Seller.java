@@ -13,17 +13,14 @@ import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
 public class Seller {
-
     @Id
-    @GeneratedValue
-    private Integer sellerNo;
+    @NotBlank
+    @Column(length = 20, unique = true)
+    private String sellerId;
 
     @Column(name = "business_number",length = 15, unique = true)
     private String businessNumber;
 
-    @NotBlank
-    @Column(length = 20, unique = true)
-    private String sellerId;
     @NotBlank
     @Column(length = 15)
     private String sellerName;
