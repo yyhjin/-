@@ -6,10 +6,12 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Table(name = "ITEM")
 @Getter
 @Setter
 public class Item {
@@ -31,6 +33,5 @@ public class Item {
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name="store_no")
     private Store store;
-
 
 }

@@ -34,11 +34,11 @@ public class Market {
     @NotBlank
     private Float lng;
 
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumns({
-//            @JoinColumn(name = "sido_name"),
-//            @JoinColumn(name = "gugun_name")
-//    })
-    //private Gugun gugun;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "sido_name", referencedColumnName = "sidoName"),
+            @JoinColumn(name = "gugun_name", referencedColumnName = "gugunName")
+    })
+    private Gugun gugun;
 
 }

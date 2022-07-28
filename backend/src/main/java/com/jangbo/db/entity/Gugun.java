@@ -19,10 +19,14 @@ import java.util.List;
 @Setter
 public class Gugun {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer gugunNo;
+
+    //@Id
     @Column(length = 75)
     private String sidoName;
 
-    @Id
+    //@Id
     @Column(length = 75)
     @NotBlank
     private String gugunName;
@@ -31,7 +35,7 @@ public class Gugun {
     @NotBlank
     private String gugunCode;
 
-    @OneToMany(mappedBy = "gugun")
-    private List<Market> markets = new ArrayList<>();
+//    @OneToMany(mappedBy = "gugun")
+//    private List<Market> markets = new ArrayList<>();
 
 }
