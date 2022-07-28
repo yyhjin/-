@@ -22,9 +22,6 @@ public class Order {
     private Integer orderNo;
 
     @NotBlank
-    private String customerId;
-
-    @NotBlank
     private Timestamp orderDate; //안되면 이거부터 수정하기
 
     @NotBlank
