@@ -15,19 +15,18 @@ import static javax.persistence.FetchType.LAZY;
 public class Item {
 
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int ItemNo;
+    private Integer ItemNo;
 
     @NotBlank
     @Column(length=30)
     private String item_name;
 
     @NotBlank
-    private int price;
+    private Integer price;
 
     @Column(nullable = false,columnDefinition = "TINYINT",length=1)
-    private boolean recent=true;
+    private boolean recent = true;
 
 
 }

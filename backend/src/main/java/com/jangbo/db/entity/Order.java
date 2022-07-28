@@ -21,21 +21,21 @@ public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderNo;
+    private Integer orderNo;
 
     @NotBlank
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate; //안되면 이거부터 수정하기
 
     @NotBlank
-    private int storeNo;
+    private Integer storeNo;
 
     @NotBlank
-    @Column(length =10)
+    @Column(length = 10)
     private String status;
 
     @NotBlank
-    private int marketNo;
+    private Integer marketNo;
 
 //    @ManyToOne(fetch = LAZY)
 //    @JoinColumn(name = "customer_id")
