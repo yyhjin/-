@@ -16,14 +16,17 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class Seller {
     @Id
-    @Column(name = "business_number")
+    @Column(name = "business_number",length = 15)
     private String businessNumber;
 
     @NotBlank
+    @Column(length = 20)
     private String sellerId;
     @NotBlank
+    @Column(length = 15)
     private String sellerName;
     @NotBlank
+    @Column(length = 20)
     private String sellerPhone;
 
     @JsonIgnore

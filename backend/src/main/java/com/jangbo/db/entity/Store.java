@@ -25,12 +25,16 @@ public class Store {
     private Integer storeNo;
 
     @NotBlank
+    @Column(length = 30)
     private String storeName;
     @NotBlank
+    @Column(length = 30)
     private String storeCategory;
     @NotBlank
+    @Column(length = 20)
     private String storePhone;
     @NotBlank
+    @Column(length = 150)
     private String storeAddr;
 
     @OneToOne(fetch = LAZY)
@@ -41,7 +45,9 @@ public class Store {
     @JoinColumn(name = "market_no")
     private Market market;
 
+    @Column(length = 300)
     private String storeIntro;
+    @Column(length = 90)
     private String storeSubject;
     private String storeImg;
 
