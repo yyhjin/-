@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 
@@ -16,14 +17,18 @@ import javax.validation.constraints.NotEmpty;
 @Setter
 public class Customer{
     @Id
-    @Column(name = "customer_id")
+    @Column(name = "customer_id", unique = true, length = 20)
     private String customerId;
 
     @NotBlank
+    @Column(length = 15)
     private String customerName;
 
+    @Column(length = 30)
     private String customerNickname;
+    @Column(length = 150)
     private String customerAddr;
+    @Column(length = 20)
     private String customerPhone;
 
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
