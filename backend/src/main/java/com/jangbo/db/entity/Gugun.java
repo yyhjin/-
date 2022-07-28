@@ -34,7 +34,4 @@ public class Gugun {
     @OneToMany(mappedBy = "gugun")
     private List<Market> markets = new ArrayList<>();
 
-
-//    @OneToMany(mappedBy = "gugun")
-//    private List<Store> store = new ArrayList<>();
 }

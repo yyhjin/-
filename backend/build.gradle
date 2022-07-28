@@ -3,8 +3,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
     id 'java'
 
-    //querydsl 추가
-    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.jangbo'
@@ -40,33 +38,10 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
 
-    //querydsl 추가
-    implementation 'com.querydsl:querydsl-jpa'
-    implementation 'com.querydsl:querydsl-apt'
-
 }
 
 tasks.named('test') {
     useJUnitPlatform()
 }
 
-//def querydslDir = 'src/main/generated'
-def querydslDir = "$buildDir/generated/querydsl"
-querydsl {
-    library = "com.querydsl:querydsl-apt"
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', querydslDir]
-        }
-    }
-}
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
-configurations {
-    querydsl.extendsFrom compileClasspath
-}
+

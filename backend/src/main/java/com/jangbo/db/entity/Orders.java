@@ -5,19 +5,17 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;
 
 @Entity
-@Table(name = "ORDERS")
 @Getter
 @Setter
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,12 +35,11 @@ public class Order {
     @NotBlank
     private Integer marketNo;
 
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "customer_id")
-//    private Customer customer;
-//
-//    @OneToMany()
-//    private List<OrderItem> orderItems = new ArrayList<>();
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
+
+
 
 
 
