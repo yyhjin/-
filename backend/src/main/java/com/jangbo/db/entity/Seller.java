@@ -15,7 +15,11 @@ import static javax.persistence.FetchType.LAZY;
 @Getter
 @Setter
 public class Seller {
+
     @Id
+    @GeneratedValue
+    private Integer sellerNo;
+
     @NotBlank
     @Column(length = 20, unique = true)
     private String sellerId;
