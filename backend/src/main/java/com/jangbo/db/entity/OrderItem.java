@@ -13,20 +13,21 @@ import static javax.persistence.FetchType.LAZY;
 @Setter
 public class OrderItem {
     @Id
-    @GeneratedValue
-    @Column(name = "order_item_no")
-    private Integer orderItemNo;
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int orderItemNo;
 
     private int count;
+
     private int orderPrice;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "item_no")
-    private Item item;
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "order_no")
-    private Order order;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "item_no")
+//    private Item item;
+//
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "order_no")
+//    private Order order;
 
 
 

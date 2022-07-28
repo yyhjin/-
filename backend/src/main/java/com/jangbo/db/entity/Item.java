@@ -6,6 +6,8 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+import static javax.persistence.FetchType.LAZY;
+
 @Entity
 @Table(name = "ITEM")
 @Getter
@@ -13,16 +15,19 @@ import javax.validation.constraints.NotBlank;
 public class Item {
 
     @Id
-    @GeneratedValue
-    @Column(name = "item_no")
-    private Integer ItemNo;
+
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int ItemNo;
 
     @NotBlank
+    @Column(length=30)
     private String item_name;
 
     @NotBlank
     private int price;
 
-    @NotBlank
-    private boolean recent;
+    @Column(nullable = false,columnDefinition = "TINYINT",length=1)
+    private boolean recent=true;
+
+
 }
