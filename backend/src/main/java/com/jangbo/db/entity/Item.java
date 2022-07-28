@@ -28,5 +28,9 @@ public class Item {
     @Column(nullable = false,columnDefinition = "TINYINT",length=1)
     private boolean recent = true;
 
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name="store_no")
+    private Store store;
+
 
 }

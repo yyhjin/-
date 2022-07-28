@@ -20,13 +20,13 @@ public class OrderItem {
 
     private Integer orderPrice;
 
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "item_no")
-//    private Item item;
-//
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "order_no")
-//    private Order order;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "item_no")
+    private Item item;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "order_no")
+    private Orders orders;
 
 
 

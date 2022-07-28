@@ -1,3 +1,4 @@
+
 package com.jangbo.db.repository;
 
 import com.jangbo.db.entity.Seller;
@@ -21,3 +22,4 @@ public class SellerRepository {
         return em.find(Seller.class, sellerId);
     }
 }
+
