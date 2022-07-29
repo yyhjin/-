@@ -16,14 +16,14 @@ public class SellerApiController {
 
     private final SellerService sellerService;
 
-    //반환 값 결정할 것
+    //API 정상 작동하는지 확인 후 추가
     @PostMapping("/seller/signup")
     public CreateSellerResponse saveSeller(@RequestBody @Valid CreateSellerRequest request) {
         Seller seller = new Seller();
         seller.setSellerId(request.getSellerId());
-        seller.setSellerName(request.getSellerName());
-        seller.setBusinessNumber(request.getBusinessNumber());
-        seller.setSellerPhone(request.getSellerPhone());
+//        seller.setSellerName(request.getSellerName());
+//        seller.setBusinessNumber(request.getBusinessNumber());
+//        seller.setSellerPhone(request.getSellerPhone());
 
         Integer sellerNo = sellerService.join(seller);
         return new CreateSellerResponse(sellerNo);
@@ -33,9 +33,9 @@ public class SellerApiController {
     @Data
     static class CreateSellerRequest {
         private String sellerId;
-        private String sellerName;
-        private String businessNumber;
-        private String sellerPhone;
+//        private String sellerName;
+//        private String businessNumber;
+//        private String sellerPhone;
 
     }
 
