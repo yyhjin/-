@@ -24,15 +24,16 @@ public class Seller {
     @Column(length = 20, unique = true)
     private String sellerId;
 
-    @NotBlank
+    //API로 값이 제대로 보내지는지, 받아지는지 확인하고 수정할 것
+//    @NotBlank
     @Column(name = "business_number",length = 15, unique = true)
     private String businessNumber;
 
-    @NotBlank
+//    @NotBlank
     @Column(length = 15)
     private String sellerName;
 
-    @NotBlank
+//    @NotBlank
     @Column(length = 20)
     private String sellerPhone;
 
@@ -40,7 +41,7 @@ public class Seller {
 //    @JoinColumn(name = "store_no")
 //    private Store store;
 
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String sellerPwd;
+//    @JsonIgnore
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    private String sellerPwd;
 }
