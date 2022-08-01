@@ -18,7 +18,7 @@ public class SellerRepository {
         em.persist(seller);
     }
 
-    public Seller findOne(String sellerNo)  {
+    public Seller findOne(Integer sellerNo)  {
         return em.find(Seller.class, sellerNo);
     }
 
