@@ -17,4 +17,8 @@ public class StoreService {
     public Optional<Store> selectBystoreNo(int storeNo){
     return storeRepository.findById(storeNo);
     }
+
+    public void deleteBystoreNo(int storeNo){
+        storeRepository.deleteById(storeNo);
+    }
 }
