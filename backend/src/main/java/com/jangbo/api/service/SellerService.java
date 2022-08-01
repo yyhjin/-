@@ -16,20 +16,21 @@ public class SellerService {
 
     @Transactional
     public Integer join(Seller seller) {
-//        validateDuplicateMember(seller);
+        validateDuplicateSeller(seller);
         sellerRepository.save(seller);
         return seller.getSellerNo();
     }
 
-    private void validateDuplicateMember(Seller seller) {
+    private void validateDuplicateSeller(Seller seller) {
         //EXCEPTION
-        List<Seller> findMembers = sellerRepository.findBySellerId(seller.getSellerId());
-        if (!findMembers.isEmpty()) {
+        List<Seller> findSellers = sellerRepository.findBySellerId(seller.getSellerId());
+        if (!findSellers.isEmpty()) {
             throw new IllegalStateException("이미 존재하는 회원입니다.");
         }
     }
 
-    public Seller findOne(String sellerId) {
-        return sellerRepository.findOne(sellerId);
+    public Seller findOne(Integer sellerNo) {
+        return sellerRepository.findOne(sellerNo);
     }
+
 }
