@@ -19,6 +19,14 @@ repositories {
     mavenCentral()
 }
 
+def version = [
+        spring: '4.1.6.RELEASE',
+        servletAPI: '3.1.0',
+        commonsCollections: '3.2.1',
+        junit: '4.12',
+        slf4j: '1.7.12'
+]
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
@@ -38,6 +46,15 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 //    testImplementation 'org.springframework.security:spring-security-test'
+
+
+//        compile 'org.springframework',name: 'spring-context',
+//                version: '5.0.7.RELEASE'
+//        compile 'org.springframework',name: 'spring-test', version: '5.0.7.RELEASE'
+//        compile 'org.springframework',name: 'spring-webmvc', version: '5.0.7.RELEASE'
+
+
+    //compileOnly "org.springframework:spring-webmvc:5.0.7.RELEASE"
 
 
 }
