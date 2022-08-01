@@ -9,6 +9,11 @@ import CustomerProfileView from '../views/Customer/CustomerProfileView.vue'
 
 const routes = [
   {
+    path: "/test",
+    name: "test",
+    component: testView,
+  },
+  {
     path: "/",
     name: "home",
     component: HomeView,

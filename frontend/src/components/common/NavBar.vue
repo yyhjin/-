@@ -10,24 +10,16 @@
 
 <script>
 export default {
-  name: 'NavBar',
+  name: "NavBar",
 
   data() {
-    return {
-      
-    };
+    return {};
   },
 
-  mounted() {
-    
-  },
+  mounted() {},
 
-  methods: {
-    
-  },
+  methods: {},
 };
 </script>
 
-<style>
-
-</style>
+<style></style>

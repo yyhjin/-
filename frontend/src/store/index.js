@@ -1,4 +1,17 @@
-import { createStore } from 'vuex'
+import { createStore } from "vuex";
+
+import state from "./state";
+import * as getters from "./getters";
+import * as mutations from "./mutations";
+import * as actions from "./actions";
+
+const root = {
+    namespaced: true,
+    state,
+    getters,
+    mutations,
+    actions,
+};
 
 export default createStore({
   state: {
