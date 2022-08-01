@@ -25,15 +25,15 @@ public class Seller {
     private String sellerId;
 
     //API로 값이 제대로 보내지는지, 받아지는지 확인하고 수정할 것
-//    @NotBlank
-//    @Column(name = "business_number",length = 15, unique = true)
-//    private String businessNumber;
+    @NotBlank
+    @Column(name = "business_number",length = 15, unique = true)
+    private String businessNumber;
 
-//    @NotBlank
+    @NotBlank
     @Column(length = 15)
     private String sellerName;
 
-//    @NotBlank
+    @NotBlank
     @Column(length = 20)
     private String sellerPhone;
 
