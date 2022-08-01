@@ -37,9 +37,6 @@ public class Store {
     @Column(length = 150)
     private String storeAddr;
 
-//    @OneToOne(fetch = LAZY)
-//    @JoinColumn(name = "business_number")
-//    private Seller seller;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "market_no")
@@ -55,9 +52,6 @@ public class Store {
     private String storeSubject;
     private String storeImg;
 
-//    @OneToMany(mappedBy = "store")
-//    private List<Item> items = new ArrayList<>();
-//
 
     //==생성 메서드==//
 //    public static Store createStore(String storeName, String storeCategory, String storePhone, String storeAddr) {
