@@ -21,9 +21,9 @@ public class InterStore {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "store_no")
-    private Store store;
+//
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "store_no")
+//    private Store store;
 
 }
