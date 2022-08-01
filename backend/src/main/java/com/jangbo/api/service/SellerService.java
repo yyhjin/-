@@ -16,7 +16,7 @@ public class SellerService {
 
     @Transactional
     public Integer join(Seller seller) {
-        validateDuplicateMember(seller);
+//        validateDuplicateMember(seller);
         sellerRepository.save(seller);
         return seller.getSellerNo();
     }
