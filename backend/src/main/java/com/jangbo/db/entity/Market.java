@@ -1,4 +1,3 @@
-
 package com.jangbo.db.entity;
 
 import lombok.Getter;
