@@ -1,37 +1,35 @@
 <template>
-  <div>
-    <NavBar/>
-    <hr style="border: solid 1px #3CBD92"/>
-    <router-view/>
-  </div>    
+    <div>
+        <NavBar />
+        <hr style="border: solid 1px #3cbd92" />
+        <router-view />
+    </div>
 </template>
 
 <script>
-import NavBar from '@/components/common/NavBar.vue';
+import NavBar from "@/components/common/NavBar.vue";
 
 export default {
-  components : {NavBar},
+    components: { NavBar },
 };
 </script>
 
-
 <style>
-
 #app {
-  text-align: center;
+    text-align: center;
 }
 
 nav {
-  padding: 30px;
-  text-align: center;
+    padding: 30px;
+    text-align: center;
 }
 
 nav a {
-  font-weight: bold;
-  color: #FF6F61;
+    font-weight: bold;
+    color: #ff6f61;
 }
 
 nav a.router-link-exact-active {
-  color: #3CBD92;
+    color: #3cbd92;
 }
 </style>
