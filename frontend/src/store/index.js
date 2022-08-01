@@ -14,6 +14,7 @@ const root = {
 };
 
 export default createStore({
+  modules:{root},
   state: {
     //dummy
     userinfo:
@@ -37,7 +38,5 @@ export default createStore({
   mutations: {
   },
   actions: {
-  },
-  modules: {
   }
 })
