@@ -6,6 +6,7 @@ import CustomerJoinView from "../views/CustomerJoinView.vue";
 import SellerJoinView from "../views/SellerJoinView.vue";
 import MyPageView from '../views/Customer/MyPageView.vue'
 import CustomerProfileView from '../views/Customer/CustomerProfileView.vue'
+import MyStoreView from '../views/Seller/MyStoreView.vue'
 import testView from '../views/test.vue'
 const routes = [
   {
@@ -52,6 +53,11 @@ const routes = [
     path: '/customer/:id/profile',
     name: 'profile',
     component: CustomerProfileView
+  },
+  {
+    path: '/seller/:id',
+    name: 'mystore',
+    component: MyStoreView
   }
 ];
 

@@ -127,7 +127,7 @@ export default {
   /* width 주고,중앙 정렬. */
   margin-left:auto; 
   margin-right:auto;
-  width:390px;
+  width:340px;
   
 }
 .card-header {
