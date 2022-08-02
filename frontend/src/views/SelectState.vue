@@ -47,11 +47,10 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .firstDiv {
     text-align: center;
 }
-
 .btn_group {  
     margin-top: 100px;
 }
@@ -73,7 +72,7 @@ export default {
 }
 
 img {
-    max-width: 100%;
+    max-width : 100%;
     max-height: 100%;
 }
 </style>
