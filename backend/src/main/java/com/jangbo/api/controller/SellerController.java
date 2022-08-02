@@ -24,7 +24,7 @@ public class SellerController {
     //API 정상 작동하는지 확인 후 추가
     @ApiOperation(value = "회원가입" , notes="판매자 정보를 등록한다.",httpMethod = "POST")
     @PostMapping("/seller/signup")
-    public CreateSellerResponse saveSeller(@Valid CreateSellerRequest request) {
+    public CreateUpdateSellerResponse saveSeller(@Valid CreateSellerRequest request) {
         Seller seller = new Seller();
         seller.setSellerId(request.getSellerId());
         seller.setSellerName(request.getSellerName());
@@ -32,7 +32,7 @@ public class SellerController {
         seller.setSellerPhone(request.getSellerPhone());
 
         Integer sellerNo = sellerService.join(seller);
-        return new CreateSellerResponse(sellerNo);
+        return new CreateUpdateSellerResponse(sellerNo);
     }
 
     @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
@@ -59,6 +59,17 @@ public class SellerController {
             return new SearchSellerResult(false, sellerDto);
         }
     }
+
+    @ApiOperation(value = "회원정보 수정", notes="판매자 회원정보를 수정한다.",httpMethod = "PUT")
+    @PutMapping("/seller/{seller_id}")
+    public CreateUpdateSellerResponse updateSeller(
+            @PathVariable("seller_id") String sellerId,
+            @Valid SellerDto request
+    ) {
+        Integer sellerNo = sellerService.update(sellerId, request.getBusinessNumber(), request.getSellerName(), request.getSellerPhone());
+        return new CreateUpdateSellerResponse(sellerNo);
+    }
+
 
     @Data
     @AllArgsConstructor
@@ -93,8 +104,8 @@ public class SellerController {
 
 
     @Data
-    static class CreateSellerResponse {
-        public CreateSellerResponse(Integer sellerNo) {
+    static class CreateUpdateSellerResponse {
+        public CreateUpdateSellerResponse(Integer sellerNo) {
             this.sellerNo = sellerNo;
         }
         private Integer sellerNo;

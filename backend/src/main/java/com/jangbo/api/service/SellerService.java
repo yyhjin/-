@@ -33,4 +33,14 @@ public class SellerService {
         return sellerRepository.findOne(sellerNo);
     }
 
+    @Transactional
+    public Integer update(String sellerId, String businessNumber, String sellerName, String sellerPhone) {
+        List<Seller> sellers = sellerRepository.findBySellerId(sellerId);
+        Seller seller = sellers.get(0);
+        seller.setBusinessNumber(businessNumber);
+        seller.setSellerName(sellerName);
+        seller.setSellerPhone(sellerPhone);
+        return seller.getSellerNo();
+    }
+
 }
