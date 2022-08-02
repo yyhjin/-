@@ -1,5 +1,7 @@
 package com.jangbo.api.service;
 
+import com.jangbo.db.dto.SidoDto;
+import com.jangbo.db.entity.Gugun;
 import com.jangbo.db.entity.Sido;
 import com.jangbo.db.repository.SidoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,8 @@ public class SidoService {
     @Autowired
     SidoRepository sidoRepository;
 
-    public List<Sido> findAll() {
-        return sidoRepository.findAll();
+    public List<SidoDto> findAllSubstring() {
+        return sidoRepository.findAllSubstring();
     }
 
 }

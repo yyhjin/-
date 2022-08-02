@@ -1,6 +1,8 @@
 package com.jangbo.api.controller;
 
 import com.jangbo.api.service.SidoService;
+import com.jangbo.db.dto.SidoDto;
+import com.jangbo.db.entity.Gugun;
 import com.jangbo.db.entity.Sido;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,7 +30,7 @@ public class SidoController {
     @ApiOperation(value = "시,도 목록 조회" , notes="시,도 전체 목록을 조회한다.",httpMethod = "GET")
     @GetMapping
     public ResponseEntity<List<Sido>> getAllSidos() {
-        List<Sido> sidos = sidoService.findAll();
+        List<SidoDto> sidos = sidoService.findAllSubstring();
         return new ResponseEntity(sidos, HttpStatus.OK);
     }
 }
