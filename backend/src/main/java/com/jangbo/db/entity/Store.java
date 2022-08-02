@@ -41,24 +41,24 @@ public class Store {
     @JoinColumn(name = "seller_id")
     private Seller seller;
 
-    @Column(length = 300)
-    private String storeIntro;
     @Column(length = 90)
     private String storeSubject;
+    @Column(length = 300)
+    private String storeIntro;
     private String storeImg;
 
-
-    //==생성 메서드==//
-//    public static Store createStore(String storeName, String storeCategory, String storePhone, String storeAddr) {
-//        Store store = new Store();
-//        store.setStoreName(storeName);
-//        store.setStoreCategory(storeCategory);
-//        store.setStorePhone(storePhone);
-//        store.setStoreAddr(storeAddr);
-//
-//        return store;
-//    }
-
+    @Builder
+    public Store(String storeName, String storeCategory, String storePhone, String storeAddr,Market market,Seller seller,String storeSubject,String storeIntro, String storeImg) {
+        this.storeName = storeName;
+        this.storeCategory = storeCategory;
+        this.storePhone = storePhone;
+        this.storeAddr = storeAddr;
+        this.market = market;
+        this.seller = seller;
+        this.storeSubject = storeSubject;
+        this.storeIntro = storeIntro;
+        this.storeImg = storeImg;
+    }
 
 
 }
