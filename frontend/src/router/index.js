@@ -8,6 +8,7 @@ import MyPageView from "../views/Customer/MyPageView.vue";
 import CustomerProfileView from "../views/Customer/CustomerProfileView.vue";
 import MarketListView from "../views/MarketListVIew.vue";
 import testView from "../views/test.vue";
+import SearchedMarketView from "../views/SearchedMarketView.vue";
 
 const routes = [
     {
@@ -24,6 +25,11 @@ const routes = [
         path: "/search",
         name: "search",
         component: MarketListView,
+    },
+    {
+        path: "/searchStore",
+        name: "searchStore",
+        component: SearchedMarketView,
     },
     {
         path: "/selectjoin",
