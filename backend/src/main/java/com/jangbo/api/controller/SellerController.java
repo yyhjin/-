@@ -3,6 +3,8 @@ package com.jangbo.api.controller;
 import com.jangbo.api.service.SellerService;
 import com.jangbo.db.entity.Seller;
 import com.jangbo.db.repository.SellerRepository;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@Api(value = "판매자api", tags={"판매자"})
 @RestController
 @RequiredArgsConstructor
 public class SellerController {
@@ -19,6 +22,7 @@ public class SellerController {
     private final SellerRepository sellerRepository;
 
     //API 정상 작동하는지 확인 후 추가
+    @ApiOperation(value = "판매자 회원가입" , notes="판매자 정보를 등록한다.",httpMethod = "POST")
     @PostMapping("/seller/signup")
     public CreateSellerResponse saveSeller(@Valid CreateSellerRequest request) {
         Seller seller = new Seller();
