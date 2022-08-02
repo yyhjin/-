@@ -10,16 +10,23 @@
 
 <script>
 export default {
-  name: "NavBar",
-
-  data() {
-    return {};
-  },
-
-  mounted() {},
-
-  methods: {},
+    name: "SearchAddress",
+    setup() {},
 };
 </script>
 
-<style></style>
+<style>
+.logo {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.div_img {
+    width: 100px;
+    float: left;
+}
+
+.nav {
+    float: right;
+}
+</style>
