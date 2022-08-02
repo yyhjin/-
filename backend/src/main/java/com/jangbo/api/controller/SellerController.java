@@ -22,7 +22,7 @@ public class SellerController {
     private final SellerRepository sellerRepository;
 
     //API 정상 작동하는지 확인 후 추가
-    @ApiOperation(value = "판매자 회원가입" , notes="판매자 정보를 등록한다.",httpMethod = "POST")
+    @ApiOperation(value = "회원가입" , notes="판매자 정보를 등록한다.",httpMethod = "POST")
     @PostMapping("/seller/signup")
     public CreateSellerResponse saveSeller(@Valid CreateSellerRequest request) {
         Seller seller = new Seller();
@@ -35,6 +35,7 @@ public class SellerController {
         return new CreateSellerResponse(sellerNo);
     }
 
+    @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
     @GetMapping("/seller/idcheck/{seller_id}")
     public CheckSellerIdResponse IdCheck(
             @PathVariable("seller_id") String sellerId
@@ -46,39 +47,39 @@ public class SellerController {
         }
     }
 
-//    @GetMapping("/seller/{seller_id}")
-//    public SearchSellerResult SearchSeller(@PathVariable("seller_id") String sellerId) {
-//        List<Seller> result = sellerRepository.findBySellerId(sellerId);
-//        result.map(m -> new SellerDto(m.getBusinessNumber(), m.getSellerName()))
-//        if (result.isEmpty()) {
-//            return new SearchSellerResult(true, null);
-//        } else {
-//            return new SearchSellerResult(false, );
-//        }
-//    }
+    @ApiOperation(value = "회원정보 조회", notes="판매자 회원정보를 조회한다.",httpMethod = "GET")
+    @GetMapping("/seller/{seller_id}")
+    public SearchSellerResult SearchSeller(@PathVariable("seller_id") String sellerId) {
+        List<Seller> result = sellerRepository.findBySellerId(sellerId);
+        if (result.isEmpty()) {
+            return new SearchSellerResult(true, null);
+        } else {
+            Seller seller = result.get(0);
+            SellerDto sellerDto = new SellerDto(seller.getBusinessNumber(), seller.getSellerName(),seller.getSellerPhone());
+            return new SearchSellerResult(false, sellerDto);
+        }
+    }
 
-//    @Data
-//    @AllArgsConstructor
-//    static class SearchSellerResult<T> {
-//        private boolean idcheck;
-//        private T data;
-//    }
-//
-//    @Data
-//    @AllArgsConstructor
-//    static class SellerDto {
-//        private String businessNumber;
-//        private String sellerName;
-//        private String sellerPhone;
-//    }
+    @Data
+    @AllArgsConstructor
+    static class SearchSellerResult<T> {
+        private boolean idCheck;
+        private T sellerData;
+    }
 
-
+    @Data
+    @AllArgsConstructor
+    static class SellerDto {
+        private String businessNumber;
+        private String sellerName;
+        private String sellerPhone;
+    }
 
 
     @Data
     @AllArgsConstructor
     static class CheckSellerIdResponse {
-        private boolean idcheck;
+        private boolean idCheck;
     }
 
 
