@@ -5,13 +5,13 @@ import lombok.Data;
 
 @Data
 public class GugunDto {
-    private String gugunCode ;
-    private String sidoName;
+    private String sidoGugun ;
+    private String gugunCode;
     private String gugunName;
 
-    public GugunDto(String gugunCode, String sidoName, String gugunName) {
+    public GugunDto(String sidoGugun, String gugunCode, String gugunName) {
+        this.sidoGugun = sidoGugun;
         this.gugunCode = gugunCode;
-        this.sidoName = sidoName;
         this.gugunName = gugunName;
     }
 }

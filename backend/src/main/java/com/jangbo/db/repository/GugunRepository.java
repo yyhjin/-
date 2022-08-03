@@ -11,8 +11,8 @@ import java.util.List;
 
 
 @Repository
-public interface GugunRepository extends JpaRepository<Gugun,Integer> {
+public interface GugunRepository extends JpaRepository<Gugun,String> {
 
-    @Query("select new com.jangbo.db.dto.GugunDto(g.gugunCode, g.sidoName, g.gugunName) from Gugun g where g.gugunCode like :sidocode% ")
-    List<GugunDto> findGugunBySido(@Param("sidocode") String sidocode);
+    //@Query("select new com.jangbo.db.dto.GugunDto(g.sidoGugun, g.gugunCode, g.gugunName) from Gugun g where g.gugunCode like :sidocode% ")
+    List<GugunDto> findAllByGugunCodeStartsWith(@Param("sidocode") String sidocode);
 }

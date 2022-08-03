@@ -22,7 +22,6 @@ public class SellerController {
     private final SellerService sellerService;
     private final SellerRepository sellerRepository;
 
-    //API 정상 작동하는지 확인 후 추가
     @ApiOperation(value = "회원가입" , notes="판매자 정보를 등록한다.",httpMethod = "POST")
     @PostMapping("/seller/signup")
     public CreateUpdateSellerResponse saveSeller(@Valid CreateSellerRequest request) {
