@@ -11,7 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+
+import static java.util.Objects.isNull;
 
 @Api(value = "판매자api", tags={"판매자"})
 @RestController
@@ -48,35 +49,27 @@ public class SellerController {
     }
 
     @ApiOperation(value = "회원정보 조회", notes="판매자 회원정보를 조회한다.",httpMethod = "GET")
-    @GetMapping("/seller/{seller_id}")
-    public SearchSellerResult SearchSeller(@PathVariable("seller_id") String sellerId) {
-        List<Seller> result = sellerRepository.findBySellerId(sellerId);
-        if (result.isEmpty()) {
-            return new SearchSellerResult(true, null);
+    @GetMapping("/seller/{seller_no}")
+    public SellerDto SearchSeller(@PathVariable("seller_no") Integer sellerNo) {
+        Seller seller = sellerRepository.findOne(sellerNo);
+        if (isNull(seller)) {
+            return new SellerDto(null, null, null);
         } else {
-            Seller seller = result.get(0);
-            SellerDto sellerDto = new SellerDto(seller.getBusinessNumber(), seller.getSellerName(),seller.getSellerPhone());
-            return new SearchSellerResult(false, sellerDto);
+            return new SellerDto(seller.getBusinessNumber(), seller.getSellerName(),seller.getSellerPhone());
         }
     }
 
     @ApiOperation(value = "회원정보 수정", notes="판매자 회원정보를 수정한다.",httpMethod = "PUT")
-    @PutMapping("/seller/{seller_id}")
-    public CreateUpdateSellerResponse updateSeller(
-            @PathVariable("seller_id") String sellerId,
+    @PutMapping("/seller/{seller_no}")
+    public boolean updateSeller(
+            @PathVariable("seller_no") Integer sellerNo,
             @Valid SellerDto request
     ) {
-        Integer sellerNo = sellerService.update(sellerId, request.getBusinessNumber(), request.getSellerName(), request.getSellerPhone());
-        return new CreateUpdateSellerResponse(sellerNo);
+        sellerService.update(sellerNo, request.getBusinessNumber(), request.getSellerName(), request.getSellerPhone());
+        return true;
     }
 
 
-    @Data
-    @AllArgsConstructor
-    static class SearchSellerResult<T> {
-        private boolean idCheck;
-        private T sellerData;
-    }
 
     @Data
     @AllArgsConstructor

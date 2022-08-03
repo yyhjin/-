@@ -34,13 +34,12 @@ public class SellerService {
     }
 
     @Transactional
-    public Integer update(String sellerId, String businessNumber, String sellerName, String sellerPhone) {
-        List<Seller> sellers = sellerRepository.findBySellerId(sellerId);
-        Seller seller = sellers.get(0);
+    public boolean update(Integer sellerNo, String businessNumber, String sellerName, String sellerPhone) {
+        Seller seller = sellerRepository.findOne(sellerNo);
         seller.setBusinessNumber(businessNumber);
         seller.setSellerName(sellerName);
         seller.setSellerPhone(sellerPhone);
-        return seller.getSellerNo();
+        return true;
     }
 
 }
