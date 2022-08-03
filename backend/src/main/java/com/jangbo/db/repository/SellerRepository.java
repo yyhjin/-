@@ -13,6 +13,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class SellerRepository {
 
+
     private final EntityManager em;
 
     public void save(Seller seller) {
@@ -22,12 +23,13 @@ public class SellerRepository {
     public Seller findOne(Integer sellerNo)  {
         return em.find(Seller.class, sellerNo);
     }
-
     public List<Seller> findBySellerId(String sellerId) {
         //parameter name binding .setParameter("name1", name) -> :name1
         return em.createQuery("select s from Seller s where s.sellerId = :sellerId", Seller.class)
                 .setParameter("sellerId", sellerId)
                 .getResultList();
     }
+
+
 }
 

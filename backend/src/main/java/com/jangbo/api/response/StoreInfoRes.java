@@ -1,8 +1,11 @@
 package com.jangbo.api.response;
 
+import com.jangbo.db.entity.Market;
+import com.jangbo.db.entity.Seller;
 import com.jangbo.db.entity.Store;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
@@ -23,11 +26,45 @@ public class StoreInfoRes {
     @ApiModelProperty(name = "상점주소", example = "서울특별시 어쩌구")
     String storeAddr;
 
+    @ApiModelProperty(name = "판매자번호", example = "1234")
+    Seller seller;
+
+    @ApiModelProperty(name = "시장번호", example = "4321")
+    Market market;
+
     public StoreInfoRes(Store store) {
         this.storeNo = store.getStoreNo();
         this.storeName = store.getStoreName();
         this.storeCategory = store.getStoreCategory();
         this.storePhone = store.getStorePhone();
         this.storeAddr = store.getStoreAddr();
+        this.seller = seller.builder()
+                .sellerNo(store.getSeller().getSellerNo()).build();
+//        this.market = market.builder().marketNo(store.getMarket().getMarketNo()).build();
+
     }
+
+    @Getter
+    static class Seller {
+        private Integer sellerNo;
+
+
+        @Builder
+        public Seller(Integer sellerNo) {
+            this.sellerNo = sellerNo;
+        }
+    }
+
+//    @Getter
+//    static class Market {
+//        private Integer markgetNo;
+//
+//
+//        @Builder
+//        public Market(Integer marketNo) {
+//            this.markgetNo = marketNo;
+//        }
+//    }
+
+
 }

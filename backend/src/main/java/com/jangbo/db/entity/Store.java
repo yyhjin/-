@@ -32,13 +32,13 @@ public class Store {
     @Column(length = 150)
     private String storeAddr;
 
-
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "market_no")
-    private Market market;
+//
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "market_no")
+//    private Market market;
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "seller_id")
+    @JoinColumn(name = "seller_no")
     private Seller seller;
 
     @Column(length = 90)
@@ -48,16 +48,23 @@ public class Store {
     private String storeImg;
 
     @Builder
-    public Store(String storeName, String storeCategory, String storePhone, String storeAddr,Market market,Seller seller,String storeSubject,String storeIntro, String storeImg) {
+    public Store(String storeName, String storeCategory, String storePhone, String storeAddr,Seller seller,String storeSubject,String storeIntro, String storeImg) {
         this.storeName = storeName;
         this.storeCategory = storeCategory;
         this.storePhone = storePhone;
         this.storeAddr = storeAddr;
-        this.market = market;
-        this.seller = seller;
         this.storeSubject = storeSubject;
         this.storeIntro = storeIntro;
         this.storeImg = storeImg;
+        this.seller = seller;
+
+    }
+
+    public void update(String storeName, String storeCategory,String storePhone,String storeAddr) {
+        this.storeName = storeName;
+        this.storeCategory = storeCategory;
+        this.storePhone = storePhone;
+        this.storeAddr = storeAddr;
     }
 
 
