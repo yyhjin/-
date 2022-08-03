@@ -8,6 +8,9 @@
                         <h5>아이디</h5>
                         <el-input placeholder="아이디 (이메일 형식)" v-model="id" class="input_id" />
                         <el-button color="#FF6F61" round class="btn_idCheck" @click="cl_idCheck">중복 확인</el-button>
+                        <h5 style="padding-top: 20px">닉네임</h5>
+                        <el-input placeholder="닉네임" v-model="nick" class="input_nick" />
+                        <el-button color="#FF6F61" round class="btn_nickCheck" @click="cl_nickCheck">중복 확인</el-button>
                         <h5 style="padding-top: 20px">비밀번호</h5>
                         <el-input placeholder="패스워드" v-model="password" class="input_pass" type="password" />
                         <h5>비밀번호 확인</h5>
@@ -23,15 +26,6 @@
                             <el-input type="text" v-model="address" id="address" placeholder="기본 주소" style="margin-top: 10px" /><br />
                             <el-input type="text" v-model="detailAddress" id="detailAddress" placeholder="상세 주소" style="margin-top: 10px" />
                             <el-input type="text" v-model="extraAddress" id="extraAddress" placeholder="참고 항목" style="margin-top: 10px" />
-                        </div>
-                        <h5>생년월일</h5>
-                        <el-input placeholder="YYYY-MM-DD" v-model="birthday" class="input_birthday" />
-                        <h5>성별(선택)</h5>
-                        <div class="mb-2 flex items-center text-sm radioGroup adjustC">
-                            <el-radio-group v-model="gender" class="ml-4">
-                                <el-radio label="남" size="large">남</el-radio>
-                                <el-radio label="여" size="large">여</el-radio>
-                            </el-radio-group>
                         </div>
                     </div>
 
@@ -52,6 +46,7 @@ export default {
     data() {
         return {
             id: "",
+            nick: "",
             password: "",
             password_double: "",
             name: "",
@@ -74,11 +69,13 @@ export default {
         cl_idCheck() {
             console.log(this.id);
         },
+        cl_nickCheck() {
+            console.log(this.nick);
+        },
         cl_register() {
             console.log("상태 : " + this.userType + " 아이디:" + this.id + " 비밀번호:" + this.password + " 비밀번호검증:" + this.password_double);
-            console.log("이름 :" + this.name + " 번호:" + this.phone_number);
+            console.log("이름 :" + this.name + "닉네임 :" + this.nick + " 번호:" + this.phone_number);
             console.log("주소:" + this.address + " 우편번호:" + this.postcode + " 상세주소:" + this.detailAddress + " 추가:" + this.extraAddress);
-            console.log("생일:" + this.birthday + " 성별:" + this.gender);
         },
         cl_cancle() {
             this.$router.push({ name: "selectjoin" });
@@ -143,6 +140,13 @@ export default {
 .btn_idCheck {
     margin-top: 10px;
     float: right;
+    width: 80px;
+}
+
+.btn_nickCheck {
+    margin-top: 10px;
+    float: right;
+    width: 80px;
 }
 
 .btn_address {

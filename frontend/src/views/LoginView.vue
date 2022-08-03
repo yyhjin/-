@@ -93,7 +93,6 @@ export default {
 }
 
 .el-button {
-    height: 30px !important;
     color: white !important;
 }
 .buttonLogin {

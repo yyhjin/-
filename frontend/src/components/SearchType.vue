@@ -43,6 +43,8 @@ export default {
 
 .mk_img {
     float: left;
+    width: 90px;
+    height: 90px;
 }
 
 .mk_name {

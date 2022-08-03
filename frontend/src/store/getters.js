@@ -7,3 +7,7 @@ export function getDoList(state) {
 export function getGuList(state) {
     return state.GuList;
 }
+
+export function getSellList(state) {
+    return state.SellList;
+}

@@ -1,11 +1,11 @@
 <template>
-    <div class="div_big">
+    <div class="div_big1">
         <h2>{{ this.market_name }}</h2>
         <div class="searchBar">
             <el-button color="#FF6F61" round class="btn_back" @click="cl_btn">돌아가기</el-button>
             <el-input class="search_type" v-model="sell_type" placeholder="Please Input" @keyup.enter="enterKey" />
         </div>
-        <div class="adjustC">
+        <div class="adjustC radio_gr">
             <el-checkbox-group v-model="checkList">
                 <el-checkbox label="정육점" />
                 <el-checkbox label="수산물" />
@@ -55,8 +55,9 @@ export default {
 </script>
 
 <style>
-.div_big {
+.div_big1 {
     display: inline-block;
+    width: 300px;
 }
 
 .div_market {
@@ -70,6 +71,7 @@ export default {
 .searchBar {
     margin-top: 20px;
     margin-bottom: 20px;
+    width: 300px;
 }
 
 .btn_back {
