@@ -12,17 +12,14 @@ import static javax.persistence.FetchType.LAZY;
 @Setter
 public class OrderItem {
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderItemNo;
 
     private Integer count;
 
-    private Integer orderPrice;
+    private Integer price;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "item_no")
-    private Item item;
+    private String itemName;
 
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "order_no")
