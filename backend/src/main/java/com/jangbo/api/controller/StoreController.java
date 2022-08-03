@@ -1,5 +1,6 @@
 package com.jangbo.api.controller;
 
+import com.jangbo.api.request.StoreEditPatchReq;
 import com.jangbo.api.request.StoreRegisterPostReq;
 import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.StoreService;
@@ -41,14 +42,14 @@ public class StoreController {
 //        return new ResponseEntity<String>("성공했다",HttpStatus.OK);
 //    }
 
-    /*상점 목록 조회*/
-    @GetMapping
-    @ApiOperation(value = "상점 목록 조회 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
-    public ResponseEntity<List<StoreInfoRes>> findAll() {
-        List<StoreInfoRes> storeInfoResList = storeService.findAll();
-        return new ResponseEntity<List<StoreInfoRes>>(storeInfoResList, HttpStatus.OK);
-    }
- /* 상점 정보 */
+//    /*상점 목록 조회*/
+//    @GetMapping
+//    @ApiOperation(value = "상점 목록 조회 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
+//    public ResponseEntity<List<StoreInfoRes>> findAll() {
+//        List<StoreInfoRes> storeInfoResList = storeService.findAll();
+//        return new ResponseEntity<List<StoreInfoRes>>(storeInfoResList, HttpStatus.OK);
+//    }
+ /* 상점 정보 조회*/
     @GetMapping("/{storeNo}")
     @ApiOperation(value = "상점 정보 조회 api", notes="상점번호로 정보조회(방정보 하나하나 )",httpMethod = "GET")
     public ResponseEntity<StoreInfoRes> findById(@PathVariable("storeNo") Integer storeNo) {
@@ -56,15 +57,23 @@ public class StoreController {
         return new ResponseEntity<StoreInfoRes>(storeInfoRes, HttpStatus.OK);
     }
 
+    /* 상점 등록 */
     @PostMapping
     @ApiOperation(value = "상점 등록 api", notes="상점등록",httpMethod = "POST")
     public ResponseEntity<Integer> save(@RequestBody StoreRegisterPostReq storeRegisterPostReq) {
-
         Integer savedStoreNo = storeService.save(storeRegisterPostReq);
-
         return new ResponseEntity<Integer>(savedStoreNo, HttpStatus.CREATED);
     }
 
+    /* 상점 수정 */
+    @PatchMapping("/{storeNo}")
+    @ApiOperation(value = "상점 수정 api", notes="상점 정보 수정, 바뀐 부분만 업데이트 해준다.",httpMethod = "PATCH")
+    public ResponseEntity<Integer> update(@PathVariable("storeNo") Integer storeNo,@RequestBody StoreEditPatchReq storeEditPatchReq) {
+        Integer updatedStoreNo = storeService.update(storeNo,storeEditPatchReq);
+        return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.CREATED);
+    }
+
+    /*상점 삭제*/
     @DeleteMapping("/{storeNo}")
     @ApiOperation(value = "상점 정보 삭제 api", notes="상점번호로 정보삭제",httpMethod = "DELETE")
     public ResponseEntity<Integer> delete(@PathVariable("storeNo") Integer storeNo) {

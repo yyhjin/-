@@ -17,7 +17,7 @@ import static javax.persistence.FetchType.LAZY;
 public class Seller {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer sellerNo;
 
     @NotBlank
