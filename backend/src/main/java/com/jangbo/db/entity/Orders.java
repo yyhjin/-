@@ -40,7 +40,8 @@ public class Orders {
     private Customer customer;
 
 
-
+    @OneToMany(mappedBy = "orders")
+    private List<OrderItem> orderItems = new ArrayList<>();
 
 
 }

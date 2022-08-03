@@ -3,6 +3,7 @@ package com.jangbo.api.controller;
 import com.jangbo.api.service.CustomerService;
 import com.jangbo.db.entity.*;
 import com.jangbo.db.repository.CustomerRepository;
+import com.jangbo.db.repository.StoreRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -11,9 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 
@@ -24,6 +28,8 @@ public class CustomerController {
 
     private final CustomerService customerService;
     private final CustomerRepository customerRepository;
+
+    private final StoreRepository storeRepository;
 
     //API 정상 작동하는지 확인 후 추가
     @ApiOperation(value = "회원가입" , notes="소비자 정보를 등록한다.",httpMethod = "POST")
@@ -86,37 +92,42 @@ public class CustomerController {
 
 
     //회원정보 조회 - 주문내역 조회
-//    @ApiOperation(value = "회원정보 조회 - 주문내역 조회", notes = "소비자 주문내역을 조회한다.", httpMethod = "GET")
-//    @GetMapping("/customer/{customer_no}/orders")
-//    public List<OrdersDto> findOrders(@PathVariable("customer_no") Integer customerNo) {
-//        List<Orders> orders = customerRepository.findOne(customerNo).getOrders();
-//        List<OrdersDto> result = orders.stream()
-//                .map(o -> new OrdersDto(o))
-//                .collect(Collectors.toList());
-//
-//        return result;
-//    }
-//
-//
-//    @Data
-//    @AllArgsConstructor
-//    static class OrdersDto<T> {
-//        private Integer orderNo;
-//        private String orderDate;
-//        private String storeNo;
-//        private String storeName; // store 에서 가져와야함
-//        private String status;
-//        private T orderItem; //
-//
-//        public OrdersDto(Orders order) {
-//            order.getOrderNo();
-//            order.getOrderDate();
-//            order.getStoreNo();
-//            order
-//            order.getStatus();
-//            order
-//        }
-//    }
+    @ApiOperation(value = "회원정보 조회 - 주문내역 조회", notes = "소비자 주문내역을 조회한다.", httpMethod = "GET")
+    @GetMapping("/customer/{customer_no}/orders")
+    public List<OrdersDto> findOrders(@PathVariable("customer_no") Integer customerNo) {
+        List<Orders> orders = customerRepository.findOne(customerNo).getOrders();
+        List<OrdersDto> result = orders.stream()
+                .map(o -> new OrdersDto(o.getOrderDate(),
+                                        o.getStatus(),
+                                        storeRepository.getReferenceById(o.getStoreNo()).getStoreName(),
+                                        o.getOrderItems().stream().map(oi -> new OrderItemDto(oi.getItemName(),oi.getCount(), oi.getPrice())
+                                        )))
+                .collect(Collectors.toList());
+        return result;
+    }
+
+
+    @Data
+    @AllArgsConstructor
+    static class OrdersDto<T> {
+        private Integer orderNo;
+        private String orderDate;
+        private String status;
+        private String storeNo;
+        private String storeName; // store 에서 가져와야함
+        private T order_item; //
+
+        public OrdersDto(Date orderDate, @NotBlank String status, @NotBlank String storeName, Stream<OrderItemDto> orderItemDtoStream) {
+        }
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class OrderItemDto {
+        private String itemName;
+        private Integer count;
+        private Integer price;
+    }
 
 
     @Data
