@@ -14,8 +14,13 @@ import java.util.List;
 @Getter
 @Setter
 public class Customer{
+
     @Id
-    @Column(name = "customer_id", unique = true, length = 20)
+    @GeneratedValue
+    private Integer customerNo;
+
+    @NotBlank
+    @Column(length = 20, unique = true)
     private String customerId;
 
     @NotBlank
@@ -39,5 +44,9 @@ public class Customer{
 
     @OneToMany(mappedBy = "customer")
     private List<Orders> orders = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "customer")
+    private List<InterStore> interStores = new ArrayList<>();
 
 }
