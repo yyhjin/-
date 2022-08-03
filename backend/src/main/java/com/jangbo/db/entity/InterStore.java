@@ -13,7 +13,7 @@ import static javax.persistence.FetchType.LAZY;
 public class InterStore {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cus_store_no")
     private Integer id;
 
@@ -21,9 +21,9 @@ public class InterStore {
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
-//
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "store_no")
-//    private Store store;
+
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "store_no")
+    private Store store;
 
 }

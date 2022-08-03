@@ -16,7 +16,7 @@ import java.util.List;
 public class Customer{
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer customerNo;
 
     @NotBlank
@@ -37,9 +37,9 @@ public class Customer{
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
     private boolean customerIndex = true; //첫 주문으로 기본 값 설정
 
-    @JsonIgnore
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private String customerPwd;
+//    @JsonIgnore
+//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+//    private String customerPwd;
 
 
     @OneToMany(mappedBy = "customer")
@@ -48,5 +48,18 @@ public class Customer{
 
     @OneToMany(mappedBy = "customer")
     private List<InterStore> interStores = new ArrayList<>();
+
+    //==연관관계 편의 메서드==//
+    public void addInterStore(InterStore interStore, Store store) {
+        interStores.add(interStore);
+        interStore.setCustomer(this);
+        interStore.setStore(store);
+    }
+
+    public void addOrders(Orders order) {
+        orders.add(order);
+        order.setCustomer(this);
+    }
+
 
 }
