@@ -19,12 +19,13 @@ import java.util.List;
 @Setter
 public class Gugun {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer gugunNo;
+    @Column(length = 150)
+    private String sidoGugun;
 
     //@Id
-    @Column(length = 75)
-    private String sidoName;
+//    @Column(length = 75)
+//    @NotBlank
+//    private String sidoName;
 
     //@Id
     @Column(length = 75)

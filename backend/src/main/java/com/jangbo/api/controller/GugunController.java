@@ -25,7 +25,7 @@ public class GugunController {
     @ApiOperation(value = "구,군 목록 조회" , notes="구,군 전체 목록을 조회한다.",httpMethod = "GET")
     @GetMapping
     public ResponseEntity<List<Gugun>> getAllBySido(String sidocode) {
-        List<GugunDto> guguns = gugunService.findGugunBySido(sidocode);
+        List<GugunDto> guguns = gugunService.findAllByGugunCodeStartsWith(sidocode);
         return new ResponseEntity(guguns, HttpStatus.OK);
     }
 }
