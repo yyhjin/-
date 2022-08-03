@@ -35,10 +35,21 @@ public class Market {
     private Float lng;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumns({
-            @JoinColumn(name = "sido_name", referencedColumnName = "sidoName"),
-            @JoinColumn(name = "gugun_name", referencedColumnName = "gugunName")
-    })
+    @JoinColumn(name = "sido_gugun")
     private Gugun gugun;
+
+//
+//    public Market() {
+//
+//    }
+//
+//    public Market(String marketName, String marketAddr, Float lat, Float lng) {
+//        this.marketName = marketName;
+//        this.marketAddr = marketAddr;
+//        this.lat = lat;
+//        this.lng = lng;
+//
+//    }
+
 
 }

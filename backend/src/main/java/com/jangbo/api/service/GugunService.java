@@ -14,8 +14,8 @@ public class GugunService {
     @Autowired
     GugunRepository gugunRepository;
 
-    public List<GugunDto> findGugunBySido(String sidocode) {
-        return gugunRepository.findGugunBySido(sidocode);
+    public List<GugunDto> findAllByGugunCodeStartsWith(String sidocode) {
+        return gugunRepository.findAllByGugunCodeStartsWith(sidocode);
     }
 
 }
