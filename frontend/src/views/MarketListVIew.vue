@@ -35,8 +35,6 @@ export default {
             searchType: "주소검색",
         };
     },
-    mounted() {},
-    methods: {},
 };
 </script>
 

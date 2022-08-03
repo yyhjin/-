@@ -28,18 +28,15 @@
 
 <script>
 import axios from "axios";
+import { ref } from "vue";
 
 export default {
-    data() {
-        return {
-            id: "",
-            password: "",
-            userType: "",
-        };
-    },
+    setup() {
+        const id = ref();
+        const password = ref();
+        const userType = ref();
 
-    methods: {
-        ck_login() {
+        function ck_login() {
             if (this.userType == "") {
                 alert("구매자? 판매자?");
             } else if (this.id == "") {
@@ -59,7 +56,9 @@ export default {
                 console.log("id " + this.id);
                 console.log("pass " + this.password);
             }
-        },
+        }
+
+        return { id, password, userType, ck_login };
     },
 };
 </script>
