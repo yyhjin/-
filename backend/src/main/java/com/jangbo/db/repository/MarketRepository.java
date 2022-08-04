@@ -1,8 +1,8 @@
 package com.jangbo.db.repository;
 
 import com.jangbo.db.dto.MarketDto;
+import com.jangbo.db.dto.StoreDto;
 import com.jangbo.db.entity.Market;
-import com.jangbo.db.entity.Seller;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -25,4 +25,8 @@ public interface MarketRepository extends JpaRepository<Market,Integer> {
     List<MarketDto> findAllByMarketNameContains(@Param("marketname") String marketname);
 
 
+
+    @Query("select new com.jangbo.db.dto.StoreDto(s.storeNo, s.storeName, s.storeCategory, s.storeAddr, s.market.marketNo, s.seller.sellerNo)" +
+            "from Store s where s.market.marketNo = :marketno")
+    List<StoreDto> findStoresByMarketNo(@Param("marketno") Integer marketno);
 }
