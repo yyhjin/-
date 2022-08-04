@@ -21,9 +21,12 @@ public class Orders {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderNo;
 
-    @NotBlank
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     private Date orderDate; //안되면 이거부터 수정하기
+
+    @NotBlank
+    private Integer marketNo;
 
     @NotBlank
     private Integer storeNo;
@@ -32,13 +35,9 @@ public class Orders {
     @Column(length = 10)
     private String status;
 
-    @NotBlank
-    private Integer marketNo;
-
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_no")
     private Customer customer;
-
 
     @OneToMany(mappedBy = "orders")
     private List<OrderItem> orderItems = new ArrayList<>();
