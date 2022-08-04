@@ -66,11 +66,17 @@ public class Store {
 
     }
 
-    public void update(String storeName, String storeCategory,String storePhone,String storeAddr) {
+    public void updateStore(String storeName, String storeCategory,String storePhone,String storeAddr) {
         this.storeName = storeName;
         this.storeCategory = storeCategory;
         this.storePhone = storePhone;
         this.storeAddr = storeAddr;
+    }
+
+    public void updateRoom(String storeSubject, String storeIntro) {
+        this.storeSubject = storeSubject;
+        this.storeIntro = storeIntro;
+      //  this.storeImg = storeImg;
     }
 
 

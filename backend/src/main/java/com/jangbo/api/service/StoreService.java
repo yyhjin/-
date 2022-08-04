@@ -1,7 +1,9 @@
 package com.jangbo.api.service;
 
+import com.jangbo.api.request.RoomEditPatchReq;
 import com.jangbo.api.request.StoreEditPatchReq;
 import com.jangbo.api.request.StoreRegisterPostReq;
+import com.jangbo.api.response.RoomInfoRes;
 import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.db.dto.MarketDto;
 import com.jangbo.db.entity.Market;
@@ -48,7 +50,7 @@ public class StoreService {
 
     /** 상점 - 상점 정보 조회 */
     @Transactional(readOnly = true)
-    public StoreInfoRes findById(int storeNo) {
+    public StoreInfoRes findStoreById(int storeNo) {
 
         Store store = storeRepository.findById(storeNo)
                 .orElseThrow(() -> new IllegalAccessError("[storeNo=" + storeNo + "] 해당 상점이 존재하지 않습니다."));
@@ -75,17 +77,17 @@ public class StoreService {
 
     /** 상점 - 상점 정보 수정 */
     @Transactional
-    public Integer update(Integer storeNo, StoreEditPatchReq storeEditPatchReq) {
+    public Integer updateStore(Integer storeNo, StoreEditPatchReq storeEditPatchReq) {
 
         Store store = storeRepository.findById(storeNo)
                 .orElseThrow(() -> new IllegalAccessError("[storeNo=" + storeNo + "] 해당 상점은 존재하지 않습니다."));
 
-        store.update(storeEditPatchReq.getStoreName(),storeEditPatchReq.getStoreCategory(),storeEditPatchReq.getStorePhone(),storeEditPatchReq.getStoreAddr());
+        store.updateStore(storeEditPatchReq.getStoreName(),storeEditPatchReq.getStoreCategory(),storeEditPatchReq.getStorePhone(),storeEditPatchReq.getStoreAddr());
 
         return storeNo;
     }
 
-    /** 상점 - 상점정보삭제 */
+    /** 상점 - 상점 정보삭제 */
     @Transactional
     public void delete(Integer storeNo) {
 
@@ -96,6 +98,25 @@ public class StoreService {
     }
 
 
+    /** 상점 - 방 정보 조회 */
+    @Transactional(readOnly = true)
+    public RoomInfoRes findRoomById(int storeNo) {
+
+        Store store = storeRepository.findById(storeNo)
+                .orElseThrow(() -> new IllegalAccessError("[storeNo=" + storeNo + "] 해당 상점이 존재하지 않습니다."));
+
+        return new RoomInfoRes(store);
+    }
+
+    /** 상점 - 방 정보 수정 */
+    @Transactional
+    public Integer updateRoom(Integer storeNo, RoomEditPatchReq roomEditPatchReq) {
+
+        Store store = storeRepository.findById(storeNo)
+                .orElseThrow(() -> new IllegalAccessError("[storeNo=" + storeNo + "] 해당 상점은 존재하지 않습니다."));
+        store.updateRoom(roomEditPatchReq.getStoreSubject(),roomEditPatchReq.getStoreIntro());
+        return storeNo;
+    }
 
 
 }
