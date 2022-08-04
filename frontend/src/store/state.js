@@ -14,14 +14,7 @@ export default {
         gender: "남",
         userType: "구매자",
     },
-    DoList: [
-        { value: "경기도", label: "경기도" },
-        { value: "서울특별시", label: "서울특별시" },
-    ],
-    GuList: [
-        { value: "부천시 중동", label: "부천시 중동" },
-        { value: "강남구 역삼동", label: "강남구 역삼동" },
-    ],
+
     SellList: [
         { name: "사과", count: "1바구니", price: "5000", max: "10" },
         { name: "포도", count: "1송이", price: "6000", max: "20" },

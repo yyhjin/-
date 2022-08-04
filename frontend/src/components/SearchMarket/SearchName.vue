@@ -6,15 +6,21 @@
 </template>
 
 <script>
-//import axios from "axios";
+import { computed, ref } from "vue";
+import { useStore } from "vuex";
 
 export default {
     name: "SearchName",
 
-    data() {
-        return {
-            market_name: "",
-        };
+    setup() {
+        const store = useStore();
+        const market_name = ref("");
+
+        const marketList = computed(() => store.state.marketStore.markets);
+
+        const getMarketByName = () => store.dispatch("marketStore/getMarketListByName");
+
+        return { market_name, marketList, getMarketByName };
     },
 
     mounted() {},
@@ -22,8 +28,7 @@ export default {
     methods: {
         cl_name() {
             console.log(this.market_name);
-            // axios.get({"url/" :+ this.market_name}).then((response) => {}).catch((error) => {});
-            this.$router.push({ name: "searchStore", params: { market_name: this.market_name } });
+            this.getMarketByName(this.market_name);
         },
     },
 };

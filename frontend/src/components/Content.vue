@@ -14,7 +14,7 @@
                     <h2>{{ selectItem.name }}</h2>
                     <el-input class="input_select" v-model="selectItem.count" placeholder="단위" style="margin-left: 5\40px" />
                     <el-input class="input_select" v-model="selectItem.price" placeholder="가격" />
-                    <el-input class="input_select" v-model="selectItem.max" placeholder="수량" />
+
                     <el-button color="#FF6F61" round class="btn_add" @click="cl_add(selectItem)">메뉴 추가</el-button>
                 </div>
             </div>
@@ -52,7 +52,6 @@ export default {
             name: "품목",
             count: "",
             price: "",
-            max: "",
         });
         const SellList = store.getters["root/getSellList"];
         const addList = (value) => store.commit("root/setSellList", value);
