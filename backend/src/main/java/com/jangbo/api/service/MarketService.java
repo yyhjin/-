@@ -23,13 +23,5 @@ public class MarketService {
         return marketRepository.findAllByMarketNameContains(marketname);
     }
 
-    public List<StoreDto> findStoresByMarketNo(Integer marketno) {
-        return marketRepository.findStoresByMarketNo(marketno);
-    }
-
-//    public Market insertMarket(String marketname, String marketaddr, Float lat, Float lng, String sidogugun) {
-//        //MarketDto market = new MarketDto(marketNo,marketname, marketaddr, lat, lng, sidogugun);
-//        return marketRepository.save(new Market(marketname, marketaddr, lat, lng));
-//    }
 
 }

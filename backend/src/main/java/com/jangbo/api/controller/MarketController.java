@@ -39,12 +39,6 @@ public class MarketController {
         return new ResponseEntity(markets, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "시장번호로 상점 목록 조회" , notes="시장번호로로 상점 목록을 조회한다.",httpMethod = "GET")
-    @GetMapping
-    public ResponseEntity<List<StoreDto>> getStoreByMarketno(Integer marketno) {
-        List<StoreDto> stores = marketService.findStoresByMarketNo(marketno);
-        return new ResponseEntity(stores, HttpStatus.OK);
-    }
 
 //    @PostMapping("/create")
 //    public ResponseEntity<List<Market>> createMarket(String marketname, String marketaddr, Float lat, Float lng, String sidogugun) {

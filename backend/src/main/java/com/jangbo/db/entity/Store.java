@@ -1,5 +1,7 @@
 package com.jangbo.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -13,6 +15,7 @@ import static javax.persistence.FetchType.LAZY;
 @Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Store {
 
     @Id
@@ -32,12 +35,14 @@ public class Store {
     @Column(length = 150)
     private String storeAddr;
 
-//
-//    @ManyToOne(fetch = LAZY)
-//    @JoinColumn(name = "market_no")
-//    private Market market;
 
-    @OneToOne(fetch = LAZY)
+    @ManyToOne
+    @JsonIgnore
+    @JoinColumn(name = "market_no")
+    private Market market;
+
+    @OneToOne
+    @JsonIgnore
     @JoinColumn(name = "seller_no")
     private Seller seller;
 
@@ -48,7 +53,7 @@ public class Store {
     private String storeImg;
 
     @Builder
-    public Store(String storeName, String storeCategory, String storePhone, String storeAddr,Seller seller,String storeSubject,String storeIntro, String storeImg) {
+    public Store(String storeName, String storeCategory, String storePhone, String storeAddr,Seller seller,Market market,String storeSubject,String storeIntro, String storeImg) {
         this.storeName = storeName;
         this.storeCategory = storeCategory;
         this.storePhone = storePhone;
@@ -57,6 +62,7 @@ public class Store {
         this.storeIntro = storeIntro;
         this.storeImg = storeImg;
         this.seller = seller;
+        this.market =market;
 
     }
 

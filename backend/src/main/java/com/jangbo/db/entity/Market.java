@@ -1,11 +1,19 @@
 package com.jangbo.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jangbo.api.response.StoreInfoRes;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.FetchType.*;
 
@@ -15,6 +23,8 @@ import static javax.persistence.FetchType.*;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Market {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,22 +44,23 @@ public class Market {
     @NotBlank
     private Float lng;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne
     @JoinColumn(name = "sido_gugun")
+    @JsonIgnore
     private Gugun gugun;
 
-//
+
 //    public Market() {
 //
 //    }
 //
-//    public Market(String marketName, String marketAddr, Float lat, Float lng) {
-//        this.marketName = marketName;
-//        this.marketAddr = marketAddr;
-//        this.lat = lat;
-//        this.lng = lng;
-//
-//    }
+    public Market(String marketName, String marketAddr, Float lat, Float lng) {
+        this.marketName = marketName;
+        this.marketAddr = marketAddr;
+        this.lat = lat;
+        this.lng = lng;
+
+    }
 
 
 }

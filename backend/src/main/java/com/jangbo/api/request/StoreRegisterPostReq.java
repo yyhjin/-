@@ -29,8 +29,8 @@ public class StoreRegisterPostReq {
     @ApiModelProperty(name = "상점주소", example = "서울특별시 어쩌구")
     String storeAddr;
 
-//    @ApiModelProperty(name = "시장번호", example = "4321")
-//    Integer marketNo;
+    @ApiModelProperty(name = "시장번호", example = "4321")
+    Integer marketNo;
 
     @ApiModelProperty(name = "판매자번호", example = "1234")
     Integer sellerNo;
