@@ -27,5 +27,7 @@ public class CustomerRepository {
                 .setParameter("customerId", customerId)
                 .getResultList();
     }
+
+
 }
 

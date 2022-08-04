@@ -25,14 +25,14 @@ public class MarketController {
     @Autowired
     MarketService marketService;
 
-    @ApiOperation(value = "주소로 시장 목록 조회" , notes="시,도와 구,군 이름으로 시장 목록을 조회한다.",httpMethod = "GET")
+    @ApiOperation(value = "주소로 시장 목록 조회" , notes="시,도 이름과 구,군 이름으로 시장 목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/addr")
     public ResponseEntity<List<MarketDto>> getAllBySidogugun(String sidogugun) {
         List<MarketDto> markets = marketService.findAllByGugun_SidoGugunStartsWith(sidogugun);
         return new ResponseEntity(markets, HttpStatus.OK);
     }
 
-    @ApiOperation(value = "시장 이름으로 시장 목록 조회" , notes="시장 이름으로 시장 목록을 조회한다.",httpMethod = "GET")
+    @ApiOperation(value = "시장이름으로 시장 목록 조회" , notes="시장이름으로 시장 목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/name")
     public ResponseEntity<List<MarketDto>> getAllByMarketname(String marketname) {
         List<MarketDto> markets = marketService.findAllByMarketNameContains(marketname);
