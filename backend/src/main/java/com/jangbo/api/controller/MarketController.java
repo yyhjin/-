@@ -2,7 +2,9 @@ package com.jangbo.api.controller;
 
 import com.jangbo.api.service.MarketService;
 import com.jangbo.db.dto.MarketDto;
+import com.jangbo.db.dto.StoreDto;
 import com.jangbo.db.entity.Market;
+import com.jangbo.db.entity.Store;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,16 +27,23 @@ public class MarketController {
 
     @ApiOperation(value = "주소로 시장 목록 조회" , notes="시,도와 구,군 이름으로 시장 목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/addr")
-    public ResponseEntity<List<Market>> getAllBySidogugun(String sidogugun) {
+    public ResponseEntity<List<MarketDto>> getAllBySidogugun(String sidogugun) {
         List<MarketDto> markets = marketService.findAllByGugun_SidoGugunStartsWith(sidogugun);
         return new ResponseEntity(markets, HttpStatus.OK);
     }
 
     @ApiOperation(value = "시장 이름으로 시장 목록 조회" , notes="시장 이름으로 시장 목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/name")
-    public ResponseEntity<List<Market>> getAllByMarketname(String marketname) {
+    public ResponseEntity<List<MarketDto>> getAllByMarketname(String marketname) {
         List<MarketDto> markets = marketService.findAllByMarketNameContains(marketname);
         return new ResponseEntity(markets, HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "시장번호로 상점 목록 조회" , notes="시장번호로로 상점 목록을 조회한다.",httpMethod = "GET")
+    @GetMapping
+    public ResponseEntity<List<StoreDto>> getStoreByMarketno(Integer marketno) {
+        List<StoreDto> stores = marketService.findStoresByMarketNo(marketno);
+        return new ResponseEntity(stores, HttpStatus.OK);
     }
 
 //    @PostMapping("/create")

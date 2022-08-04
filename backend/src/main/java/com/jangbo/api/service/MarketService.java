@@ -1,6 +1,7 @@
 package com.jangbo.api.service;
 
 import com.jangbo.db.dto.MarketDto;
+import com.jangbo.db.dto.StoreDto;
 import com.jangbo.db.entity.Market;
 import com.jangbo.db.repository.MarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class MarketService {
         return marketRepository.findAllByMarketNameContains(marketname);
     }
 
+    public List<StoreDto> findStoresByMarketNo(Integer marketno) {
+        return marketRepository.findStoresByMarketNo(marketno);
+    }
 
 //    public Market insertMarket(String marketname, String marketaddr, Float lat, Float lng, String sidogugun) {
 //        //MarketDto market = new MarketDto(marketNo,marketname, marketaddr, lat, lng, sidogugun);

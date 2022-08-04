@@ -12,7 +12,6 @@ import static javax.persistence.FetchType.LAZY;
 @Setter
 public class OrderItem {
     @Id
-
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer orderItemNo;
 

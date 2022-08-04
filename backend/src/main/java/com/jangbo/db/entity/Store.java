@@ -38,7 +38,7 @@ public class Store {
     private Market market;
 
     @OneToOne(fetch = LAZY)
-    @JoinColumn(name = "seller_id")
+    @JoinColumn(name = "seller_no")
     private Seller seller;
 
     @Column(length = 90)
