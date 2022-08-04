@@ -10,10 +10,27 @@
             <h2>소개 문구 :</h2>
             <el-input v-model="introduce" :rows="3" type="textarea" placeholder="소개를 적어주세요." class="input_intro" v-if="!isModalViewed" />
         </div>
-        <div class="div_img">
+        <div class="div_img" v-if="!isModalViewed">
             <h2>소개 이미지 :</h2>
-            <div class="demo-image__preview" v-if="!isModalViewed">
-                <el-image style="width: 150px; height: 150px" :src="url" :preview-src-list="srcList" :initial-index="4" fit="cover" />
+            <div>
+                <el-upload action="#" list-type="picture-card" :auto-upload="false" v-model:file-list="fileList">
+                    <h3>추가</h3>
+
+                    <template #file="{ file }">
+                        <div>
+                            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="상점사진" />
+                            <span class="el-upload-list__item-actions">
+                                <!--
+                                <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                                    <h5>크게</h5>
+                                </span>-->
+                                <span v-if="!disabled" class="el-upload-list__item-delete" @click="item_delete(file)">
+                                    <h4>삭제</h4>
+                                </span>
+                            </span>
+                        </div>
+                    </template>
+                </el-upload>
             </div>
         </div>
         <div class="div_menu">
@@ -25,6 +42,7 @@
                 <choosed-item v-if="!isModalViewed"></choosed-item>
             </div>
         </div>
+
         <div style="width: 200px; margin: auto">
             <el-button color="#FF6F61" round class="btn_ok" @click="cl_ok" style="height: 50px !important">가게 오픈</el-button>
         </div>
@@ -33,6 +51,7 @@
 
 <script>
 import { useStore } from "vuex";
+import { ref } from "vue";
 import Content from "@/components/Content.vue";
 import ModalView from "@/components/ModalView.vue";
 import ChoosedItem from "@/components/ChoosedItem.vue";
@@ -48,22 +67,15 @@ export default {
         const store = useStore();
         const SellList = store.getters["root/getSellList"];
 
-        return { SellList };
+        const disabled = ref(false);
+
+        return { SellList, disabled };
     },
     data() {
         return {
             introduce: "",
-            url: "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-            srcList: [
-                "https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg",
-                "https://fuss10.elemecdn.com/1/34/19aa98b1fcb2781c4fba33d850549jpeg.jpeg",
-                "https://fuss10.elemecdn.com/0/6f/e35ff375812e6b0020b6b4e8f9583jpeg.jpeg",
-                "https://fuss10.elemecdn.com/9/bb/e27858e973f5d7d3904835f46abbdjpeg.jpeg",
-                "https://fuss10.elemecdn.com/d/e6/c4d93a3805b3ce3f323f7974e6f78jpeg.jpeg",
-                "https://fuss10.elemecdn.com/3/28/bbf893f792f03a54408b3b7a7ebf0jpeg.jpeg",
-                "https://fuss10.elemecdn.com/2/11/6535bcfb26e4c79b48ddde44f4b6fjpeg.jpeg",
-            ],
             isModalViewed: false,
+            fileList: [],
         };
     },
 
@@ -71,7 +83,17 @@ export default {
 
     methods: {
         cl_ok() {
-            console.log("ok");
+            console.log(this.fileList);
+        },
+        cl_add() {
+            console.log(this.file);
+        },
+        item_delete(file) {
+            for (var i = 0; i < this.fileList.length; i++) {
+                if (file.name == this.fileList[i].name) {
+                    this.fileList.splice(i, 1);
+                }
+            }
         },
     },
 };
@@ -80,6 +102,7 @@ export default {
 <style scoped>
 .div_big {
     width: 500px;
+    display: inline-block;
 }
 
 .div_intro {
