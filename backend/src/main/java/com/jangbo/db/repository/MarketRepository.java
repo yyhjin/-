@@ -24,9 +24,4 @@ public interface MarketRepository extends JpaRepository<Market,Integer> {
             "from Market m where m.marketName like %:marketname%")
     List<MarketDto> findAllByMarketNameContains(@Param("marketname") String marketname);
 
-
-
-    @Query("select new com.jangbo.db.dto.StoreDto(s.storeNo, s.storeName, s.storeCategory, s.storeAddr, s.market.marketNo, s.seller.sellerNo)" +
-            "from Store s where s.market.marketNo = :marketno")
-    List<StoreDto> findStoresByMarketNo(@Param("marketno") Integer marketno);
 }

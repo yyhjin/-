@@ -40,7 +40,7 @@ public class StoreInfoRes {
         this.storeAddr = store.getStoreAddr();
         this.seller = seller.builder()
                 .sellerNo(store.getSeller().getSellerNo()).build();
-//        this.market = market.builder().marketNo(store.getMarket().getMarketNo()).build();
+        this.market = market.builder().marketNo(store.getMarket().getMarketNo()).build();
 
     }
 
@@ -55,16 +55,16 @@ public class StoreInfoRes {
         }
     }
 
-//    @Getter
-//    static class Market {
-//        private Integer markgetNo;
-//
-//
-//        @Builder
-//        public Market(Integer marketNo) {
-//            this.markgetNo = marketNo;
-//        }
-//    }
+    @Getter
+    static class Market {
+        private Integer marketNo;
+
+
+        @Builder
+        public Market(Integer marketNo) {
+            this.marketNo = marketNo;
+        }
+    }
 
 
 }

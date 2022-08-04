@@ -43,12 +43,20 @@ public class StoreController {
 //    }
 
 //    /*상점 목록 조회*/
-//    @GetMapping
-//    @ApiOperation(value = "상점 목록 조회 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
-//    public ResponseEntity<List<StoreInfoRes>> findAll() {
-//        List<StoreInfoRes> storeInfoResList = storeService.findAll();
-//        return new ResponseEntity<List<StoreInfoRes>>(storeInfoResList, HttpStatus.OK);
-//    }
+    @GetMapping
+    @ApiOperation(value = "상점 목록 조회 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
+    public ResponseEntity<List<StoreInfoRes>> findAll() {
+        List<StoreInfoRes> storeInfoResList = storeService.findAll();
+        return new ResponseEntity<List<StoreInfoRes>>(storeInfoResList, HttpStatus.OK);
+    }
+
+    //    /*상점 목록 조회*/
+    @GetMapping("market/{marketNo}")
+    @ApiOperation(value = "한 시장안에 상점 목록 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
+    public ResponseEntity<List<Store>> findStores(@PathVariable("marketNo") Integer marketNo) {
+        List<Store> storeList = storeService.findStoresByMarket(marketNo);
+        return new ResponseEntity<List<Store>>(storeList, HttpStatus.OK);
+    }
  /* 상점 정보 조회*/
     @GetMapping("/{storeNo}")
     @ApiOperation(value = "상점 정보 조회 api", notes="상점번호로 정보조회(방정보 하나하나 )",httpMethod = "GET")
