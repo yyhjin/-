@@ -1,7 +1,9 @@
 package com.jangbo.api.controller;
 
+import com.jangbo.api.request.RoomEditPatchReq;
 import com.jangbo.api.request.StoreEditPatchReq;
 import com.jangbo.api.request.StoreRegisterPostReq;
+import com.jangbo.api.response.RoomInfoRes;
 import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.StoreService;
 import com.jangbo.db.entity.Store;
@@ -60,8 +62,8 @@ public class StoreController {
  /* 상점 정보 조회*/
     @GetMapping("/{storeNo}")
     @ApiOperation(value = "상점 정보 조회 api", notes="상점번호로 정보조회(방정보 하나하나 )",httpMethod = "GET")
-    public ResponseEntity<StoreInfoRes> findById(@PathVariable("storeNo") Integer storeNo) {
-        StoreInfoRes storeInfoRes = storeService.findById(storeNo);
+    public ResponseEntity<StoreInfoRes> findStoreById(@PathVariable("storeNo") Integer storeNo) {
+        StoreInfoRes storeInfoRes = storeService.findStoreById(storeNo);
         return new ResponseEntity<StoreInfoRes>(storeInfoRes, HttpStatus.OK);
     }
 
@@ -76,8 +78,8 @@ public class StoreController {
     /* 상점 수정 */
     @PatchMapping("/{storeNo}")
     @ApiOperation(value = "상점 수정 api", notes="상점 정보 수정, 바뀐 부분만 업데이트 해준다.",httpMethod = "PATCH")
-    public ResponseEntity<Integer> update(@PathVariable("storeNo") Integer storeNo,@RequestBody StoreEditPatchReq storeEditPatchReq) {
-        Integer updatedStoreNo = storeService.update(storeNo,storeEditPatchReq);
+    public ResponseEntity<Integer> updateStore(@PathVariable("storeNo") Integer storeNo,@RequestBody StoreEditPatchReq storeEditPatchReq) {
+        Integer updatedStoreNo = storeService.updateStore(storeNo,storeEditPatchReq);
         return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.CREATED);
     }
 
@@ -89,5 +91,20 @@ public class StoreController {
         storeService.delete(storeNo);
 
         return new ResponseEntity<Integer>(storeNo, HttpStatus.NO_CONTENT);
+    }
+
+    /* 방 정보 조회 */
+    @GetMapping("/room/{storeNo}")
+    @ApiOperation(value = "방 정보 조회 api", notes="상점번호로 방 정보 조회(방안의 내용)",httpMethod = "GET")
+    public ResponseEntity<RoomInfoRes> findRoomById(@PathVariable("storeNo") Integer storeNo) {
+        RoomInfoRes roomInfoRes = storeService.findRoomById(storeNo);
+        return new ResponseEntity<RoomInfoRes>(roomInfoRes, HttpStatus.OK);
+    }
+    /* 방 정보 수정 */
+    @PatchMapping("room/{storeNo}")
+    @ApiOperation(value = "방 정보 수정 api", notes="방 정보 수정, 바뀐 부분만 업데이트 해준다.",httpMethod = "PATCH")
+    public ResponseEntity<Integer> updateRoom(@PathVariable("storeNo") Integer storeNo,@RequestBody RoomEditPatchReq roomEditPatchReq) {
+        Integer updatedStoreNo = storeService.updateRoom(storeNo,roomEditPatchReq);
+        return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.CREATED);
     }
 }
