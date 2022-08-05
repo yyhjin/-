@@ -1,33 +1,13 @@
 package com.jangbo.db.repository;
 
 import com.jangbo.db.entity.Customer;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
-import javax.persistence.EntityManager;
-import java.util.List;
+public interface CustomerRepository extends CrudRepository<Customer, Integer> {
 
-@Repository
-@RequiredArgsConstructor
-public class CustomerRepository {
+    Customer findByCustomerId(String customerId);
 
-    private final EntityManager em;
-
-    public void save(Customer customer) {
-        em.persist(customer);
+    default Customer findOne(Integer customerNo) {
+        return (Customer) findById(customerNo).orElse(null);
     }
-
-    public Customer findOne(Integer customerNo)  {
-        return em.find(Customer.class, customerNo);
-    }
-
-    public List<Customer> findByCustomerId(String customerId) {
-        //parameter name binding .setParameter("name1", name) -> :name1
-        return em.createQuery("select c from Customer c where c.customerId = :customerId", Customer.class)
-                .setParameter("customerId", customerId)
-                .getResultList();
-    }
-
-
 }
-
