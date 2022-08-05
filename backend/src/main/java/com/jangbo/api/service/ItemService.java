@@ -9,8 +9,7 @@ import com.jangbo.db.repository.ItemRepository;
 import com.jangbo.db.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 
@@ -22,7 +21,7 @@ public class ItemService {
     private final ItemRepository itemRepository;
 
     /** 상점 - 상점별 아이템 정보 조회 */
-    @Transactional
+    @Transactional(readOnly = true)
     public List<Item> findItemsByStore(Integer storeNo) {
         return itemRepository.findByStore(storeRepository.getOne(storeNo));
 

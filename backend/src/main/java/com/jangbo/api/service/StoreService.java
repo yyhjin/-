@@ -5,7 +5,6 @@ import com.jangbo.api.request.StoreEditPatchReq;
 import com.jangbo.api.request.StoreRegisterPostReq;
 import com.jangbo.api.response.RoomInfoRes;
 import com.jangbo.api.response.StoreInfoRes;
-import com.jangbo.db.dto.MarketDto;
 import com.jangbo.db.entity.Market;
 import com.jangbo.db.entity.Seller;
 import com.jangbo.db.entity.Store;
