@@ -1,5 +1,6 @@
 package com.jangbo.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,20 +33,26 @@ public class Item {
 
     @ManyToOne
     @JoinColumn(name="store_no")
+    @JsonIgnore
     private Store store;
 
 
     @Builder
-    public Item(String itemNo,Integer price,boolean recent,Store store){
-        this.itemName =itemNo;
+    public Item(Integer itemNo,String itemName,Integer price,boolean recent,Store store){
+        this.itemNo = itemNo;
+        this.itemName =itemName;
         this.price = price;
         this.recent = recent;
         this.store = store;
     }
 
-    public void update(String itemNo,Integer price,boolean recent){
+    public void update(String itemNo,Integer price){
         this.itemName =itemNo;
         this.price = price;
+
+    }
+    public void isRecent(boolean recent){
         this.recent = recent;
     }
+
 }

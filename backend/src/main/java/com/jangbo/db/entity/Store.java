@@ -53,7 +53,8 @@ public class Store {
     private String storeImg;
 
     @Builder
-    public Store(String storeName, String storeCategory, String storePhone, String storeAddr,Seller seller,Market market,String storeSubject,String storeIntro, String storeImg) {
+    public Store(Integer storeNo,String storeName, String storeCategory, String storePhone, String storeAddr,Seller seller,Market market,String storeSubject,String storeIntro, String storeImg) {
+        this.storeNo =storeNo;
         this.storeName = storeName;
         this.storeCategory = storeCategory;
         this.storePhone = storePhone;

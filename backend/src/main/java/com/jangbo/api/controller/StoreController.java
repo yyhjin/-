@@ -80,7 +80,7 @@ public class StoreController {
     @ApiOperation(value = "상점 수정 api", notes="상점 정보 수정, 바뀐 부분만 업데이트 해준다.",httpMethod = "PATCH")
     public ResponseEntity<Integer> updateStore(@PathVariable("storeNo") Integer storeNo,@RequestBody StoreEditPatchReq storeEditPatchReq) {
         Integer updatedStoreNo = storeService.updateStore(storeNo,storeEditPatchReq);
-        return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.CREATED);
+        return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.NO_CONTENT);
     }
 
     /*상점 삭제*/
@@ -105,6 +105,6 @@ public class StoreController {
     @ApiOperation(value = "방 정보 수정 api", notes="방 정보 수정, 바뀐 부분만 업데이트 해준다.",httpMethod = "PATCH")
     public ResponseEntity<Integer> updateRoom(@PathVariable("storeNo") Integer storeNo,@RequestBody RoomEditPatchReq roomEditPatchReq) {
         Integer updatedStoreNo = storeService.updateRoom(storeNo,roomEditPatchReq);
-        return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.CREATED);
+        return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.NO_CONTENT);
     }
 }
