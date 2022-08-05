@@ -1,35 +1,13 @@
-
 package com.jangbo.db.repository;
 
 import com.jangbo.db.entity.Seller;
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-import java.util.Optional;
+public interface SellerRepository extends CrudRepository<Seller, Integer> {
 
-@Repository
-@RequiredArgsConstructor
-public class SellerRepository {
+    Seller findBySellerId(String sellerId);
 
-
-    private final EntityManager em;
-
-    public void save(Seller seller) {
-        em.persist(seller);
+    default Seller findOne(Integer sellerNo) {
+        return (Seller) findById(sellerNo).orElse(null);
     }
-
-    public Seller findOne(Integer sellerNo)  {
-        return em.find(Seller.class, sellerNo);
-    }
-    public List<Seller> findBySellerId(String sellerId) {
-        //parameter name binding .setParameter("name1", name) -> :name1
-        return em.createQuery("select s from Seller s where s.sellerId = :sellerId", Seller.class)
-                .setParameter("sellerId", sellerId)
-                .getResultList();
-    }
-
-
 }
-

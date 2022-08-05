@@ -10,7 +10,7 @@ public interface AuthService {
 
     void signUpCustomer(CustomerRegisterReq customerRegisterReq);
 
-//    Seller loginSeller(String sellerId, String sellerPwd);
-//
-//    Customer loginCustomer(String customerId, String customerPwd);
+    Seller loginSeller(String sellerId, String sellerPwd) throws Exception;
+
+    Customer loginCustomer(String customerId, String customerPwd) throws Exception;
 }

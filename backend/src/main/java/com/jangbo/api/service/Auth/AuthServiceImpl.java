@@ -58,27 +58,31 @@ public class AuthServiceImpl implements AuthService {
         customerRepository.save(customer);
     }
 
-//    //판매자 - 로그인
-//    @Override
-//    public Seller loginSeller(String sellerId, String sellerPwd) throws Exception {
-//        Seller seller = sellerRepository.findBySellerId(sellerId);
-//        if (seller == null) throw new Exception("아이디가 틀립니다.");
-//        String salt = seller.getSalt().getSalt();
-//        sellerPwd = saltUtil.encodePassword(salt, sellerPwd);
-//        if (!seller.getSellerPwd().equals(sellerPwd))
-//            throw new Exception("비밀번호가 틀립니다.");
-//        return seller;
-//    }
-//
-//    //소비자 - 로그인
-//    @Override
-//    public Customer loginCustomer(String customerId, String customerPwd) throws Exception {
-//        Customer customer = customerRepository.findByCustomerId(customerId);
-//        if (customer == null) throw new Exception("아이디가 틀립니다.");
-//        String salt = customer.getSalt().getSalt();
-//        customerPwd = saltUtil.encodePassword(salt, customerPwd);
-//        if (!customer.getCustomerPwd().equals(customerPwd))
-//            throw new Exception("비밀번호가 틀립니다.");
-//        return customer;
-//    }
+    //판매자 - 로그인
+    @Override
+    public Seller loginSeller(String sellerId, String sellerPwd) throws Exception {
+        Seller seller = sellerRepository.findBySellerId(sellerId);
+        if (seller == null) throw new Exception("아이디가 틀립니다.");
+        String salt = seller.getSalt().getSalt();
+        sellerPwd = saltUtil.encodePassword(salt, sellerPwd);
+        if (!seller.getSellerPwd().equals(sellerPwd))
+            throw new Exception("비밀번호가 틀립니다.");
+        return seller;
+    }
+
+    //소비자 - 로그인
+    @Override
+    public Customer loginCustomer(String customerId, String customerPwd) throws Exception {
+        Customer customer = customerRepository.findByCustomerId(customerId);
+        if (customer == null) throw new Exception("아이디가 틀립니다.");
+        String salt = customer.getSalt().getSalt();
+        customerPwd = saltUtil.encodePassword(salt, customerPwd);
+        if (!customer.getCustomerPwd().equals(customerPwd))
+            throw new Exception("비밀번호가 틀립니다.");
+        return customer;
+    }
+
+
+
+
 }
