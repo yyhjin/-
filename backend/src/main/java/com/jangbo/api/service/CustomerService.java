@@ -1,7 +1,7 @@
 package com.jangbo.api.service;
 
 import com.jangbo.db.entity.Customer;
-import com.jangbo.db.repository.CustomerRepository;
+import com.jangbo.db.repository.CustomerRepositoryTemp;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +12,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CustomerService {
-    private final CustomerRepository customerRepository;
+    private final CustomerRepositoryTemp customerRepository;
 
     @Transactional
     public Integer join(Customer customer) {

@@ -32,26 +32,26 @@ public class CustomerController {
     private final StoreRepository storeRepository;
 
     //API 정상 작동하는지 확인 후 추가
-    @ApiOperation(value = "회원가입" , notes="소비자 정보를 등록한다.",httpMethod = "POST")
-    @PostMapping("/customer/signup")
-    public CreateUpdateCustomerResponse saveCustomer(@Valid CreateUpdateCustomerRequest request) {
-        Customer customer = new Customer();
-        customer.setCustomerId(request.getCustomerId());
-        customer.setCustomerName(request.getCustomerName());
-        customer.setCustomerNickname(request.getCustomerNickname());
-        customer.setCustomerAddr(request.getCustomerAddr());
-        customer.setCustomerPhone(request.getCustomerPhone());
-
-        Integer customerNo = customerService.join(customer);
-        return new CreateUpdateCustomerResponse(customerNo);
-    }
+//    @ApiOperation(value = "회원가입" , notes="소비자 정보를 등록한다.",httpMethod = "POST")
+//    @PostMapping("/customer/signup")
+//    public CreateUpdateCustomerResponse saveCustomer(@Valid CreateUpdateCustomerRequest request) {
+//        Customer customer = new Customer();
+//        customer.setCustomerId(request.getCustomerId());
+//        customer.setCustomerName(request.getCustomerName());
+//        customer.setCustomerNickname(request.getCustomerNickname());
+//        customer.setCustomerAddr(request.getCustomerAddr());
+//        customer.setCustomerPhone(request.getCustomerPhone());
+//
+//        Integer customerNo = customerService.join(customer);
+//        return new CreateUpdateCustomerResponse(customerNo);
+//    }
 
     @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
     @GetMapping("/customer/idcheck/{customer_id}")
     public CheckCustomerIdResponse IdCheck(
             @PathVariable("customer_id") String customerId
     ) {
-        if (customerRepository.findByCustomerId(customerId).isEmpty()) {
+        if (customerRepository.findByCustomerId(customerId) == null) {
             return new CheckCustomerIdResponse(true);
         } else {
             return new CheckCustomerIdResponse(false);
@@ -61,12 +61,12 @@ public class CustomerController {
     //회원정보 조회 - 개인정보
     @ApiOperation(value = "회원정보 조회 - 개인정보", notes="소비자 회원정보를 조회한다.",httpMethod = "GET")
     @GetMapping("/customer/{customer_no}")
-    public CreateUpdateCustomerRequest SearchSeller(@PathVariable("customer_no") Integer customerNo) {
+    public CustomerRequest SearchSeller(@PathVariable("customer_no") Integer customerNo) {
         Customer customer = customerRepository.findOne(customerNo);
         if (isNull(customer)) {
-            return new CreateUpdateCustomerRequest(null, null, null, null, null);
+            return new CustomerRequest(null, null, null, null, null);
         } else {
-            return new CreateUpdateCustomerRequest(customer.getCustomerId(), customer.getCustomerName(),customer.getCustomerNickname(), customer.getCustomerAddr(), customer.getCustomerPhone());
+            return new CustomerRequest(customer.getCustomerId(), customer.getCustomerName(),customer.getCustomerNickname(), customer.getCustomerAddr(), customer.getCustomerPhone());
         }
     }
 
@@ -74,7 +74,7 @@ public class CustomerController {
     @PutMapping("/customer/{customer_no}")
     public boolean updateCustomer(
             @PathVariable("customer_no") Integer customerNo,
-            @Valid CreateUpdateCustomerRequest request
+            @Valid CustomerRequest request
     ) {
         return customerService.update(customerNo, request.getCustomerName(), request.getCustomerNickname(), request.getCustomerAddr(), request.getCustomerPhone());
     }
@@ -106,6 +106,16 @@ public class CustomerController {
         return result;
     }
 
+
+    @Data
+    @AllArgsConstructor
+    static class CustomerRequest {
+        private String customerId;
+        private String customerName;
+        private String customerNickname;
+        private String customerAddr;
+        private String customerPhone;
+    }
 
     @Data
     @AllArgsConstructor
@@ -161,15 +171,6 @@ public class CustomerController {
     }
 
 
-    @Data
-    @AllArgsConstructor
-    static class CreateUpdateCustomerRequest {
-        private String customerId;
-        private String customerName;
-        private String customerNickname;
-        private String customerAddr;
-        private String customerPhone;
-    }
 
 
     @Data

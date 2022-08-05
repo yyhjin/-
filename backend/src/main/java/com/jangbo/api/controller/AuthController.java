@@ -1,59 +1,78 @@
-//package com.jangbo.api.controller;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.ResponseEntity;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.web.bind.annotation.PostMapping;
-//import org.springframework.web.bind.annotation.RequestBody;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//import org.springframework.web.bind.annotation.RestController;
-//
-//import com.ssafy.api.request.UserLoginPostReq;
-//import com.ssafy.api.response.UserLoginPostRes;
-//import com.ssafy.api.service.UserService;
-//import com.ssafy.common.model.response.BaseResponseBody;
-//import com.ssafy.common.util.JwtTokenUtil;
-//import com.ssafy.db.entity.User;
-//import com.ssafy.db.repository.UserRepositorySupport;
-//
-//import io.swagger.annotations.Api;
-//import io.swagger.annotations.ApiOperation;
-//import io.swagger.annotations.ApiParam;
-//import io.swagger.annotations.ApiResponses;
-//import io.swagger.annotations.ApiResponse;
-//
-///**
-// * 인증 관련 API 요청 처리를 위한 컨트롤러 정의.
-// */
-//@Api(value = "인증 API", tags = {"Auth."})
-//@RestController
-//@RequestMapping("/api/v1/auth")
-//public class AuthController {
-//	@Autowired
-//	UserService userService;
-//
-//	@Autowired
-//	PasswordEncoder passwordEncoder;
-//
-//	@PostMapping("/login")
-//	@ApiOperation(value = "로그인", notes = "<strong>아이디와 패스워드</strong>를 통해 로그인 한다.")
-//    @ApiResponses({
-//        @ApiResponse(code = 200, message = "성공", response = UserLoginPostRes.class),
-//        @ApiResponse(code = 401, message = "인증 실패", response = BaseResponseBody.class),
-//        @ApiResponse(code = 404, message = "사용자 없음", response = BaseResponseBody.class),
-//        @ApiResponse(code = 500, message = "서버 오류", response = BaseResponseBody.class)
-//    })
-//	public ResponseEntity<UserLoginPostRes> login(@RequestBody @ApiParam(value="로그인 정보", required = true) UserLoginPostReq loginInfo) {
-//		String userId = loginInfo.getId();
-//		String password = loginInfo.getPassword();
-//
-//		User user = userService.getUserByUserId(userId);
-//		// 로그인 요청한 유저로부터 입력된 패스워드 와 디비에 저장된 유저의 암호화된 패스워드가 같은지 확인.(유효한 패스워드인지 여부 확인)
-//		if(passwordEncoder.matches(password, user.getPassword())) {
-//			// 유효한 패스워드가 맞는 경우, 로그인 성공으로 응답.(액세스 토큰을 포함하여 응답값 전달)
-//			return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", JwtTokenUtil.getToken(userId)));
-//		}
-//		// 유효하지 않는 패스워드인 경우, 로그인 실패로 응답.
-//		return ResponseEntity.status(401).body(UserLoginPostRes.of(401, "Invalid Password", null));
-//	}
-//}
+package com.jangbo.api.controller;
+
+import com.jangbo.api.request.CustomerRegisterReq;
+import com.jangbo.api.request.SellerRegisterReq;
+import com.jangbo.api.response.Response;
+import com.jangbo.api.service.Auth.AuthService;
+import com.jangbo.db.entity.Customer;
+import com.jangbo.db.entity.Seller;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiModelProperty;
+import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+
+@Api(value = "권한api", tags={"권한"})
+@Slf4j
+@RestController
+public class AuthController {
+    @Autowired
+    private AuthService authService;
+
+    @ApiOperation(value = "회원가입 - 판매자", notes="판매자로 가입한다.",httpMethod = "POST")
+    @PostMapping("/seller/signup")
+    public Response signUpSeller(@RequestBody @Valid SellerRegisterReq sellerRegisterReq) {
+        try {
+            authService.signUpSeller(sellerRegisterReq);
+            return new Response("success", "회원가입을 성공적으로 완료했습니다.", null);
+        } catch (Exception e) {
+            return new Response("error", e.toString(), null);
+        }
+    }
+
+    @ApiOperation(value = "회원가입 - 소비자", notes="소비자로 가입한다.",httpMethod = "POST")
+    @PostMapping("/customer/signup")
+    public Response signUpCustomer(@RequestBody @Valid CustomerRegisterReq customerRegisterReq) {
+        try {
+            authService.signUpCustomer(customerRegisterReq);
+            return new Response("success", "소비자 회원가입을 성공적으로 완료했습니다.", null);
+        } catch (Exception e) {
+            return new Response("error", e.toString(), null);
+        }
+    }
+
+//    @Data
+//    @AllArgsConstructor
+//    static class CreateCustomerRequest {
+//        private String customerId;
+//        private String customerName;
+//        private String customerNickname;
+//        private String customerAddr;
+//        private String customerPhone;
+//        private String customerPwd;
+//    }
+
+    //    @ApiOperation(value = "회원가입 - 판매자", notes="판매자로 가입한다.",httpMethod = "POST")
+//    @PostMapping("/seller/signup")
+//    public Response signUpSeller(@Valid CreateSellerRequest request) {
+//        try {
+//            Seller seller = new Seller();
+//            seller.setSellerId(request.getSellerId());
+//            seller.setSellerName(request.getSellerName());
+//            seller.setBusinessNumber(request.getBusinessNumber());
+//            seller.setSellerPhone(request.getSellerPhone());
+//            seller.setSellerPwd(request.getSellerPwd());
+//            authService.signUpSeller(seller);
+//            return new Response("success", "판매자 회원가입을 성공적으로 완료했습니다.", null);
+//        } catch (Exception e) {
+//            return new Response("error", "판매자 회원가입을 하는 도중 오류가 발생했습니다.", null);
+//        }
+//    }
+}

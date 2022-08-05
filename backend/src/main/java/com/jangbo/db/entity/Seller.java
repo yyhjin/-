@@ -7,9 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -24,7 +21,6 @@ public class Seller {
     @Column(length = 20, unique = true)
     private String sellerId;
 
-    //API로 값이 제대로 보내지는지, 받아지는지 확인하고 수정할 것
     @NotBlank
     @Column(name = "business_number",length = 15, unique = true)
     private String businessNumber;
@@ -41,7 +37,11 @@ public class Seller {
 //    @JoinColumn(name = "store_no")
 //    private Store store;
 
-//    @JsonIgnore
-//    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-//    private String sellerPwd;
+    @NotBlank
+    private String sellerPwd;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "salt_id")
+    private Salt salt;
+
 }
