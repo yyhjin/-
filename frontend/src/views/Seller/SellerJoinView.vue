@@ -181,4 +181,17 @@ export default {
     height: 40px !important;
     margin-top: 40px;
 }
+.btn_sellerCheck{
+    color:white;
+}
+.btn_register{
+    color:white;
+}
+
+.btn_idCheck{
+    color:white;
+}
+.btn_address{
+    color:white;
+}
 </style>

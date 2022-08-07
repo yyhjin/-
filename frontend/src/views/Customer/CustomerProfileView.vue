@@ -57,7 +57,7 @@
           <div>
             <el-button
               color="#FF6F61"
-              style="width: 100px"
+              style="width: 100px;"
               round
               class="btn_modify"
               @click="cl_modify"
@@ -162,14 +162,4 @@ export default {
   text-align: left !important;
 }
 
-.btn_modify {
-  height: 40px !important;
-  margin-top: 40px;
-}
-
-.btn_cancle {
-  color: black !important;
-  height: 40px !important;
-  margin-top: 40px;
-}
 </style>

@@ -11,7 +11,11 @@ import testView from "../views/test.vue";
 import SearchedMarketView from "../views/SearchedMarketView.vue";
 import MarketListView from "../views/MarketListVIew.vue";
 import StoreOpenView from "../views/StoreOpenView.vue";
-
+import StoreProfileView from '../views/Seller/StoreProfileView.vue'
+import StoreMenuView from '../views/Seller/StoreMenuView.vue'
+import StoreBillsView from '../views/Seller/StoreBillsView.vue'
+import StoreRegisterView from '../views/Seller/StoreRegisterView.vue'
+import testView from '../views/test.vue'
 const routes = [
     {
         path: "/test",
@@ -80,6 +84,26 @@ const routes = [
         name: "openStore",
         component: StoreOpenView,
     },
+    {
+      path: '/seller/:id/store',
+      name: 'store_profile',
+      component: StoreProfileView
+    },
+    {
+      path: '/seller/:id/menu',
+      name: 'store_menu',
+      component: StoreMenuView
+    },
+    {
+      path: '/seller/:id/bills',
+      name: 'store_bills',
+      component: StoreBillsView
+    },
+    {
+      path: '/seller/:id/register',
+      name: 'store_register',
+      component: StoreRegisterView
+    }
 ];
 
 const router = createRouter({

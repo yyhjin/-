@@ -54,8 +54,13 @@ export default {
 };
 </script>
 
+<<<<<<< HEAD
 <style>
 .div_big1 {
+=======
+<style scoped>
+.div_big {
+>>>>>>> feat#28
     display: inline-block;
     width: 300px;
 }
