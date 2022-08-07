@@ -1,5 +1,6 @@
 package com.jangbo.api.controller;
 
+import com.jangbo.api.request.ChangePasswordReq;
 import com.jangbo.api.request.CustomerRegisterReq;
 import com.jangbo.api.request.RequestLoginUser;
 import com.jangbo.api.request.SellerRegisterReq;
@@ -10,13 +11,13 @@ import com.jangbo.api.service.Auth.JwtUtil;
 import com.jangbo.api.service.Auth.RedisUtil;
 import com.jangbo.db.entity.Customer;
 import com.jangbo.db.entity.Seller;
+import com.jangbo.db.repository.CustomerRepository;
+import com.jangbo.db.repository.SellerRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +35,9 @@ public class AuthController {
     private final AuthService authService;
     private final JwtUtil jwtUtil;
     private final RedisUtil redisUtil;
+
+    private final SellerRepository sellerRepository;
+    private final CustomerRepository customerRepository;
 
 
     @ApiOperation(value = "회원가입 - 판매자", notes="판매자로 가입한다.",httpMethod = "POST")
@@ -99,5 +103,35 @@ public class AuthController {
         }
     }
 
+    @ApiOperation(value = "비밀번호 변경 - 판매자", notes="판매자가 비밀번호를 변경한다.",httpMethod = "PUT")
+    @PutMapping("/seller/change_pwd/{seller_no}")
+    public Response changeSellerPassword(
+            @PathVariable("seller_no") Integer sellerNo,
+            @RequestBody ChangePasswordReq changePasswordReq
+    ) {
+        try{
+            Seller seller = sellerRepository.findOne(sellerNo);
+            authService.changeSellerPassword(seller, changePasswordReq.getPassword(), changePasswordReq.getPasswordUpdate());
+            return new Response("success","성공적으로 사용자의 비밀번호를 변경했습니다.",null);
+        }catch(Exception e){
+            return new Response("error","사용자의 비밀번호를 변경할 수 없었습니다.",null);
+        }
+    }
+
+
+    @ApiOperation(value = "비밀번호 변경 - 소비자", notes="소비자가 비밀번호를 변경한다.",httpMethod = "PUT")
+    @PutMapping("/customer/change_pwd/{customer_no}")
+    public Response changeCustomerPassword(
+            @PathVariable("customer_no") Integer customerNo,
+            @RequestBody ChangePasswordReq changePasswordReq
+    ) {
+        try{
+            Customer customer = customerRepository.findOne(customerNo);
+            authService.changeCustomerPassword(customer, changePasswordReq.getPassword(), changePasswordReq.getPasswordUpdate());
+            return new Response("success","성공적으로 사용자의 비밀번호를 변경했습니다.",null);
+        }catch(Exception e){
+            return new Response("error","사용자의 비밀번호를 변경할 수 없었습니다.",null);
+        }
+    }
 
 }

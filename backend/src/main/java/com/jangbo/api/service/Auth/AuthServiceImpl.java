@@ -58,6 +58,19 @@ public class AuthServiceImpl implements AuthService {
         customerRepository.save(customer);
     }
 
+    //소비자 - 로그인
+
+    @Override
+    public Customer loginCustomer(String customerId, String customerPwd) throws Exception {
+        Customer customer = customerRepository.findByCustomerId(customerId);
+        if (customer == null) throw new Exception("아이디가 틀립니다.");
+        String salt = customer.getSalt().getSalt();
+        customerPwd = saltUtil.encodePassword(salt, customerPwd);
+        if (!customer.getCustomerPwd().equals(customerPwd))
+            throw new Exception("비밀번호가 틀립니다.");
+        return customer;
+    }
+
     //판매자 - 로그인
     @Override
     public Seller loginSeller(String sellerId, String sellerPwd) throws Exception {
@@ -70,19 +83,35 @@ public class AuthServiceImpl implements AuthService {
         return seller;
     }
 
-    //소비자 - 로그인
+    //비밀번호 변경 - 판매자
     @Override
-    public Customer loginCustomer(String customerId, String customerPwd) throws Exception {
-        Customer customer = customerRepository.findByCustomerId(customerId);
-        if (customer == null) throw new Exception("아이디가 틀립니다.");
-        String salt = customer.getSalt().getSalt();
-        customerPwd = saltUtil.encodePassword(salt, customerPwd);
-        if (!customer.getCustomerPwd().equals(customerPwd))
+    public void changeSellerPassword(Seller seller, String sellerPwd, String sellerPwdUpdate) throws Exception{
+        if(seller == null) throw new Exception("멤버가 조회되지 않습니다.");
+
+        String salt_before = seller.getSalt().getSalt();
+        sellerPwd = saltUtil.encodePassword(salt_before, sellerPwd);
+        if (!seller.getSellerPwd().equals(sellerPwd))
             throw new Exception("비밀번호가 틀립니다.");
-        return customer;
+
+        String salt = saltUtil.genSalt();
+        seller.setSalt(new Salt(salt));
+        seller.setSellerPwd(saltUtil.encodePassword(salt, sellerPwdUpdate));
+        sellerRepository.save(seller);
     }
 
+    @Override
+    public void changeCustomerPassword(Customer customer, String customerPwd, String customerPwdUpdate) throws Exception{
+        if(customer == null) throw new Exception("멤버가 조회되지 않습니다.");
 
+        String salt_before = customer.getSalt().getSalt();
+        customerPwd = saltUtil.encodePassword(salt_before, customerPwd);
+        if (!customer.getCustomerPwd().equals(customerPwd))
+            throw new Exception("비밀번호가 틀립니다.");
 
+        String salt = saltUtil.genSalt();
+        customer.setSalt(new Salt(salt));
+        customer.setCustomerPwd(saltUtil.encodePassword(salt, customerPwdUpdate));
+        customerRepository.save(customer);
+    }
 
 }
