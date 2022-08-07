@@ -8,6 +8,16 @@
 </head>
 <body>
 <h1>장보장보장보장</h1>
+<form th:action="@{/hello}" method="post" enctype="multipart/form-data">
+    상점이름 : <input type="text" name="storeName"> <br>
+    업종 : <input type="text" name="storeCategory"> <br>
+    전화번호 : <input type="text" name="storePhone"> <br>
+    주소 : <input type="text" name="storeAddr"> <br>
+    시장번호 : <input type="number" name="marketNo"> <br>
+    판매자번호 : <input type="number" name="sellerNo"> <br>
+    프로필사진 : <input type="file" name="multipartFile"> <br>
+    <button>등록하기</button>
+</form>
 
 </body>
 </html>

@@ -46,8 +46,8 @@ public class Item {
         this.store = store;
     }
 
-    public void update(String itemNo,Integer price){
-        this.itemName =itemNo;
+    public void update(String itemName,Integer price){
+        this.itemName =itemName;
         this.price = price;
 
     }

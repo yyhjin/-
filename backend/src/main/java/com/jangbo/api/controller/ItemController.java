@@ -28,7 +28,7 @@ public class ItemController {
     ItemService itemService;
 
     /*아이템 목록 조회*/
-    @GetMapping("/{storeNo}")
+    @GetMapping("/store/{storeNo}")
     @ApiOperation(value = "한 상점안에 아이템 목록 api", notes="전체 조회(라이브상점에 뿌릴거임)",httpMethod = "GET")
     public ResponseEntity<List<Item>> findItems(@PathVariable("storeNo") Integer storeNo) {
         List<Item> itemList = itemService.findItemsByStore(storeNo);

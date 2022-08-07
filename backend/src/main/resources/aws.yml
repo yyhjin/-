@@ -1,0 +1,11 @@
+cloud:
+  aws:
+    credentials:
+        accessKey: AKIA4AH6N5ICVPHHAWNU
+        secretKey: z1U2dCaGYk69zG6LJAb
+    s3:
+        bucket: jangbo-image
+    region:
+        static: ap-northeast-2
+    stack:
+        auto: false

@@ -6,6 +6,7 @@ import com.jangbo.api.request.StoreRegisterPostReq;
 import com.jangbo.api.response.RoomInfoRes;
 import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.StoreService;
+import com.jangbo.api.service.FileUploadService;
 import com.jangbo.db.entity.Store;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,9 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 @Api(value = "상점api", tags={"상점"})
 @RestController
 @RequestMapping("/store")
@@ -23,6 +25,9 @@ public class StoreController {
 
     @Autowired
     StoreService storeService;
+
+    @Autowired
+    FileUploadService fileUploadService;
 //    @GetMapping("/{storeNo}")
 //    @ApiOperation(value = "상점 정보 조회 api" , notes="상점번호로 상점정보를 불러온다.",httpMethod = "GET")
 //    public ResponseEntity<StoreRegisterPostReq> findByNo(@PathVariable int storeNo){
@@ -44,7 +49,7 @@ public class StoreController {
 //        return new ResponseEntity<String>("성공했다",HttpStatus.OK);
 //    }
 
-//    /*상점 목록 조회*/
+//    /*상점 전체 목록 조회*/
     @GetMapping
     @ApiOperation(value = "상점 목록 조회 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
     public ResponseEntity<List<StoreInfoRes>> findAll() {
@@ -52,7 +57,7 @@ public class StoreController {
         return new ResponseEntity<List<StoreInfoRes>>(storeInfoResList, HttpStatus.OK);
     }
 
-    //    /*상점 목록 조회*/
+        /*상점 목록 조회*/
     @GetMapping("market/{marketNo}")
     @ApiOperation(value = "한 시장안에 상점 목록 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
     public ResponseEntity<List<Store>> findStores(@PathVariable("marketNo") Integer marketNo) {
@@ -70,8 +75,14 @@ public class StoreController {
     /* 상점 등록 */
     @PostMapping
     @ApiOperation(value = "상점 등록 api", notes="상점등록",httpMethod = "POST")
-    public ResponseEntity<Integer> save(@RequestBody StoreRegisterPostReq storeRegisterPostReq) {
+    public ResponseEntity<Integer> save(@RequestBody StoreRegisterPostReq storeRegisterPostReq, @RequestParam(required = false) MultipartFile multipartFile)throws IOException {
+        String imgPath = fileUploadService.fileUpload(multipartFile);
+        storeRegisterPostReq.setStoreImg(imgPath);
         Integer savedStoreNo = storeService.save(storeRegisterPostReq);
+
+//        fileDto.setStoreNo(savedStoreNo);
+//        fileDto.toEntity();//안되면 여기부터 수정
+        //상점번호를 받아서 이미지 테이블에 상점번호를 같이 저장하자
         return new ResponseEntity<Integer>(savedStoreNo, HttpStatus.CREATED);
     }
 
@@ -107,4 +118,5 @@ public class StoreController {
         Integer updatedStoreNo = storeService.updateRoom(storeNo,roomEditPatchReq);
         return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.NO_CONTENT);
     }
+
 }

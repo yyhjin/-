@@ -35,6 +35,9 @@ public class Store {
     @Column(length = 150)
     private String storeAddr;
 
+    @Column(length = 150)
+    private String storeImg; //경로 저장
+
 
     @ManyToOne
     @JsonIgnore
@@ -50,34 +53,35 @@ public class Store {
     private String storeSubject;
     @Column(length = 300)
     private String storeIntro;
-    private String storeImg;
+
 
     @Builder
-    public Store(Integer storeNo,String storeName, String storeCategory, String storePhone, String storeAddr,Seller seller,Market market,String storeSubject,String storeIntro, String storeImg) {
-        this.storeNo =storeNo;
+    public Store(Integer storeNo, String storeName, String storeCategory, String storePhone, String storeAddr, String storeImg,Seller seller, Market market, String storeSubject, String storeIntro) {
+        this.storeNo = storeNo;
         this.storeName = storeName;
         this.storeCategory = storeCategory;
         this.storePhone = storePhone;
         this.storeAddr = storeAddr;
+        this.storeImg = storeImg;
         this.storeSubject = storeSubject;
         this.storeIntro = storeIntro;
-        this.storeImg = storeImg;
         this.seller = seller;
-        this.market =market;
+        this.market = market;
 
     }
 
-    public void updateStore(String storeName, String storeCategory,String storePhone,String storeAddr) {
+    public void updateStore(String storeName, String storeCategory, String storePhone, String storeAddr) {
         this.storeName = storeName;
         this.storeCategory = storeCategory;
         this.storePhone = storePhone;
         this.storeAddr = storeAddr;
+
     }
 
     public void updateRoom(String storeSubject, String storeIntro) {
         this.storeSubject = storeSubject;
         this.storeIntro = storeIntro;
-      //  this.storeImg = storeImg;
+
     }
 
 
