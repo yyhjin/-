@@ -369,4 +369,245 @@ customer_id: 소비자 아이디
   "data": null
 }
 ```
+  
 
+### 지역 주소(sido, gugun)
+  
+#### 시, 도 조회
+
+ㅡ 시,도 전체 리스트 반환
+
+```
+[
+  {
+    "sidoCode": "11",        //시,도 코드 앞 두글자
+    "sidoName": "서울특별시" //시,도 이름
+  },
+  ...
+]
+```
+
+![image](/uploads/730ab768efcd213b61ce6bd7a1a66fe7/image.png)
+  
+
+#### 구, 군 조회
+
+ㅡ 시,도 코드(시,도 코드의 맨 앞 두글자)로 해당 시,도의 구,군 목록 반환
+
+```
+[
+  {
+    "sidoGugun": "서울특별시 강남구", //시,도 이름 + 구,군 이름
+    "gugunCode": "1168000000",       //구,군 코드
+    "gugunName": "강남구"            //구,군 이름
+  },
+  {
+    "sidoGugun": "서울특별시 강동구",
+    "gugunCode": "1174000000",
+    "gugunName": "강동구"
+  },
+  ...
+]
+```
+
+![image](/uploads/5a9dde8386785361e1d7b06f5a003279/image.png)
+  
+  
+
+### 시장(market)
+  
+#### 시장번호로 시장정보 조회
+
+```
+{
+  "marketNo": 1,
+  "marketName": "강남시장",
+  "marketAddr": "서울특별시 강남구 압구정로2길 46",
+  "lat": 37.5188,
+  "lng": 127.021
+}
+```
+
+![image](/uploads/d700801ec062fc3e48d8a92e913c1a9f/image.png)
+  
+
+#### 주소로 시장목록 조회
+
+ㅡ 시,도 이름 + 구,군 이름으로 해당 주소의 시장 목록 반환
+
+```
+[
+  {
+    "marketNo": 1,
+    "marketName": "강남시장",
+    "marketAddr": "서울특별시 강남구 압구정로2길 46",
+    "lat": 37.5188,
+    "lng": 127.021
+  },
+  {
+    "marketNo": 2,
+    "marketName": "신사상가",
+    "marketAddr": "서울특별시 강남구 압구정로29길 72-1",
+    "lat": 37.5323,
+    "lng": 127.028
+  },
+  ...
+```
+
+![2022-08-07_223626](/uploads/fe08dd1fc32caf61fe24f382f02864d4/2022-08-07_223626.png)
+  
+
+#### 시장이름으로 시장목록 조회
+
+ㅡ 해당 이름을 포함하고 있는 시장 목록 조회
+
+```
+[
+  {
+    "marketNo": 17,
+    "marketName": "수유중앙시장",
+    "marketAddr": "서울특별시 강북구 노해로17길 21",
+    "lat": 37.6403,
+    "lng": 127.021
+  },
+  {
+    "marketNo": 28,
+    "marketName": "신월중앙시장",
+    "marketAddr": "서울특별시 강서구 강서로5나길 109",
+    "lat": 37.528,
+    "lng": 126.842
+  },
+  ...
+```
+
+![2022-08-07_224017](/uploads/6997a797ebd4a84a52b13bf3d3ea1ed1/2022-08-07_224017.png)
+  
+  
+
+
+### 주문(order)
+  
+#### 주문서 생성
+
+ㅡ 주문 아이템 1개에 대한 정보를 입력하여 주문서, 주문한 아이템 create 한 후 주문 번호 반환  
+※추후 주문 아이템을 리스트로 입력 받도록 수정 예정
+  
+**입력 데이터**
+ㅡ 주문 아이템 번호, 주문 아이템 수량, 소비자 번호, 상점 번호
+![2022-08-07_231703](/uploads/bc600ae781609bb13cfe6334422fe28e/2022-08-07_231703.png)
+  
+**반환 데이터**
+ㅡ 주문 번호 반환
+![2022-08-07_225706](/uploads/f52832979a93807997d575fcec837347/2022-08-07_225706.png)
+  
+**MySQL**
+ㅡ 주문서(order)
+![2022-08-07_230101](/uploads/835894e827caa8fd12ae202a8d0b1aaa/2022-08-07_230101.png)
+ㅡ 주문 아이템(order_item)
+![2022-08-07_230125](/uploads/d37fd32dd995cff83d77a844d8120b14/2022-08-07_230125.png)
+  
+
+#### 주문상태 수정
+
+ㅡ 해당 주문의 상태를 ORDER, CANCEL, DELIVERY 로 변경, 해당 주문정보 반환
+  
+**입력 데이터**
+ㅡ 주문 번호, 수정할 상태
+![2022-08-07_232007](/uploads/35daaeada6aa29c5b44d39dbaeb24341/2022-08-07_232007.png)
+  
+**반환 데이터**
+ㅡ 수정 후의 주문정보
+```
+{
+  "orderNo": 22,
+  "orderDate": "2022-08-07T14:10:22.000+00:00",
+  "marketNo": 3,
+  "storeNo": 2,
+  "status": "수정TEST",
+  "orderItems": [
+    {
+      "orderItemNo": 11,
+      "count": 1,
+      "price": 1000,
+      "itemName": "사과",
+      "orderNo": 22
+    }
+  ],
+  "marketName": null,
+  "customerNo": 1,
+  "customerId": "아이디",
+  "storeName": null
+}
+```
+
+![2022-08-07_232207](/uploads/5e0091f7f6df639dbdff046778dace5f/2022-08-07_232207.png)
+  
+
+#### 주문목록 조회(소비자)
+
+ㅡ 소비자 번호로 해당 소비자의 주문목록 반환
+```
+[
+  {
+    "orderNo": 22,
+    "orderDate": "2022-08-07T14:10:22.000+00:00",
+    "marketNo": 3,
+    "storeNo": 2,
+    "status": "수정TEST",
+    "orderItems": [
+      {
+        "orderItemNo": 11,
+        "count": 1,
+        "price": 1000,
+        "itemName": "사과",
+        "orderNo": 22
+      }
+    ],
+    "marketName": "영동전통시장",
+    "customerNo": 1,
+    "customerId": "아이디",
+    "storeName": "프룻프룻"
+  },
+  ...
+]
+```
+
+![2022-08-07_232634](/uploads/b48246037db42764a5ff4af37699ffb7/2022-08-07_232634.png)
+  
+
+#### 주문목록 조회(판매자)
+
+ㅡ 상점 번호로 해당 상점의 주문목록 반환(필요 없는 정보는 담지 않음)
+```
+[
+  {
+    "orderNo": 22,
+    "orderDate": "2022-08-07T14:10:22.000+00:00",
+    "marketNo": 3,
+    "storeNo": 2,
+    "status": "수정TEST",
+    "orderItems": [
+      {
+        "orderItemNo": 11,
+        "count": 1,
+        "price": 1000,
+        "itemName": "사과",
+        "orderNo": 22
+      }
+    ],
+    "marketName": null,
+    "customerNo": 1,
+    "customerId": "아이디",
+    "storeName": null
+  },
+  ...
+]
+```
+
+![2022-08-07_232939](/uploads/7fcc54601813ffc337038449bd470cb1/2022-08-07_232939.png)
+  
+
+#### 첫 주문 여부 조회(소비자)
+
+ㅡ 소비자 번호로 해당 소비자의 첫 주문 여부 반환
+![2022-08-07_233203](/uploads/303d7b46bc18aa8fb0fd66303d0bf925/2022-08-07_233203.png)
