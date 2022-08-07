@@ -633,20 +633,20 @@ customer_id: 소비자 아이디
 ![image](https://user-images.githubusercontent.com/26956570/183306281-efae2291-c338-4b52-84c3-ab933e220693.png)
 
 #### 상점정보조회
-- 상점 번호로 상점의 정보를 조회한다.
+- 상점 번호로 상점의 정보를 조회한다.     
 ![image](https://user-images.githubusercontent.com/26956570/183306027-ab5c1533-6901-4f82-aef9-43ddca31faf3.png)
 #### 상점삭제
-- 상점 번호로 상점의 정보를 삭제한다. 
-불필요할 것 같아서 생략.
+- 상점 번호로 상점의 정보를 삭제한다.      
+불필요할 것 같아서 생략.    
 #### 한 시장안의 상점목록
 ![image](https://user-images.githubusercontent.com/26956570/183306160-855f1efa-81bb-4bdc-b35c-6e22fac9642f.png)
 #### 방 정보 조회 (라이브 상점정보)
-- 아직 등록되지 않았을 경우에 널값을 보낸다. 
+- 아직 등록되지 않았을 경우에 널값을 보낸다.     
 ![image](https://user-images.githubusercontent.com/26956570/183306497-2d86b2fd-260c-4ad6-961c-34870e8a4339.png)
 #### 방 정보 수정
 ![image](https://user-images.githubusercontent.com/26956570/183306474-220f8ae5-df77-4ba7-b086-17386fc71efc.png)
 #### 상품 등록
-- 여러차례 넣은 모습(이름이 중복이 되지않도록 수정필요 )
+- 여러차례 넣은 모습(이름이 중복이 되지않도록 수정필요 )    
 ![image](https://user-images.githubusercontent.com/26956570/183306634-493261e6-af05-4e95-b226-5a1197b47c4f.png)
 #### 상품 수정(안쓸예정)
 #### 상품 삭제 
