@@ -12,10 +12,11 @@
 <script>
 export default {
     name: "SearchType",
+    setup() {},
 
     data() {
         return {
-            items: [{ name: "OO수산" }, { name: "OO청과물" }],
+            //items: [{ name: "OO수산" }, { name: "OO청과물" }],
             item: "",
             marketList: [
                 { name: "OO수산", items: "고등어,꽁치,갈치", like: 222 },
@@ -36,13 +37,15 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .div_big {
     margin: auto;
 }
 
 .mk_img {
     float: left;
+    width: 90px;
+    height: 90px;
 }
 
 .mk_name {

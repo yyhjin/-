@@ -35,12 +35,10 @@ export default {
             searchType: "주소검색",
         };
     },
-    mounted() {},
-    methods: {},
 };
 </script>
 
-<style>
+<style scoped>
 .adjustC {
     --el-color-primary: #ff6f61;
 }
