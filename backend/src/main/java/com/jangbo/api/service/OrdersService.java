@@ -26,9 +26,9 @@ public class OrdersService {
     @Autowired
     StoreRepository storeRepository;
 
-    public List<OrdersDto> findAllByCustomer_CustomerNo(Integer customerno) {
+    public List<OrdersDto> findAllByCustomer_CustomerNoOrderByOrderDateDesc(Integer customerno) {
         //return ordersRepository.findAllByCustomer_CustomerNo(customerno);
-        List<Orders> orders = ordersRepository.findAllByCustomer_CustomerNo(customerno);
+        List<Orders> orders = ordersRepository.findAllByCustomer_CustomerNoOrderByOrderDateDesc(customerno);
         //return orders.stream().map(OrdersDto::new).collect(Collectors.toList());
         //return orders.stream().map(o -> new OrdersDto(o)).collect(Collectors.toList());
 
@@ -46,8 +46,8 @@ public class OrdersService {
         return result;
     }
 
-    public List<OrdersDto> findAllByStoreNo(Integer storeno) {
-        return ordersRepository.findAllByStoreNo(storeno);
+    public List<OrdersDto> findAllByStoreNoOrderByOrderDateDesc(Integer storeno) {
+        return ordersRepository.findAllByStoreNoOrderByOrderDateDesc(storeno);
     }
 
     public Orders findOrdersByOrderNo(Integer orderno) {
