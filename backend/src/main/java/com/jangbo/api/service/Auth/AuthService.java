@@ -13,4 +13,13 @@ public interface AuthService {
     Seller loginSeller(String sellerId, String sellerPwd) throws Exception;
 
     Customer loginCustomer(String customerId, String customerPwd) throws Exception;
+
+
+    void changeSellerPassword(Seller seller, String sellerPwd, String sellerPwdUpdate) throws Exception;
+
+    void changeCustomerPassword(Customer customer, String customerPwd, String customerPwdUpdate) throws Exception;
+
+//    Seller findBySellerId(String sellerId) throws Exception;
+
+//    Customer findByCustomerId(String customerId) throws Exception;
 }
