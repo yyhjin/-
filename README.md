@@ -1,5 +1,13 @@
 # 구현 진행 상황
 
+노션 링크:https://www.notion.so/74c6b74788fc45a9bb116f95732ec3b4
+
+노션 - 구현 진행 상황 링크: https://www.notion.so/f7e3003b0723431c8b69d20f3334df65
+
+프론트앤드 코드: gitlab의 dev-front 브랜치에 올라가 있음
+
+백앤드 코드: gitlabdml dev-back 브랜치에 올라가 있음
+
 
 
 [TOC]
@@ -90,7 +98,7 @@ customer_id: 소비자 아이디
 
 
 
-#### 로그인
+#### 로그인: JWT, Redis로 refreshToken, accessToken 구현
 
 **로그인 데이터 전달**
 
@@ -137,6 +145,10 @@ customer_id: 소비자 아이디
 ```
 
 ![스크린샷 2022-08-07 19.07.54](README.assets/스크린샷 2022-08-07 19.07.54.png)
+
+ㅡ Token: refreshToken, accessToken 정상적으로 들어감 & HttpOnly
+
+![스크린샷 2022-08-07 21.16.33](README.assets/스크린샷 2022-08-07 21.16.33.png)
 
 
 
@@ -258,7 +270,7 @@ customer_id: 소비자 아이디
 
 
 
-#### 첫화면 - 로그인 - 소비자와 마찬가지
+#### 로그인 - 소비자와 마찬가지
 
 **성공시**
 
