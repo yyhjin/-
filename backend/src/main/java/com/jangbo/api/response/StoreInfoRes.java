@@ -56,7 +56,7 @@ public class StoreInfoRes {
     }
 
     @Getter
-    static class Market {
+    public static class Market {
         private Integer marketNo;
 
 

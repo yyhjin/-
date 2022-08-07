@@ -38,10 +38,8 @@ public class Market {
     @NotBlank
     private String marketAddr;
 
-    @NotBlank
     private Float lat;
 
-    @NotBlank
     private Float lng;
 
     @ManyToOne

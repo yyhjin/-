@@ -4,6 +4,7 @@ import com.jangbo.api.request.ItemEditPatchReq;
 import com.jangbo.api.request.ItemRecentPatchReq;
 import com.jangbo.api.request.ItemRegisterPostReq;
 import com.jangbo.api.request.StoreEditPatchReq;
+import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.ItemService;
 import com.jangbo.db.entity.Item;
 import com.jangbo.db.entity.Store;
@@ -12,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -67,4 +69,15 @@ public class ItemController {
 
         return new ResponseEntity<Integer>(itemNo, HttpStatus.NO_CONTENT);
     }
+
+
+    /*아이템 조회*/
+    @GetMapping("/{itemNo}")
+    @ApiOperation(value="상품 조회 api",notes = "상품번호로 상품정보를 조회한다.",httpMethod = "GET")
+    public ResponseEntity<Item> selectByItemNo(@PathVariable("itemNo") Integer itemNo) {
+        Item item = itemService.findItemByItemNo(itemNo);
+        return new ResponseEntity<Item>(item, HttpStatus.OK);
+    }
+
+
 }

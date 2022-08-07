@@ -23,5 +23,9 @@ public class MarketService {
         return marketRepository.findAllByMarketNameContains(marketname);
     }
 
+    public MarketDto findMarketByMarketNo(Integer marketno) {
+        return marketRepository.findMarketByMarketNo(marketno);
+    }
+
 
 }
