@@ -45,9 +45,9 @@ public class AuthController {
     public Response signUpSeller(@RequestBody @Valid SellerRegisterReq sellerRegisterReq) {
         try {
             authService.signUpSeller(sellerRegisterReq);
-            return new Response("success", "회원가입을 성공적으로 완료했습니다.", null);
+            return new Response("success", "판매자 회원가입을 성공적으로 완료했습니다.", null);
         } catch (Exception e) {
-            return new Response("error", e.toString(), null);
+            return new Response("error", "판매자 회원가입에 실패하였습니다.", null);
         }
     }
 
@@ -58,7 +58,7 @@ public class AuthController {
             authService.signUpCustomer(customerRegisterReq);
             return new Response("success", "소비자 회원가입을 성공적으로 완료했습니다.", null);
         } catch (Exception e) {
-            return new Response("error", e.toString(), null);
+            return new Response("error", "소비자 회원가입에 실패하였습니다.", null);
         }
     }
 

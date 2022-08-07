@@ -23,37 +23,6 @@ public class SellerController {
     private final SellerService sellerService;
     private final SellerRepository sellerRepository;
 
-//    @ApiOperation(value = "회원가입" , notes="판매자 정보를 등록한다.",httpMethod = "POST")
-//    @PostMapping("/signup")
-//    public CreateUpdateSellerResponse saveSeller(@Valid CreateSellerRequest request) {
-//        Seller seller = new Seller();
-//        seller.setSellerId(request.getSellerId());
-//        seller.setSellerName(request.getSellerName());
-//        seller.setBusinessNumber(request.getBusinessNumber());
-//        seller.setSellerPhone(request.getSellerPhone());
-//
-//        Integer sellerNo = sellerService.join(seller);
-//        return new CreateUpdateSellerResponse(sellerNo);
-//    }
-
-//    @PostMapping("/signup")
-//    public Response signUpUser(@RequestBody Seller seller){
-//        Response response = new Response();
-//
-//        try{
-//            authSellerService.signUpUser(member);
-//            response.setResponse("success");
-//            response.setMessage("회원가입을 성공적으로 완료했습니다.");
-//        }
-//        catch(Exception e){
-//            response.setResponse("failed");
-//            response.setMessage("회원가입을 하는 도중 오류가 발생했습니다.");
-//            response.setData(e.toString());
-//        }
-//
-//        return response;
-//    }
-
     @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
     @GetMapping("/idcheck/{seller_id}")
     public CheckSellerIdResponse IdCheck(
@@ -86,15 +55,6 @@ public class SellerController {
         sellerService.update(sellerNo, request.getBusinessNumber(), request.getSellerName(), request.getSellerPhone());
         return true;
     }
-
-//    @Data
-//    @AllArgsConstructor
-//    static class SellerRequest {
-//        private String sellerId;
-//        private String sellerName;
-//        private String businessNumber;
-//        private String sellerPhone;
-//    }
 
     @Data
     @AllArgsConstructor
