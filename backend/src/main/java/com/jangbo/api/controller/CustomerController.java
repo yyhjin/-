@@ -31,21 +31,6 @@ public class CustomerController {
 
     private final StoreRepository storeRepository;
 
-    //API 정상 작동하는지 확인 후 추가
-//    @ApiOperation(value = "회원가입" , notes="소비자 정보를 등록한다.",httpMethod = "POST")
-//    @PostMapping("/customer/signup")
-//    public CreateUpdateCustomerResponse saveCustomer(@Valid CreateUpdateCustomerRequest request) {
-//        Customer customer = new Customer();
-//        customer.setCustomerId(request.getCustomerId());
-//        customer.setCustomerName(request.getCustomerName());
-//        customer.setCustomerNickname(request.getCustomerNickname());
-//        customer.setCustomerAddr(request.getCustomerAddr());
-//        customer.setCustomerPhone(request.getCustomerPhone());
-//
-//        Integer customerNo = customerService.join(customer);
-//        return new CreateUpdateCustomerResponse(customerNo);
-//    }
-
     @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
     @GetMapping("/customer/idcheck/{customer_id}")
     public CheckCustomerIdResponse IdCheck(
@@ -74,7 +59,7 @@ public class CustomerController {
     @PutMapping("/customer/{customer_no}")
     public boolean updateCustomer(
             @PathVariable("customer_no") Integer customerNo,
-            @Valid CustomerRequest request
+            @Valid CustomerUpdateReq request
     ) {
         return customerService.update(customerNo, request.getCustomerName(), request.getCustomerNickname(), request.getCustomerAddr(), request.getCustomerPhone());
     }
@@ -111,6 +96,15 @@ public class CustomerController {
     @AllArgsConstructor
     static class CustomerRequest {
         private String customerId;
+        private String customerName;
+        private String customerNickname;
+        private String customerAddr;
+        private String customerPhone;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class CustomerUpdateReq {
         private String customerName;
         private String customerNickname;
         private String customerAddr;
