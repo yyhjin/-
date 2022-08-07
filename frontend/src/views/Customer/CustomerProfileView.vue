@@ -3,8 +3,7 @@
  <!-- TODO:
   1.탈퇴기능 추가여부? 
   -->
-  <div>
-    <el-space wrap>
+  <div class="root_div">
       <el-card class="card">
         <h2>회원정보 수정</h2>
         <div class="modifyMenu">
@@ -69,8 +68,6 @@
           </div>
         </div>
       </el-card>
-    </el-space>
-
   </div>
 </template>
 <script>
@@ -122,21 +119,15 @@ export default {
       }).open();
     }
   }
-
-  
-
-  
 }
 </script>
 <style scoped> 
+  .card{
+    margin:auto;
+  }
 .adjustC {
   --el-color-primary: #ff6f61;
 }
-
-.firstDiv {
-  text-align: center;
-}
-
 .card {
   width: 300px !important;
   margin-top: 40px;

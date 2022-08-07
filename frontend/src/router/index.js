@@ -15,7 +15,7 @@ import StoreProfileView from '../views/Seller/StoreProfileView.vue'
 import StoreMenuView from '../views/Seller/StoreMenuView.vue'
 import StoreBillsView from '../views/Seller/StoreBillsView.vue'
 import StoreRegisterView from '../views/Seller/StoreRegisterView.vue'
-import testView from '../views/test.vue'
+
 const routes = [
     {
         path: "/test",

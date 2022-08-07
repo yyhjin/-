@@ -1,25 +1,4 @@
 <template>
-<<<<<<< HEAD
-    <div class="root_div">
-        <h1>내 상점</h1>
-        <div class="mystore_btns">
-            <el-row>
-                <el-col>
-                    <el-button class="mystore_btn" type="danger" plain @click="market_open()">가게 오픈</el-button>
-                </el-col>
-                <el-col>
-                    <el-button class="mystore_btn" plain>상점정보 관리</el-button>
-                </el-col>
-                <el-col>
-                    <el-button class="mystore_btn" plain>메뉴 관리</el-button>
-                </el-col>
-                <el-col>
-                    <el-button class="mystore_btn" plain>주문</el-button>
-                </el-col>
-            </el-row>
-        </div>
-    </div>
-=======
   <div class="root_div">
     등록 여부<el-radio-group v-model="isRegistered" size="small">
       <el-radio-button label="true" />
@@ -43,7 +22,7 @@
         </el-card>
       </div>
       <div class="mystore_btns">
-          <el-button class="mystore_btn" type="danger" plain @click="routerPush('StoreOpenView')">가게 오픈</el-button>
+          <el-button class="mystore_btn" type="danger" plain @click="routerPush('openStore')">가게 오픈</el-button>
           <el-button class="mystore_btn" plain @click="routerPush('store_profile')">상점정보 관리</el-button>
           <el-button class="mystore_btn" plain @click="routerPush('store_menu')">메뉴 관리</el-button>
           <el-button class="mystore_btn" plain @click="routerPush('store_bills')">판매 내역</el-button>
@@ -72,29 +51,12 @@
 
 
   </div>
->>>>>>> feat#28
 </template>
 <script>
 //백엔드에서 기본이미지 못 준다고 하면 이걸로 해결해보자.
 import defaultimage from '@/assets/defaultshop.png'
 // import MyStoreBtnComp from '@/components/Mystore/MyStoreBtnComp.vue'
 export default {
-<<<<<<< HEAD
-    methods: {
-        market_open() {
-            this.$router.push({ name: "openStore", params: { seller_id: this.$route.params.id } });
-        },
-    },
-};
-</script>
-<style scoped>
-.mystore_btn {
-    width: 300px;
-    height: 70px !important;
-    margin-top: 10px;
-    color: black !important;
-    font-size: larger;
-=======
   // mounted: { 
   //   //axios: vuex 데이터 갱신 할 것.
 
@@ -135,7 +97,6 @@ export default {
   },
   methods: {
     routerPush(to) {
-      alert(to + "로 이동")
       this.$router.push({
         name: to,
         // params: { user:this.dummy }
@@ -173,7 +134,6 @@ export default {
   display: flex !important;
   flex-direction: row !important;
 
->>>>>>> feat#28
 }
 .mystore_btn {
   width: 100%;
