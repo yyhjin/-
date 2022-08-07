@@ -141,11 +141,13 @@ export default {
 }
 
 .btn_idCheck {
+    color:white;
     margin-top: 10px;
     float: right;
 }
 
 .btn_address {
+    color:white;
     float: right;
     margin-top: 20px;
     width: 80px;
@@ -164,7 +166,9 @@ export default {
     text-align: left !important;
 }
 
+
 .btn_register {
+    color:white;
     height: 40px !important;
     margin-top: 40px;
 }
@@ -174,4 +178,5 @@ export default {
     height: 40px !important;
     margin-top: 40px;
 }
+
 </style>

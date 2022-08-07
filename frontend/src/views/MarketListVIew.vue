@@ -40,7 +40,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .adjustC {
     --el-color-primary: #ff6f61;
 }

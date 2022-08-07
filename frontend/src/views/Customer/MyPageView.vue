@@ -1,9 +1,15 @@
 <template>
   <div class=root-div>
+    회원 유형:<el-radio-group v-model="userType" size="small">
+      <el-radio-button label="구매자" />
+      <el-radio-button label="판매자" />
+      
+    </el-radio-group>
+   
     <h2>{{dummy.name}}#{{$route.params.id}}님의 page</h2>
-
 <!--------------------- 회원 정보 ------------------------>
-    <el-card class="box-card">
+<div class="user_Info">
+   <el-card class="box-card">
       <template #header>
         <div class="card-header">
           <span>회원 정보</span>
@@ -17,8 +23,11 @@
         {{dummy.name}}{{dummy.id}}
        </div>
     </el-card>
+</div>
+   
 <!--------------------- 찜 목록 ------------------------>
-     <el-card class="box-card">
+<div class="user_zzim" v-if="userType=='구매자'">
+  <el-card class="box-card">
       <template #header>
         <div class="card-header"> 
           <span> 찜 목록</span>
@@ -38,11 +47,10 @@
         
       </div>
       </el-card>
-      
-
-
-
+</div>
+     
 <!--------------------- 구매내역 ------------------------>
+  <div class="user_orders" v-if="userType=='구매자'">
     <el-card class="box-card">
       <template #header>
         <div class="card-header"> 
@@ -54,9 +62,12 @@
         <OrderComp :order="dummy"/>
       </div>
     </el-card>
+  </div> 
+  <!--------------------- 구매내역/ ------------------------>
+    
 
 
-  </div>
+</div>
 </template>
 
 
@@ -71,6 +82,9 @@ export default {
     return{
       // dummy data from vuex
       dummy : this.$store.state.userinfo,
+
+      userType:this.$store.state.userinfo.userType,
+
       zzimlist:[],
       dummyorder: [{
                 order_no: 1,
@@ -141,4 +155,5 @@ export default {
   text-decoration: underline;
   
 }
+
 </style>
