@@ -2,6 +2,7 @@ package com.jangbo.db.entity;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -23,12 +24,11 @@ public class Orders {
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
+    @CreationTimestamp
     private Date orderDate; //안되면 이거부터 수정하기
 
-    @NotBlank
     private Integer marketNo;
 
-    @NotBlank
     private Integer storeNo;
 
     @NotBlank
