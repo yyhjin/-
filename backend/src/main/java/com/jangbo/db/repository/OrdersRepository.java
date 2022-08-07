@@ -21,10 +21,10 @@ public interface OrdersRepository extends JpaRepository<Orders,Integer> {
 //    @Query("select new com.jangbo.db.dto.OrdersDto(o)" +
 //            "from Orders o where o.customer.customerNo = :customerno")
     //List<OrdersDto> findAllByCustomer_CustomerNo(@Param("customerno") Integer customerno);
-    List<Orders> findAllByCustomer_CustomerNo(@Param("customerno") Integer customerno);
+    List<Orders> findAllByCustomer_CustomerNoOrderByOrderDateDesc(@Param("customerno") Integer customerno);
 
 
-    List<OrdersDto> findAllByStoreNo(@Param("storeno") Integer storeno);
+    List<OrdersDto> findAllByStoreNoOrderByOrderDateDesc(@Param("storeno") Integer storeno);
 
     Orders findOrdersByOrderNo(@Param("orderno") Integer orderno);
 

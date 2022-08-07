@@ -36,14 +36,14 @@ public class OrdersController {
     @ApiOperation(value = "주문목록 조회(소비자)" , notes="소비자번호로 해당 소비자의 주문목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/customer")
     public ResponseEntity<List<OrdersDto>> getAllByCustomerNo(Integer customerno) {
-        List<OrdersDto> orders = ordersService.findAllByCustomer_CustomerNo(customerno);
+        List<OrdersDto> orders = ordersService.findAllByCustomer_CustomerNoOrderByOrderDateDesc(customerno);
         return new ResponseEntity(orders, HttpStatus.OK);
     }
 
     @ApiOperation(value = "주문목록 조회(판매자)" , notes="상점번호로 해당 상점의 주문목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/store")
     public ResponseEntity<List<OrdersDto>> getAllByStoreNo(Integer storeno) {
-        List<OrdersDto> orders = ordersService.findAllByStoreNo(storeno);
+        List<OrdersDto> orders = ordersService.findAllByStoreNoOrderByOrderDateDesc(storeno);
         return new ResponseEntity(orders, HttpStatus.OK);
     }
 
@@ -109,7 +109,7 @@ public class OrdersController {
         Integer orderitemno = orderItemService.orderitemsave(orderitem).getOrderItemNo();
 //        Orders update = ordersService.findOrdersByOrderNo(orderno);
 //        OrdersDto result = new OrdersDto(update);
-        return new ResponseEntity(orderitemno, HttpStatus.OK);
+        return new ResponseEntity(orderno, HttpStatus.OK);
     }
 
 
