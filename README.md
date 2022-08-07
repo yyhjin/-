@@ -617,3 +617,41 @@ customer_id: 소비자 아이디
 
 ㅡ 소비자 번호로 해당 소비자의 첫 주문 여부 반환
 ![2022-08-07_233203](/uploads/303d7b46bc18aa8fb0fd66303d0bf925/2022-08-07_233203.png)
+
+
+### 상점관리
+
+주로 상점 관리에 쓰이고 대기화면에서 소비자에게 보여지는 방목록들.
+주문할 때 상품을 고를 수 있는 상품 목록 조회, 
+판매자 입장에서는 상점 crud. 아이템 crud(수정은 필요없어서 지울 예정)
+방을 만들 때 (장사시작할 때) 판매할 품목을 보다 쉽게 고르게 하기 위해 전날 판매했던 품목을 저장해두고 목록으로 미리 보여주는 최근판매여부가있다.
+
+#### 상점등록 
+- s3 이슈로 캡처하지못했음.. 
+#### 상점정보수정
+![image](https://user-images.githubusercontent.com/26956570/183306256-5ffdbf3a-eedb-4ca4-91d9-1c89e9eb5579.png)
+![image](https://user-images.githubusercontent.com/26956570/183306281-efae2291-c338-4b52-84c3-ab933e220693.png)
+
+#### 상점정보조회
+- 상점 번호로 상점의 정보를 조회한다.
+![image](https://user-images.githubusercontent.com/26956570/183306027-ab5c1533-6901-4f82-aef9-43ddca31faf3.png)
+#### 상점삭제
+- 상점 번호로 상점의 정보를 삭제한다. 
+불필요할 것 같아서 생략.
+#### 한 시장안의 상점목록
+![image](https://user-images.githubusercontent.com/26956570/183306160-855f1efa-81bb-4bdc-b35c-6e22fac9642f.png)
+#### 방 정보 조회 (라이브 상점정보)
+- 아직 등록되지 않았을 경우에 널값을 보낸다. 
+![image](https://user-images.githubusercontent.com/26956570/183306497-2d86b2fd-260c-4ad6-961c-34870e8a4339.png)
+#### 방 정보 수정
+![image](https://user-images.githubusercontent.com/26956570/183306474-220f8ae5-df77-4ba7-b086-17386fc71efc.png)
+#### 상품 등록
+- 여러차례 넣은 모습(이름이 중복이 되지않도록 수정필요 )
+![image](https://user-images.githubusercontent.com/26956570/183306634-493261e6-af05-4e95-b226-5a1197b47c4f.png)
+#### 상품 수정(안쓸예정)
+#### 상품 삭제 
+생략
+#### 상점에서 파는 목록
+![image](https://user-images.githubusercontent.com/26956570/183306909-b0d49d57-df7b-4e69-b06c-957e3435b12b.png)
+#### 상품의 최근 판매여부  
+![image](https://user-images.githubusercontent.com/26956570/183306949-1156e953-b4d6-449b-ad86-5d35a0a54f04.png)
