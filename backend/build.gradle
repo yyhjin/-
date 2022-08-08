@@ -3,8 +3,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
     id 'java'
 
-    //querydsl 추가
-    id 'com.ewerk.gradle.plugins.querydsl' version '1.0.10'
 }
 
 group = 'com.jangbo'
@@ -22,15 +20,35 @@ repositories {
     mavenCentral()
 }
 
+def version = [
+        spring: '4.1.6.RELEASE',
+        servletAPI: '3.1.0',
+        commonsCollections: '3.2.1',
+        junit: '4.12',
+        slf4j: '1.7.12'
+]
+
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-security'// 주석처리였음
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-web-services'
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    //swagger
+    implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+    //JWT
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    //REDIS
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -38,12 +56,8 @@ dependencies {
     runtimeOnly 'mysql:mysql-connector-java'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.security:spring-security-test'// 주석처리였음
 
-
-    //querydsl 추가
-    implementation 'com.querydsl:querydsl-jpa'
-    implementation 'com.querydsl:querydsl-apt'
 
 }
 
@@ -51,23 +65,4 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-//def querydslDir = 'src/main/generated'
-def querydslDir = "$buildDir/generated/querydsl"
-querydsl {
-    library = "com.querydsl:querydsl-apt"
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', querydslDir]
-        }
-    }
-}
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
-}
-configurations {
-    querydsl.extendsFrom compileClasspath
-}
+
