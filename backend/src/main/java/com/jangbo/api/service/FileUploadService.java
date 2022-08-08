@@ -28,7 +28,7 @@ import java.util.List;
 @Service
 @NoArgsConstructor
 public class FileUploadService {
-   private AmazonS3 s3Client;
+    private AmazonS3 s3Client;
 
 
     @Value("${cloud.aws.s3.bucket}")
@@ -43,35 +43,50 @@ public class FileUploadService {
     @Value("${cloud.aws.region.static}")
     private String region;
 
-    private  StoreRepository storeRepository;
+    private StoreRepository storeRepository;
 
-public void setS3Client(){
-    AWSCredentials credentials = new BasicAWSCredentials(this.accessKey,this.secretKey);
-    s3Client = AmazonS3ClientBuilder.standard()
-            .withCredentials(new AWSStaticCredentialsProvider(credentials))
-            .withRegion(this.region)
-            .build();
-}
-    public String fileUpload(MultipartFile multipartFile) throws IOException{
-         String fileName = multipartFile.getOriginalFilename();
-         s3Client.putObject(new PutObjectRequest(bucket,fileName, multipartFile.getInputStream(),null)
-                 .withCannedAcl(CannedAccessControlList.PublicRead));
-         return s3Client.getUrl(bucket,fileName).toString();
-
-//        ObjectMetadata objectMetadata = new ObjectMetadata();
-//        objectMetadata.setContentLength(multipartFile.getSize());
-//        objectMetadata.setContentType(multipartFile.getContentType());
-//
-//        try(InputStream inputStream = multipartFile.getInputStream()) {
-//            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
-//
-//        }catch (IOException e){
-//            throw new ResponseStatusException((HttpStatus.INTERNAL_SERVER_ERROR,"파일업로드에 실패했습니다.");
-//        }
-//        //원본파일 이름과 변경된 파일 이름을 DB에 저장
-
-
+    public void setS3Client() {
+        AWSCredentials credentials = new BasicAWSCredentials(this.accessKey, this.secretKey);
+        s3Client = AmazonS3ClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .withRegion(this.region)
+                .build();
     }
 
+    public String fileUpload(MultipartFile multipartFile) throws IOException {
+        String fileName = multipartFile.getOriginalFilename();
+        ObjectMetadata objectMetadata = new ObjectMetadata();
+        objectMetadata.setContentType(multipartFile.getContentType());
 
-}
+        try (InputStream inputStream = multipartFile.getInputStream()) {
+            s3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+        } catch (IOException e) {
+            // throw new FileUploadFailedException();
+        }
+
+        return s3Client.getUrl(bucket, fileName).toString();
+    }
+
+//    private void validateFileExists(MultipartFile multipartFile) {
+//        if (multipartFile.isEmpty()) {
+//            throw new EmptyFileException();
+//
+//
+////        ObjectMetadata objectMetadata = new ObjectMetadata();
+////        objectMetadata.setContentLength(multipartFile.getSize());
+////        objectMetadata.setContentType(multipartFile.getContentType());
+////
+////        try(InputStream inputStream = multipartFile.getInputStream()) {
+////            amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, inputStream, objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead));
+////
+////        }catch (IOException e){
+////            throw new ResponseStatusException((HttpStatus.INTERNAL_SERVER_ERROR,"파일업로드에 실패했습니다.");
+////        }
+////        //원본파일 이름과 변경된 파일 이름을 DB에 저장
+//
+//
+//        }
+//
+//
+    }

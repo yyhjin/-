@@ -10,6 +10,7 @@ import com.jangbo.api.service.FileUploadService;
 import com.jangbo.db.entity.Store;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -75,16 +76,33 @@ public class StoreController {
     /* 상점 등록 */
     @PostMapping
     @ApiOperation(value = "상점 등록 api", notes="상점등록",httpMethod = "POST")
-    public ResponseEntity<Integer> save(@RequestBody StoreRegisterPostReq storeRegisterPostReq, @RequestParam(required = false) MultipartFile multipartFile)throws IOException {
+    public ResponseEntity<Integer> save(@RequestPart(required = true)MultipartFile multipartFile)throws IOException {
+//        @RequestBody StoreRegisterPostReq storeRegisterPostReq,
+System.out.println("여기는 들어옴??");
         String imgPath = fileUploadService.fileUpload(multipartFile);
-        storeRegisterPostReq.setStoreImg(imgPath);
-        Integer savedStoreNo = storeService.save(storeRegisterPostReq);
+//        storeRegisterPostReq.setStoreImg(imgPath);
+//        Integer savedStoreNo = storeService.save(storeRegisterPostReq);
 
 //        fileDto.setStoreNo(savedStoreNo);
 //        fileDto.toEntity();//안되면 여기부터 수정
         //상점번호를 받아서 이미지 테이블에 상점번호를 같이 저장하자
-        return new ResponseEntity<Integer>(savedStoreNo, HttpStatus.CREATED);
+        return new ResponseEntity<Integer>(100, HttpStatus.CREATED);
     }
+
+//    @PostMapping
+//    @ApiOperation(value = "이미지 등록 api", notes="상점등록",httpMethod = "POST")
+//    public ResponseEntity<Integer> save(@RequestParam(required = false) MultipartFile multipartFile)throws IOException {
+//        String imgPath = fileUploadService.fileUpload(multipartFile);
+//
+////        fileDto.setStoreNo(savedStoreNo);
+////        fileDto.toEntity();//안되면 여기부터 수정
+//        //상점번호를 받아서 이미지 테이블에 상점번호를 같이 저장하자
+//        return new ResponseEntity<Integer>(savedStoreNo, HttpStatus.CREATED);
+//    }
+
+
+
+
 
     /* 상점 수정 */
     @PatchMapping("/{storeNo}")
