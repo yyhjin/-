@@ -633,7 +633,8 @@ customer_id: 소비자 아이디
 방을 만들 때 (장사시작할 때) 판매할 품목을 보다 쉽게 고르게 하기 위해 전날 판매했던 품목을 저장해두고 목록으로 미리 보여주는 최근판매여부가있다.
 
 #### 상점등록 
-- s3 이슈로 캡처하지못했음.. 
+-반환은 생성된 상점번호를 보내준다.
+![22](https://user-images.githubusercontent.com/26956570/183316622-39b68200-7984-44a6-af34-fa68c8c03c27.png)
 #### 상점정보수정
 ![image](https://user-images.githubusercontent.com/26956570/183306256-5ffdbf3a-eedb-4ca4-91d9-1c89e9eb5579.png)
 ![image](https://user-images.githubusercontent.com/26956570/183306281-efae2291-c338-4b52-84c3-ab933e220693.png)
