@@ -40,12 +40,17 @@ export default {
 <style scoped>
 .div_big {
     margin: auto;
+    padding-top: 10px;
+}
+
+.div_market {
+    margin-top: 20px;
 }
 
 .mk_img {
     float: left;
-    width: 90px;
-    height: 90px;
+    width: 80px;
+    height: 80px;
 }
 
 .mk_name {

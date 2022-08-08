@@ -90,6 +90,10 @@ export default {
     margin: 0px 10px;
 }
 
+.el-button {
+    color: white !important;
+}
+
 .btn_fruit {
     width: 100px;
     height: 50px;

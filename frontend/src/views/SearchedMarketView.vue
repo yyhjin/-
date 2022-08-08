@@ -1,21 +1,23 @@
 <template>
-    <div class="div_big1">
-        <h2>{{ this.market_name }}</h2>
-        <div class="searchBar">
-            <el-button color="#FF6F61" round class="btn_back" @click="cl_btn">돌아가기</el-button>
-            <el-input class="search_type" v-model="sell_type" placeholder="Please Input" @keyup.enter="enterKey" />
+    <div class="div_div">
+        <div class="div_big1">
+            <h2>{{ this.market_name }}</h2>
+            <div class="searchBar">
+                <el-button color="#FF6F61" round class="btn_back" @click="cl_btn">돌아가기</el-button>
+                <el-input class="search_type" v-model="sell_type" placeholder="Please Input" @keyup.enter="enterKey" />
+            </div>
+            <div class="adjustC radio_gr">
+                <el-checkbox-group v-model="checkList">
+                    <el-checkbox label="정육점" />
+                    <el-checkbox label="수산물" />
+                    <el-checkbox label="청과물" />
+                    <el-checkbox label="철물점" />
+                    <el-checkbox label="음식점" />
+                    <el-checkbox label="잡화점" />
+                </el-checkbox-group>
+            </div>
+            <search-type></search-type>
         </div>
-        <div class="adjustC radio_gr">
-            <el-checkbox-group v-model="checkList">
-                <el-checkbox label="정육점" />
-                <el-checkbox label="수산물" />
-                <el-checkbox label="청과물" />
-                <el-checkbox label="철물점" />
-                <el-checkbox label="음식점" />
-                <el-checkbox label="잡화점" />
-            </el-checkbox-group>
-        </div>
-        <search-type></search-type>
     </div>
 </template>
 
@@ -55,7 +57,11 @@ export default {
 </script>
 
 <style scoped>
-.div_big1{
+.div_div {
+    text-align: center;
+}
+
+.div_big1 {
     display: inline-block;
     width: 300px;
 }
@@ -86,7 +92,7 @@ export default {
 .adjustC {
     --el-color-primary: #ff6f61;
 }
-.radioGroup {
-    padding-left: 20px;
+.radio_gr {
+    padding-left: 10px;
 }
 </style>
