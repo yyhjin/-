@@ -7,8 +7,7 @@
                     <div class="inputRegister">
                         <h5>사업자 등록 번호</h5>
                         <el-input placeholder="사업자 등록 번호" v-model="seller_number" class="input_Snumber" />
-                        <el-button color="#FF6F61" round class="btn_sellerCheck" @click="cl_sellerCheck">확인</el-button>
-                        <h5 style="padding-top: 20px">업종</h5>
+                        <h5>업종</h5>
                         <el-input placeholder="업종" v-model="sellItem" class="input_sellItem" />
                         <h5>아이디</h5>
                         <el-input placeholder="아이디 (이메일 형식)" v-model="id" class="input_id" />
@@ -17,6 +16,7 @@
                         <el-input placeholder="패스워드" v-model="password" class="input_pass" type="password" />
                         <h5>비밀번호 확인</h5>
                         <el-input placeholder="패스워드 확인" v-model="password_double" class="input_pass" type="password" />
+                        <h5 style="text-align: right; color: red">{{ same }}</h5>
                         <h5>이름</h5>
                         <el-input placeholder="이름" v-model="name" class="input_name" />
                         <h5>연락처</h5>
@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { getId, joinSeller } from "@/api/seller.js";
 export default {
     name: "JoinView",
 
@@ -52,15 +53,12 @@ export default {
             id: "",
             password: "",
             password_double: "",
+            same: "",
             name: "",
             phone_number: "",
             address: "",
-            postcode: "",
             detailAddress: "",
             extraAddress: "",
-            birthday: "",
-            gender: "",
-            userType: "",
         };
     },
 
@@ -68,19 +66,76 @@ export default {
         this.userType = this.$route.params.userType;
     },
 
-    methods: {
-        cl_sellerCheck() {
-            console.log(this.seller_number);
+    watch: {
+        password_double() {
+            if (this.password != this.password_double) {
+                this.same = "다름";
+            } else if (this.password == this.password_double) {
+                this.same = "같음";
+            }
         },
+        password() {
+            if (this.password != this.password_double) {
+                this.same = "다름";
+            } else if (this.password == this.password_double) {
+                this.same = "같음";
+            }
+        },
+    },
+    methods: {
         cl_idCheck() {
             console.log(this.id);
+            if (this.id) {
+                getId(
+                    this.id,
+                    (response) => {
+                        if (response.data.idCheck) {
+                            console.log(response);
+                            alert("사용 가능합니다");
+                        } else if (!response.data.idCheck) {
+                            alert("중복된 아이디입니다.");
+                        }
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            } else {
+                alert("아이디를 입력하세요");
+            }
         },
         cl_register() {
-            console.log("업종:" + this.sellItem);
-            console.log("상태 : " + this.userType + " 아이디:" + this.id + " 비밀번호:" + this.password + " 비밀번호검증:" + this.password_double);
-            console.log("이름 :" + this.name + " 번호:" + this.phone_number);
-            console.log("주소:" + this.address + " 우편번호:" + this.postcode + " 상세주소:" + this.detailAddress + " 추가:" + this.extraAddress);
-            console.log("생일:" + this.birthday + " 성별:" + this.gender);
+            if (this.id != "" && this.name != "" && this.password != "" && this.nick != "" && this.phone_number != "") {
+                if (this.same == "같음") {
+                    const params = {
+                        businessNumber: this.seller_number,
+                        sellerId: this.id,
+                        sellerName: this.name,
+                        sellerPhone: this.phone_number,
+                        sellerPwd: this.password,
+                        //sellerAddr: this.address + " " + this.detailAddress + " " + this.extraAddress,
+                    };
+                    joinSeller(
+                        params,
+                        (response) => {
+                            if (response.data.response == "success") {
+                                alert("회원가입이 완료되었습니다.");
+                                this.$router.push({ name: "home" });
+                            } else {
+                                console.log(response);
+                                alert("회원가입에 실패하였습니다.");
+                            }
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+                } else {
+                    alert("비밀번호가 다름니다");
+                }
+            } else {
+                alert("칸을 모두 채워주세요");
+            }
         },
         cl_cancle() {
             this.$router.push({ name: "selectjoin" });
@@ -118,8 +173,6 @@ export default {
                     } else {
                         this.extraAddress = "";
                     }
-                    // 우편번호를 입력한다.
-                    this.postcode = data.zonecode;
                 },
             }).open();
         },
@@ -181,17 +234,17 @@ export default {
     height: 40px !important;
     margin-top: 40px;
 }
-.btn_sellerCheck{
-    color:white;
+.btn_sellerCheck {
+    color: white;
 }
-.btn_register{
-    color:white;
+.btn_register {
+    color: white;
 }
 
-.btn_idCheck{
-    color:white;
+.btn_idCheck {
+    color: white;
 }
-.btn_address{
-    color:white;
+.btn_address {
+    color: white;
 }
 </style>

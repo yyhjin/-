@@ -27,14 +27,15 @@
 </template>
 
 <script>
-import axios from "axios";
+import { loginCustomer } from "@/api/customer";
+import { loginSeller } from "@/api/seller";
 import { ref } from "vue";
 
 export default {
     setup() {
         const id = ref();
         const password = ref();
-        const userType = ref();
+        const userType = ref("구매자");
 
         function ck_login() {
             if (this.userType == "") {
@@ -44,14 +45,43 @@ export default {
             } else if (this.password == "") {
                 alert("비밀번호 입력 필요");
             } else {
-                axios
-                    .get("https://jsonplaceholder.typicode.com/users/")
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                const params = {
+                    username: this.id,
+                    password: this.password,
+                };
+                if (this.userType == "구매자") {
+                    loginCustomer(
+                        params,
+                        (response) => {
+                            console.log(response);
+                            if (response.data.response == "success") {
+                                alert("로그인 성공");
+                                //jwt 받아오기
+                            } else {
+                                alert("아이디 또는 비밀번호 오류");
+                            }
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+                } else {
+                    loginSeller(
+                        params,
+                        (response) => {
+                            console.log(response);
+                            if (response.data.response == "success") {
+                                alert("로그인 성공");
+                                //jwt 받아오기
+                            } else {
+                                alert("아이디 또는 비밀번호 오류");
+                            }
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+                }
                 console.log("상태 " + this.userType);
                 console.log("id " + this.id);
                 console.log("pass " + this.password);
