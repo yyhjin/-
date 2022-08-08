@@ -1,8 +1,8 @@
 # 구현 진행 상황
 
-노션 링크:https://www.notion.so/74c6b74788fc45a9bb116f95732ec3b4
+노션 링크:https://sly-hexagon-e43.notion.site/74c6b74788fc45a9bb116f95732ec3b4
 
-노션 - 구현 진행 상황 링크: https://www.notion.so/f7e3003b0723431c8b69d20f3334df65
+노션 - 구현 진행 상황 링크: https://sly-hexagon-e43.notion.site/f7e3003b0723431c8b69d20f3334df65
 
 프론트앤드 코드: gitlab의 dev-front 브랜치에 올라가 있음
 
@@ -20,7 +20,7 @@
 
 프론트 작업물은 노션 - 구현 상황에 업로드 하였음
 
-링크: https://www.notion.so/f7e3003b0723431c8b69d20f3334df65
+링크:  https://sly-hexagon-e43.notion.site/f7e3003b0723431c8b69d20f3334df65
 
 백앤드는 README.md에 전체 작성함
 
