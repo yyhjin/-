@@ -31,6 +31,7 @@ export default {
     data() {
         return {
             market_name: "",
+            market_no: "",
             sell_type: "",
             checkList: [],
         };
@@ -38,6 +39,7 @@ export default {
 
     mounted() {
         this.market_name = this.$route.params.market_name;
+        this.market_no = this.$route.params.market_no;
     },
     methods: {
         cl_btn() {
