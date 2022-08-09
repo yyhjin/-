@@ -81,6 +81,9 @@ public class Store {
         this.storeIntro = storeIntro;
 
     }
+    public void updateImg(String fileName){
+        this.storeImg = fileName;
+    }
 
 
 }
