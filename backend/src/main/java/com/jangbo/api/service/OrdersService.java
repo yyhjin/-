@@ -28,9 +28,10 @@ public class OrdersService {
 
     public List<OrdersDto> findAllByCustomer_CustomerNoOrderByOrderDateDesc(Integer customerno) {
         //return ordersRepository.findAllByCustomer_CustomerNo(customerno);
-        List<Orders> orders = ordersRepository.findAllByCustomer_CustomerNoOrderByOrderDateDesc(customerno);
         //return orders.stream().map(OrdersDto::new).collect(Collectors.toList());
         //return orders.stream().map(o -> new OrdersDto(o)).collect(Collectors.toList());
+
+        List<Orders> orders = ordersRepository.findAllByCustomer_CustomerNoOrderByOrderDateDesc(customerno);
 
         List<OrdersDto> result = new LinkedList<OrdersDto>();
 
