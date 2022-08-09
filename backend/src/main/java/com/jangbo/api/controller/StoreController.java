@@ -5,17 +5,20 @@ import com.jangbo.api.request.StoreEditPatchReq;
 import com.jangbo.api.request.StoreRegisterPostReq;
 import com.jangbo.api.response.RoomInfoRes;
 import com.jangbo.api.response.StoreInfoRes;
+import com.jangbo.api.service.FileService;
 import com.jangbo.api.service.StoreService;
 import com.jangbo.db.entity.Store;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 @Api(value = "상점api", tags={"상점"})
 @RestController
 @RequestMapping("/store")
@@ -23,28 +26,12 @@ public class StoreController {
 
     @Autowired
     StoreService storeService;
-//    @GetMapping("/{storeNo}")
-//    @ApiOperation(value = "상점 정보 조회 api" , notes="상점번호로 상점정보를 불러온다.",httpMethod = "GET")
-//    public ResponseEntity<StoreRegisterPostReq> findByNo(@PathVariable int storeNo){
-//
-//        return new ResponseEntity<StoreRegisterPostReq>(storeService.findByNo(storeNo),HttpStatus.OK);
-//    }
 
-//    @DeleteMapping("/{storeNo}")
-//    @ApiOperation(value = "상점 정보 삭제 api", notes="상점번호로 정보삭제",httpMethod = "DELETE")
-//    public ResponseEntity<String> deleteStore(@PathVariable int storeNo) {
-//        storeService.deleteBystoreNo(storeNo);
-//        return new ResponseEntity<String>("삭제되었다",HttpStatus.NO_CONTENT);
-//    }
-//
-//    @PostMapping
-//    @ApiOperation(value= "상점 등록api", notes="사용자의 입력 정보를 받아 상점을 등록한다.",httpMethod = "POST")
-//    public ResponseEntity<String> registStore(StoreRegisterPostReq storeRegisterPostReq){
-//        storeService.createStore(storeRegisterPostReq);
-//        return new ResponseEntity<String>("성공했다",HttpStatus.OK);
-//    }
+    @Autowired
+    FileService fileService;
 
-//    /*상점 목록 조회*/
+
+//    /*상점 전체 목록 조회*/
     @GetMapping
     @ApiOperation(value = "상점 목록 조회 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
     public ResponseEntity<List<StoreInfoRes>> findAll() {
@@ -52,7 +39,7 @@ public class StoreController {
         return new ResponseEntity<List<StoreInfoRes>>(storeInfoResList, HttpStatus.OK);
     }
 
-    //    /*상점 목록 조회*/
+        /*상점 목록 조회*/
     @GetMapping("market/{marketNo}")
     @ApiOperation(value = "한 시장안에 상점 목록 api", notes="전체 조회(대기화면에 뿌릴거임)",httpMethod = "GET")
     public ResponseEntity<List<Store>> findStores(@PathVariable("marketNo") Integer marketNo) {
@@ -67,13 +54,19 @@ public class StoreController {
         return new ResponseEntity<StoreInfoRes>(storeInfoRes, HttpStatus.OK);
     }
 
-    /* 상점 등록 */
+
     @PostMapping
     @ApiOperation(value = "상점 등록 api", notes="상점등록",httpMethod = "POST")
-    public ResponseEntity<Integer> save(@RequestBody StoreRegisterPostReq storeRegisterPostReq) {
-        Integer savedStoreNo = storeService.save(storeRegisterPostReq);
+    public ResponseEntity<Integer> save(@RequestPart(value="storeRegisterPostReq")StoreRegisterPostReq store,
+                                        @RequestPart(value="file" , required = false) MultipartFile file)throws IOException {
+        String name = store.getStoreName();
+        String imgPath = fileService.fileUpload(store,file);
+        store.setStoreImg(imgPath);
+       Integer savedStoreNo = storeService.save(store);
+        //상점번호를 받아서 이미지 테이블에 상점번호를 같이 저장하자
         return new ResponseEntity<Integer>(savedStoreNo, HttpStatus.CREATED);
     }
+
 
     /* 상점 수정 */
     @PatchMapping("/{storeNo}")
@@ -107,4 +100,5 @@ public class StoreController {
         Integer updatedStoreNo = storeService.updateRoom(storeNo,roomEditPatchReq);
         return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.NO_CONTENT);
     }
+
 }
