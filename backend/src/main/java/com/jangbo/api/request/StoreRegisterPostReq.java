@@ -1,10 +1,13 @@
 package com.jangbo.api.request;
 
+import com.jangbo.db.entity.File;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 
 /**
@@ -12,6 +15,7 @@ import lombok.NoArgsConstructor;
  */
 
 @Getter
+@Setter
 @NoArgsConstructor
 @ApiModel("StoreRegisterPostRequest")
 public class StoreRegisterPostReq {
@@ -35,26 +39,21 @@ public class StoreRegisterPostReq {
     @ApiModelProperty(name = "판매자번호", example = "1234")
     Integer sellerNo;
 
+    @ApiModelProperty(name = "프로필사진", example = "http://경로/프로필.jpg")
+    String storeImg;
 
-//    @Builder
-//    public StoreRegisterPostReq(String storeName, String storeCategory, String storePhone, String storeAddr, Integer sellerNo) {
-//        this.storeName = storeName;
-//        this.storeCategory = storeCategory;
-//        this.storePhone = storePhone;
-//        this.storeAddr = storeAddr;
-////        this.marketNo = marketNo;
-//        this.sellerNo = sellerNo;
-//    }
 
-//    public Store toEntity() {
-//        return Store.builder()
-//
-//                .storeName(storeName)
-//                .storeCategory(storeCategory)
-//                .storeAddr(storeAddr)
-//                .storePhone(storePhone)
-//                .build();
-//    }
+    @Builder
+    public StoreRegisterPostReq(String storeName, String storeCategory, String storePhone, String storeAddr, Integer marketNo, Integer sellerNo, String storeImg) {
+        this.storeName = storeName;
+        this.storeCategory = storeCategory;
+        this.storePhone = storePhone;
+        this.storeAddr = storeAddr;
+        this.marketNo = marketNo;
+        this.sellerNo = sellerNo;
+        this.storeImg=storeImg;
+    }
+
 
 
 
