@@ -22,4 +22,6 @@ public interface AuthService {
 //    Seller findBySellerId(String sellerId) throws Exception;
 
 //    Customer findByCustomerId(String customerId) throws Exception;
+
+    void logout(String accessToken, String refreshToken);
 }

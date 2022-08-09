@@ -7,10 +7,14 @@ import com.jangbo.db.entity.Salt;
 import com.jangbo.db.entity.Seller;
 import com.jangbo.db.repository.CustomerRepository;
 import com.jangbo.db.repository.SellerRepository;
+import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.swing.*;
+import java.util.Date;
 
 @Service
 @Transactional
@@ -22,6 +26,9 @@ public class AuthServiceImpl implements AuthService {
     private final CustomerRepository customerRepository;
 
     private final SaltUtil saltUtil;
+
+    private final RedisUtil redisUtil;
+    private final JwtUtil jwtUtil;
 
     //판매자 - 회원가입
     @Override
@@ -112,6 +119,12 @@ public class AuthServiceImpl implements AuthService {
         customer.setSalt(new Salt(salt));
         customer.setCustomerPwd(saltUtil.encodePassword(salt, customerPwdUpdate));
         customerRepository.save(customer);
+    }
+
+    @Override
+    public void logout(String accessToken, String refreshToken) {
+        redisUtil.setBlackList(accessToken, "accessToken", jwtUtil.getExpiration(accessToken));
+//        redisUtil.setBlackList(refreshToken, "refreshToken", jwtUtil.getExpiration(refreshToken));
     }
 
 }
