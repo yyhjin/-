@@ -18,17 +18,22 @@ export default {
 
         const marketList = computed(() => store.state.marketStore.markets);
 
-        const getMarketByName = () => store.dispatch("marketStore/getMarketListByName");
+        const reMarket = () => store.commit("marketStore/CLEAR_MARKET_LIST");
+        const setMarket = () => store.commit("marketStore/SET_MARKET_INIT");
 
-        return { market_name, marketList, getMarketByName };
+        const getMarketByName = () => store.dispatch("marketStore/getMarketListByName", market_name.value);
+
+        return { market_name, reMarket, setMarket, marketList, getMarketByName };
     },
-
-    mounted() {},
+    created() {
+        this.reMarket();
+        this.setMarket();
+    },
 
     methods: {
         cl_name() {
             console.log(this.market_name);
-            this.getMarketByName(this.market_name);
+            this.getMarketByName();
         },
     },
 };

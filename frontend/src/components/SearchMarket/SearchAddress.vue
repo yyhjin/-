@@ -2,18 +2,18 @@
     <div class="Div1">
         <div class="searchMenu">
             <el-select v-model="searchDo" filterable placeholder="시/도" style="margin-top: 60px">
-                <el-option v-for="item in DoList" :key="item.value" :label="item.text" :value="item.value" />
+                <el-option v-for="item in DoList" :key="item.value" :label="item.text" :value="item" />
             </el-select>
 
             <el-select v-model="searchGu" filterable placeholder="구/군" style="margin: 30px 0px">
-                <el-option v-for="item in GuList" :key="item.value" :label="item.text" :value="item.value" />
+                <el-option v-for="item in GuList" :key="item.value" :label="item.text" :value="item.text" />
             </el-select>
         </div>
     </div>
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -22,7 +22,8 @@ export default {
         const store = useStore();
         const searchDo = ref();
         const searchGu = ref();
-        const setDo = () => store.commit("marketStore/getSido");
+
+        const setDo = onMounted(() => store.dispatch("marketStore/getSido"));
 
         const marketList = computed(() => store.state.marketStore.markets);
         const DoList = computed(() => store.state.marketStore.sidos);
@@ -30,24 +31,32 @@ export default {
 
         const reDo = () => store.commit("marketStore/CLEAR_SIDO_LIST");
         const reGu = () => store.commit("marketStore/CLEAR_GUGUN_LIST");
+        const reMarket = () => store.commit("marketStore/CLEAR_MARKET_LIST");
 
-        const setGuList = () => store.dispatch("marketStore/getGugun");
-        const getMarketList = () => store.dispatch("marketStore/getMarketList");
+        const setGuList = () => {
+            store.dispatch(`marketStore/getGugun`, searchDo.value);
+        };
 
-        return { setDo, DoList, searchDo, searchGu, reDo, reGu, setGuList, GuList, marketList, getMarketList };
+        const getMarketList = () => store.dispatch(`marketStore/getMarketList`, searchDo.value.text + " " + searchGu.value);
+
+        return { setDo, DoList, searchDo, searchGu, reDo, reGu, reMarket, setGuList, GuList, marketList, getMarketList };
+    },
+    created() {
+        this.reDo;
+        this.reMarket;
+        this.setDo;
     },
 
     watch: {
         searchDo: function () {
-            this.reDo;
-            console.log(this.searchDo);
-            this.setGuList(this.searchDo);
+            //console.log("도코드 " + this.searchDo);
+            this.searchGu = "";
+            this.setGuList();
         },
 
         searchGu: function () {
-            this.reGu;
-            console.log(this.searchDo + " " + this.searchGu);
-            this.getMarketList(this.searchDo, this.searchGu);
+            console.log(this.searchDo.text + " " + this.searchGu);
+            this.getMarketList();
         },
     },
 };

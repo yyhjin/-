@@ -44,7 +44,11 @@ export default {
 }
 
 .div_market {
-    margin-top: 20px;
+    border: 1px solid #ff6f61;
+    border-radius: 20px;
+    width: 300px;
+    height: 90px;
+    margin: 20px 0px;
 }
 
 .mk_img {
