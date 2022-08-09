@@ -86,9 +86,16 @@ export default {
     methods: {
         cl_ok() {
             console.log(this.fileList);
+
+            // 오픈버튼 임시로 만들어 둿어요.
+            this.$router.push({
+        name: 'seller_room',
+        params: { id:1 }
+      })
         },
         cl_add() {
             console.log(this.file);
+            
         },
         item_delete(file) {
             for (var i = 0; i < this.fileList.length; i++) {

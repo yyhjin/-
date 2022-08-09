@@ -15,6 +15,7 @@ import StoreProfileView from '../views/Seller/StoreProfileView.vue'
 import StoreMenuView from '../views/Seller/StoreMenuView.vue'
 import StoreBillsView from '../views/Seller/StoreBillsView.vue'
 import StoreRegisterView from '../views/Seller/StoreRegisterView.vue'
+import SellerRoomView from '../views/Seller/SellerRoomView.vue'
 
 const routes = [
     {
@@ -103,6 +104,11 @@ const routes = [
       path: '/seller/:id/register',
       name: 'store_register',
       component: StoreRegisterView
+    },
+    {
+      path: '/room/:id',
+      name: 'seller_room',
+      component: SellerRoomView
     }
 ];
 
