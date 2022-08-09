@@ -15,9 +15,6 @@ export default {
 </script>
 
 <style>
-#app {
-}
-
 nav {
     padding: 30px;
     text-align: center;

@@ -7,20 +7,21 @@ import SellerJoinView from "../views/Seller/SellerJoinView.vue";
 import MyPageView from "../views/Customer/MyPageView.vue";
 import CustomerProfileView from "../views/Customer/CustomerProfileView.vue";
 import MyStoreView from "../views/Seller/MyStoreView.vue";
-import testView from "../views/test.vue";
+//import testView from "../views/test.vue";
 import SearchedMarketView from "../views/SearchedMarketView.vue";
 import MarketListView from "../views/MarketListVIew.vue";
 import StoreOpenView from "../views/StoreOpenView.vue";
-import StoreProfileView from '../views/Seller/StoreProfileView.vue'
-import StoreMenuView from '../views/Seller/StoreMenuView.vue'
-import StoreBillsView from '../views/Seller/StoreBillsView.vue'
-import StoreRegisterView from '../views/Seller/StoreRegisterView.vue'
+import StoreProfileView from "../views/Seller/StoreProfileView.vue";
+import StoreMenuView from "../views/Seller/StoreMenuView.vue";
+import StoreBillsView from "../views/Seller/StoreBillsView.vue";
+import StoreRegisterView from "../views/Seller/StoreRegisterView.vue";
+import OpenVidu from "../views/OpenVidu.vue";
 
 const routes = [
     {
         path: "/test",
         name: "test",
-        component: testView,
+        component: OpenVidu,
     },
     {
         path: "/",
@@ -85,25 +86,25 @@ const routes = [
         component: StoreOpenView,
     },
     {
-      path: '/seller/:id/store',
-      name: 'store_profile',
-      component: StoreProfileView
+        path: "/seller/:id/store",
+        name: "store_profile",
+        component: StoreProfileView,
     },
     {
-      path: '/seller/:id/menu',
-      name: 'store_menu',
-      component: StoreMenuView
+        path: "/seller/:id/menu",
+        name: "store_menu",
+        component: StoreMenuView,
     },
     {
-      path: '/seller/:id/bills',
-      name: 'store_bills',
-      component: StoreBillsView
+        path: "/seller/:id/bills",
+        name: "store_bills",
+        component: StoreBillsView,
     },
     {
-      path: '/seller/:id/register',
-      name: 'store_register',
-      component: StoreRegisterView
-    }
+        path: "/seller/:id/register",
+        name: "store_register",
+        component: StoreRegisterView,
+    },
 ];
 
 const router = createRouter({
