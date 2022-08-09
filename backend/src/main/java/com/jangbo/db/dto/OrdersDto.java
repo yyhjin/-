@@ -54,6 +54,9 @@ public class OrdersDto {
         this.customerNo = order.getCustomer().getCustomerNo();
         this.customerId = order.getCustomer().getCustomerId();
 
+
+//        MarketRepository marketRepository = null;
+//        this.marketName = marketRepository.findMarketByMarketNo(order.getMarketNo()).getMarketName();
     }
 
     public OrdersDto(Orders order, String marketName, String storeName) {
@@ -72,8 +75,6 @@ public class OrdersDto {
 
         this.marketName = marketName;
         this.storeName = storeName;
-//        MarketRepository marketRepository = null;
-//        this.marketName = marketRepository.findMarketByMarketNo(order.getMarketNo()).getMarketName();
 
     }
 

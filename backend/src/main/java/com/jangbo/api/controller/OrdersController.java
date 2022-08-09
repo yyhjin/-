@@ -1,5 +1,7 @@
 package com.jangbo.api.controller;
 
+import com.jangbo.api.request.OrderRegisterReq;
+import com.jangbo.api.request.OrderStateEditReq;
 import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.*;
 import com.jangbo.db.dto.OrderItemDto;
@@ -36,14 +38,14 @@ public class OrdersController {
     @ApiOperation(value = "주문목록 조회(소비자)" , notes="소비자번호로 해당 소비자의 주문목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/customer")
     public ResponseEntity<List<OrdersDto>> getAllByCustomerNo(Integer customerno) {
-        List<OrdersDto> orders = ordersService.findAllByCustomer_CustomerNo(customerno);
+        List<OrdersDto> orders = ordersService.findAllByCustomer_CustomerNoOrderByOrderDateDesc(customerno);
         return new ResponseEntity(orders, HttpStatus.OK);
     }
 
     @ApiOperation(value = "주문목록 조회(판매자)" , notes="상점번호로 해당 상점의 주문목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/store")
     public ResponseEntity<List<OrdersDto>> getAllByStoreNo(Integer storeno) {
-        List<OrdersDto> orders = ordersService.findAllByStoreNo(storeno);
+        List<OrdersDto> orders = ordersService.findAllByStoreNoOrderByOrderDateDesc(storeno);
         return new ResponseEntity(orders, HttpStatus.OK);
     }
 
@@ -57,21 +59,21 @@ public class OrdersController {
     @ApiOperation(value = "주문상태 수정" , notes="주문번호에 해당하는 주문의 상태를 변경한다.",httpMethod = "PUT")
     @PutMapping
     @Transactional
-    public ResponseEntity<OrdersDto> getFirstcheckByCustomerNo(Integer orderno, String status) {
-        Orders order = ordersService.findOrdersByOrderNo(orderno);
+    public ResponseEntity<OrdersDto> getFirstcheckByCustomerNo(@RequestBody OrderStateEditReq body) {
+        Orders order = ordersService.findOrdersByOrderNo(body.getOrderNo());
 
         Orders updateorder = new Orders();
         updateorder.setCustomer(order.getCustomer());
-        updateorder.setOrderNo(orderno);
+        updateorder.setOrderNo(body.getOrderNo());
         updateorder.setOrderDate(order.getOrderDate());
         updateorder.setOrderItems(order.getOrderItems());
         updateorder.setMarketNo(order.getMarketNo());
         updateorder.setStoreNo(order.getStoreNo());
-        updateorder.setStatus(status);
+        updateorder.setStatus(body.getStatus());
 
-        ordersService.updateOrderState(updateorder, orderno, status);
+        ordersService.updateOrderState(updateorder, body.getOrderNo(), body.getStatus());
 
-        Orders update = ordersService.findOrdersByOrderNo(orderno);
+        Orders update = ordersService.findOrdersByOrderNo(body.getOrderNo());
         OrdersDto result = new OrdersDto(update);
         return new ResponseEntity(result, HttpStatus.OK);
     }
@@ -80,36 +82,37 @@ public class OrdersController {
     @ApiOperation(value = "주문" , notes="주문서를 생성한다.",httpMethod = "POST")
     @PostMapping
     @Transactional
-    public ResponseEntity<Integer> createOrders(Integer storeno, Integer customerno, Integer itemno, Integer count) {
+    public ResponseEntity<Integer> createOrders(Integer storeNo, Integer customerNo, @RequestBody List<OrderRegisterReq> body) {
 
         // 주문서 생성
-        Integer marketno = storeService.findStoreById(storeno).getMarket().getMarketNo();
-        Customer customer = customerService.findOne(customerno);
+        Integer marketno = storeService.findStoreById(storeNo).getMarket().getMarketNo();
+        Customer customer = customerService.findOne(customerNo);
 
         Orders createorder = new Orders();
         createorder.setCustomer(customer);
         //createorder.setOrderItems(order.getOrderItems());
         createorder.setMarketNo(marketno);
-        createorder.setStoreNo(storeno);
+        createorder.setStoreNo(storeNo);
         createorder.setStatus("ORDER");
 
         Integer orderno = ordersService.ordersave(createorder).getOrderNo();
 
         // 주문 아이템 생성
-        Item item = itemService.findItemByItemNo(itemno);
+        for(int i = 0; i < body.size(); i++) {
+            Item item = itemService.findItemByItemNo(body.get(i).getItemNo());
 
-        OrderItem orderitem = new OrderItem();
-        orderitem.setOrders(createorder);
-        orderitem.setCount(count);
-        orderitem.setItemName(item.getItemName());
-        orderitem.setPrice(item.getPrice()*count);
+            OrderItem orderitem = new OrderItem();
+            orderitem.setOrders(createorder);
+            orderitem.setCount(body.get(i).getCount());
+            orderitem.setItemName(item.getItemName());
+            orderitem.setPrice(item.getPrice() * body.get(i).getCount());
 
 
-
-        Integer orderitemno = orderItemService.orderitemsave(orderitem).getOrderItemNo();
+            Integer orderitemno = orderItemService.orderitemsave(orderitem).getOrderItemNo();
+        }
 //        Orders update = ordersService.findOrdersByOrderNo(orderno);
 //        OrdersDto result = new OrdersDto(update);
-        return new ResponseEntity(orderitemno, HttpStatus.OK);
+        return new ResponseEntity(orderno, HttpStatus.OK);
     }
 
 
