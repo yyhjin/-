@@ -29,6 +29,8 @@ public class StoreService {
 
 
 
+
+
     /** 상점- 전체 목록 조회  */
     @Transactional(readOnly = true)
     public List<StoreInfoRes> findAll() {
@@ -63,6 +65,7 @@ public class StoreService {
     public Integer save(StoreRegisterPostReq storeRegisterPostReq) {
         Seller seller = sellerRepository.findOne(storeRegisterPostReq.getSellerNo());
         Market market = marketRepository.getOne(storeRegisterPostReq.getMarketNo());
+
         Store store = Store.builder()
                 .seller(seller)
                 .market(market)
@@ -70,8 +73,10 @@ public class StoreService {
                 .storeCategory(storeRegisterPostReq.getStoreCategory())
                 .storePhone(storeRegisterPostReq.getStorePhone())
                 .storeAddr(storeRegisterPostReq.getStoreAddr())
+                .storeImg(storeRegisterPostReq.getStoreImg())
                 .build();
         return storeRepository.save(store).getStoreNo();
+
     }
 
     /** 상점 - 상점 정보 수정 */
