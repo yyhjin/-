@@ -49,8 +49,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
     //s3 의존성 추가
-    compileOnly 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
-    implementation 'com.amazonaws:aws-java-sdk:1.11.404'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
+
 
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'

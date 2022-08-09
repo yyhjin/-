@@ -43,15 +43,16 @@ public class StoreRegisterPostReq {
     String storeImg;
 
 
-//    @Builder
-//    public StoreRegisterPostReq(String storeName, String storeCategory, String storePhone, String storeAddr, Integer sellerNo) {
-//        this.storeName = storeName;
-//        this.storeCategory = storeCategory;
-//        this.storePhone = storePhone;
-//        this.storeAddr = storeAddr;
-////        this.marketNo = marketNo;
-//        this.sellerNo = sellerNo;
-//    }
+    @Builder
+    public StoreRegisterPostReq(String storeName, String storeCategory, String storePhone, String storeAddr, Integer marketNo, Integer sellerNo, String storeImg) {
+        this.storeName = storeName;
+        this.storeCategory = storeCategory;
+        this.storePhone = storePhone;
+        this.storeAddr = storeAddr;
+        this.marketNo = marketNo;
+        this.sellerNo = sellerNo;
+        this.storeImg=storeImg;
+    }
 
 //    public Store toEntity() {
 //        return Store.builder()

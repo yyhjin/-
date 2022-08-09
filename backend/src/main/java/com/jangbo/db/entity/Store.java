@@ -1,6 +1,6 @@
 package com.jangbo.db.entity;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -8,14 +8,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
 
-import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-//@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 public class Store {
 
     @Id
@@ -31,7 +29,7 @@ public class Store {
     @NotBlank
     @Column(length = 20)
     private String storePhone;
-    @NotBlank
+
     @Column(length = 150)
     private String storeAddr;
 

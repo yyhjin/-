@@ -27,7 +27,7 @@ public class StoreService {
 
     private final MarketRepository marketRepository;
 
-    FileUploadService fileUploadService;
+
 
 
 
