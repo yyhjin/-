@@ -32,12 +32,18 @@ public class StoreInfoRes {
     @ApiModelProperty(name = "시장번호", example = "4321")
     Market market;
 
+    @ApiModelProperty(name = "이미지파일명", example = "싱글생글-1-20220809-231040.jpg") //상점이름+상점번호+등록한 날짜시간
+    String storeImg;
+
+
+
     public StoreInfoRes(Store store) {
         this.storeNo = store.getStoreNo();
         this.storeName = store.getStoreName();
         this.storeCategory = store.getStoreCategory();
         this.storePhone = store.getStorePhone();
         this.storeAddr = store.getStoreAddr();
+        this.storeImg = store.getStoreImg();
         this.seller = seller.builder()
                 .sellerNo(store.getSeller().getSellerNo()).build();
         this.market = market.builder().marketNo(store.getMarket().getMarketNo()).build();

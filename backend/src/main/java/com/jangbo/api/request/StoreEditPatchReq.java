@@ -1,6 +1,6 @@
 package com.jangbo.api.request;
 
-import com.jangbo.db.entity.File;
+
 import com.jangbo.db.entity.Seller;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
