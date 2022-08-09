@@ -99,7 +99,7 @@ export default {
     routerPush(to) {
       this.$router.push({
         name: to,
-        // params: { user:this.dummy }
+        params: { id:1 }
       });
     }
 
