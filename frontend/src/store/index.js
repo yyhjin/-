@@ -5,6 +5,7 @@ import * as getters from "./getters";
 import * as mutations from "./mutations";
 import * as actions from "./actions";
 import marketStore from "@/store/modules/marketStore.js";
+import storeInMarket from "@/store/modules/storeInMarket.js";
 
 const root = {
     namespaced: true,
@@ -15,7 +16,7 @@ const root = {
 };
 
 export default createStore({
-    modules: { root, marketStore },
+    modules: { root, marketStore, storeInMarket },
     state: {
         //dummy
         userinfo: {

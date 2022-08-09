@@ -30,4 +30,14 @@ function MarketInstance() {
     return instance;
 }
 
-export { MarketInstance, SellerInstance, CustomerInstance };
+function StoreInstance() {
+    const instance = axios.create({
+        baseURL: "http://localhost:8080/store",
+        headers: {
+            "Content-type": "application/json",
+        },
+    });
+    return instance;
+}
+
+export { MarketInstance, SellerInstance, CustomerInstance, StoreInstance };

@@ -11,18 +11,13 @@ import MyStoreView from "../views/Seller/MyStoreView.vue";
 import SearchedMarketView from "../views/SearchedMarketView.vue";
 import MarketListView from "../views/MarketListVIew.vue";
 import StoreOpenView from "../views/StoreOpenView.vue";
-import StoreProfileView from '../views/Seller/StoreProfileView.vue'
-import StoreMenuView from '../views/Seller/StoreMenuView.vue'
-import StoreBillsView from '../views/Seller/StoreBillsView.vue'
-import StoreRegisterView from '../views/Seller/StoreRegisterView.vue'
-import SellerRoomView from '../views/Seller/SellerRoomView.vue'
+import StoreProfileView from "../views/Seller/StoreProfileView.vue";
+import StoreMenuView from "../views/Seller/StoreMenuView.vue";
+import StoreBillsView from "../views/Seller/StoreBillsView.vue";
+import StoreRegisterView from "../views/Seller/StoreRegisterView.vue";
+import SellerRoomView from "../views/Seller/SellerRoomView.vue";
 
 const routes = [
-    {
-        path: "/test",
-        name: "test",
-        component: OpenVidu,
-    },
     {
         path: "/",
         name: "home",
@@ -101,15 +96,15 @@ const routes = [
         component: StoreBillsView,
     },
     {
-      path: '/seller/:id/register',
-      name: 'store_register',
-      component: StoreRegisterView
+        path: "/seller/:id/register",
+        name: "store_register",
+        component: StoreRegisterView,
     },
     {
-      path: '/room/:id',
-      name: 'seller_room',
-      component: SellerRoomView
-    }
+        path: "/room/:id",
+        name: "seller_room",
+        component: SellerRoomView,
+    },
 ];
 
 const router = createRouter({
