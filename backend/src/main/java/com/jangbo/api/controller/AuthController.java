@@ -16,16 +16,12 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import java.util.concurrent.TimeUnit;
 
 @Api(value = "권한api", tags={"권한"})
 @Slf4j
@@ -33,7 +29,6 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class AuthController {
 
-    //    AuthenticationManager authenticationManager;
     private final CookieUtil cookieUtil;
     private final AuthService authService;
     private final JwtUtil jwtUtil;
@@ -142,18 +137,8 @@ public class AuthController {
     }
 
 
-//    @ApiOperation(value = "로그아웃", notes="로그아웃을 한다.",httpMethod = "POST")
-//    @PostMapping("/authenticate")
-//    public boolean logout(
-//            @RequestBody @Valid TokenDto requestTokenDto) {
-//        authService.logout(requestTokenDto.getAccessToken(), requestTokenDto.getRefreshToken());
-//        return true;
-//    }
-
-
-
     @ApiOperation(value = "로그아웃", notes="로그아웃을 한다.",httpMethod = "POST")
-    @PostMapping("/authenticate")
+    @PostMapping("/logout")
     public ResponseSimple logout(@RequestBody @Valid TokenDto requestTokenDto,
                                  HttpServletRequest req,
                                  HttpServletResponse res) {
@@ -162,7 +147,6 @@ public class AuthController {
             return new ResponseSimple("fail","잘못된 요청입니다.",null);
         }
 
-//        redisUtil.deleteData(requestTokenDto.getAccessToken());
         redisUtil.deleteData(requestTokenDto.getRefreshToken());
 
         authService.logout(requestTokenDto.getAccessToken(), requestTokenDto.getRefreshToken());
