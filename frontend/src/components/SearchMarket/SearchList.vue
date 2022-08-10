@@ -25,8 +25,9 @@ export default {
         const marketList = computed(() => store.state.marketStore.markets);
 
         const setMarket = (no) => store.commit("storeInMarket/SET_MARKETNO", no);
+        const setMarketName = (name) => store.commit("storeInMarket/SET_MARKETNAME", name);
 
-        return { marketList, market, setMarket };
+        return { marketList, market, setMarket, setMarketName };
     },
 
     data() {
@@ -40,8 +41,9 @@ export default {
             this.market.no = item.no;
             this.market.name = item.name;
             this.setMarket(this.market.no);
+            this.setMarketName(this.market.name);
             console.log(this.market);
-            this.$router.push({ name: "searchStore", params: { market_name: this.market.name } });
+            this.$router.push({ name: "searchStore" });
         },
     },
 };

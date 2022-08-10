@@ -1,4 +1,5 @@
 import { createStore } from "vuex";
+import createPersistedState from "vuex-persistedstate";
 
 import state from "./state";
 import * as getters from "./getters";
@@ -6,6 +7,7 @@ import * as mutations from "./mutations";
 import * as actions from "./actions";
 import marketStore from "@/store/modules/marketStore.js";
 import storeInMarket from "@/store/modules/storeInMarket.js";
+import userInfo from "@/store/modules/userInfo";
 
 const root = {
     namespaced: true,
@@ -16,17 +18,18 @@ const root = {
 };
 
 export default createStore({
-    modules: { root, marketStore, storeInMarket },
+    modules: { root, marketStore, storeInMarket, userInfo },
     state: {
         //dummy
         userinfo: {
             id: "jaeseungzzang@naver.com",
             password: "",
             password_double: "",
+            userno: "2",
+            nick: "재승2",
             name: "한재승",
             phone_number: "0107777777",
             address: "역삼역",
-            postcode: "",
             detailAddress: "1402호",
             extraAddress: "(멀티캠퍼스 빌딩)",
             birthday: "20220728",
@@ -37,4 +40,9 @@ export default createStore({
     getters: {},
     mutations: {},
     actions: {},
+    plugins: [
+        createPersistedState({
+            paths: ["storeInMarket", "userInfo"],
+        }),
+    ],
 });

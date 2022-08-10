@@ -5,6 +5,7 @@ const storeInMarket = {
     state: {
         stores: [],
         market_no: "",
+        market_name: "",
     },
 
     mutations: {
@@ -15,6 +16,9 @@ const storeInMarket = {
         },
         SET_MARKETNO: (state, no) => {
             state.market_no = no;
+        },
+        SET_MARKETNAME: (state, name) => {
+            state.market_name = name;
         },
         CLEAR_STORE_LIST: (state) => {
             state.stores = [];
