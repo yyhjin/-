@@ -29,16 +29,21 @@
 <script>
 import { loginCustomer } from "@/api/customer";
 import { loginSeller } from "@/api/seller";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { ElMessage } from "element-plus";
+import { useCookies } from "vue3-cookies";
 
 export default {
     setup() {
+        // var router = this.$router;
         const store = useStore();
+        const cookies = useCookies();
         const id = ref();
         const password = ref();
         const userType = ref("구매자");
+        const userno = computed(() => store.state.userInfo.userNo);
+
         const setUserType = (type) => store.commit("userInfo/SET_USERTYPE", type);
         const setUserNo = (no) => store.commit("userInfo/SET_USERNO", no);
         const open = () => {
@@ -47,38 +52,53 @@ export default {
                 type: "success",
             });
         };
-        const open2 = () => {
+        const open2 = (message) => {
             ElMessage({
-                message: "아이디 또는 비밀번호 오류",
-                type: "warning",
+                message: message,
+                type: "error",
             });
         };
 
-        function ck_login() {
-            if (this.userType == "") {
-                alert("구매자? 판매자?");
-            } else if (this.id == "") {
+        return { id, password, open, open2, userno, userType, setUserNo, setUserType, cookies };
+    },
+
+    watch: {
+        userno() {
+            console.log(this.userno);
+            if (this.userType == "구매자") {
+                this.$router.push({ name: "search" });
+            } else {
+                this.$router.push({ name: "mystore", params: { id: this.userno } });
+            }
+        },
+    },
+
+    methods: {
+        ck_login() {
+            if (this.id == undefined) {
                 alert("아이디입력 필요");
-            } else if (this.password == "") {
+            } else if (this.password == undefined) {
                 alert("비밀번호 입력 필요");
             } else {
                 const params = {
                     username: this.id,
                     password: this.password,
                 };
+
                 if (this.userType == "구매자") {
-                    setUserType(this.userType);
+                    this.setUserType(this.userType);
                     loginCustomer(
-                        params,
+                        { username: this.id, password: this.password },
                         (response) => {
                             console.log(response);
                             if (response.data.response == "success") {
-                                setUserNo(response.data.data);
-                                open();
-                                //this.$router.push({ name: "search" });
+                                this.setUserNo(response.data.data);
+                                this.open();
+                                this.$cookies.set("hi", "hihi", 2, "/");
+                                //this.$cookies.get("accessToken");
                                 //jwt 받아오기
                             } else {
-                                open2();
+                                this.open2(response.data.data);
                             }
                         },
                         (error) => {
@@ -86,17 +106,19 @@ export default {
                         }
                     );
                 } else {
-                    setUserType(this.userType);
+                    this.setUserType(this.userType);
                     loginSeller(
                         params,
                         (response) => {
                             console.log(response);
                             if (response.data.response == "success") {
-                                setUserNo(response.data.data);
-                                open();
+                                this.setUserNo(response.data.data);
+                                this.open();
+                                //localStorage.setItem("test", "test");
+                                //this.$cookies.get("accessToken");
                                 //jwt 받아오기
                             } else {
-                                open2();
+                                this.open2(response.data.data);
                             }
                         },
                         (error) => {
@@ -104,17 +126,8 @@ export default {
                         }
                     );
                 }
-                console.log("상태 " + this.userType);
-                console.log("id " + this.id);
-                console.log("pass " + this.password);
             }
-        }
-
-        function move() {
-            this.$router.push({ name: "search" });
-        }
-
-        return { id, password, userType, ck_login, setUserNo, setUserType, move };
+        },
     },
 };
 </script>

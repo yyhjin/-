@@ -19,7 +19,7 @@ async function loginCustomer(params, success, fail) {
 
 //회원수정
 async function updateCustomer(no, params, success, fail) {
-    await api.put(`/${no}`, params).then(success).catch(fail);
+    await api.patch(`/${no}`, params).then(success).catch(fail);
 }
 
 //회원조회

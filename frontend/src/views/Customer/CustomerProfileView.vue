@@ -103,15 +103,23 @@ export default {
 
     methods: {
         cl_modify() {
-            alert("등록성공");
+            //alert("등록성공");
             console.log(this.userNo);
+            var custaddr = this.userinfo.address;
+            if (this.userinfo.detailAddress != undefined) {
+                custaddr = custaddr + " " + this.userinfo.detailAddress;
+            }
+            if (this.userinfo.extraAddress != undefined) {
+                custaddr = custaddr + " " + this.userinfo.extraAddress;
+            }
             //console.log("등록 정보: " + JSON.stringify(this.userinfo));
             const params = {
-                customerAddr: this.userinfo.address + " " + this.userinfo.detailAddress + " " + this.userinfo.extraAddress,
+                customerAddr: custaddr,
                 customerName: this.userinfo.name,
                 customerNickname: this.userinfo.nick,
                 customerPhone: this.userinfo.phone_number,
             };
+            console.log(params);
             updateCustomer(
                 this.userNo,
                 params,

@@ -16,6 +16,19 @@ import StoreMenuView from "../views/Seller/StoreMenuView.vue";
 import StoreBillsView from "../views/Seller/StoreBillsView.vue";
 import StoreRegisterView from "../views/Seller/StoreRegisterView.vue";
 import SellerRoomView from "../views/Seller/SellerRoomView.vue";
+import SellerProfileView from "../views/Seller/SellerProfileView";
+
+import store from "@/store/index";
+
+const beforeAuth = (isAuth) => (from, to, next) => {
+    const isAuthenticated = store.getters["userInfo/isAuthenticated"];
+    if (isAuthenticated && isAuth) {
+        return next();
+    } else {
+        // 홈 화면으로 이동
+        next("/login");
+    }
+};
 
 const routes = [
     {
@@ -32,20 +45,24 @@ const routes = [
         path: "/search",
         name: "search",
         component: MarketListView,
+        beforeEnter: beforeAuth(true),
     },
 
     {
         path: "/searchStore",
         name: "searchStore",
         component: SearchedMarketView,
+        beforeEnter: beforeAuth(true),
     },
 
     {
+        //소비자회원가입
         path: "/joinCustomer",
         name: "joinCustomer",
         component: CustomerJoinView,
     },
     {
+        //판매자회원가입
         path: "/joinSeller",
         name: "joinSeller",
         component: SellerJoinView,
@@ -64,46 +81,62 @@ const routes = [
         path: "/customer/:id",
         name: "mypage",
         component: MyPageView,
+        beforeEnter: beforeAuth(true),
     },
     {
         path: "/customer/:id/profile",
         name: "profile",
         component: CustomerProfileView,
+        beforeEnter: beforeAuth(true),
+    },
+    {
+        // 판매자 마이페이지 정보수정
+        path: "/seller/profile",
+        name: "sellerProfile",
+        component: SellerProfileView,
+        beforeEnter: beforeAuth(true),
     },
     {
         path: "/seller/:id",
         name: "mystore",
         component: MyStoreView,
+        beforeEnter: beforeAuth(true),
     },
     {
         path: "/openStore",
         name: "openStore",
         component: StoreOpenView,
+        beforeEnter: beforeAuth(true),
     },
     {
         path: "/seller/:id/store",
         name: "store_profile",
         component: StoreProfileView,
+        beforeEnter: beforeAuth(true),
     },
     {
         path: "/seller/:id/menu",
         name: "store_menu",
         component: StoreMenuView,
+        beforeEnter: beforeAuth(true),
     },
     {
         path: "/seller/:id/bills",
         name: "store_bills",
         component: StoreBillsView,
+        beforeEnter: beforeAuth(true),
     },
     {
         path: "/seller/:id/register",
         name: "store_register",
         component: StoreRegisterView,
+        beforeEnter: beforeAuth(true),
     },
     {
         path: "/room/:id",
         name: "seller_room",
         component: SellerRoomView,
+        beforeEnter: beforeAuth(true),
     },
 ];
 
