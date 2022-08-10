@@ -7,14 +7,10 @@ import com.jangbo.db.entity.Salt;
 import com.jangbo.db.entity.Seller;
 import com.jangbo.db.repository.CustomerRepository;
 import com.jangbo.db.repository.SellerRepository;
-import io.jsonwebtoken.Jwt;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.swing.*;
-import java.util.Date;
 
 @Service
 @Transactional
@@ -124,7 +120,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void logout(String accessToken, String refreshToken) {
         redisUtil.setBlackList(accessToken, "accessToken", jwtUtil.getExpiration(accessToken));
-//        redisUtil.setBlackList(refreshToken, "refreshToken", jwtUtil.getExpiration(refreshToken));
     }
 
 }
