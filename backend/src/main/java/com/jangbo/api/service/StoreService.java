@@ -61,6 +61,13 @@ public class StoreService {
         return new StoreInfoRes(store);
     }
 
+    @Transactional(readOnly = true)
+    public Store findStoreBySeller(Integer sellerNo) {
+        return storeRepository.findBySeller(sellerRepository.findOne(sellerNo));
+
+    }
+
+
 
     /**
      * 상점 - 상점 등록

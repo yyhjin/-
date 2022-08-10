@@ -54,6 +54,13 @@ public class StoreController {
         return new ResponseEntity<StoreInfoRes>(storeInfoRes, HttpStatus.OK);
     }
 
+    @GetMapping("seller/{sellerNo}")
+    @ApiOperation(value = "상점 정보 조회 api", notes="판매자번호로 정보조회",httpMethod = "GET")
+    public ResponseEntity<Store> findStoreBySellerId(@PathVariable("sellerNo") Integer sellerNo) {
+        Store store = storeService.findStoreBySeller(sellerNo);
+        return new ResponseEntity<Store>(store, HttpStatus.OK);
+    }
+
     /*상점 등록 및 프로필 사진*/
     @PostMapping
     @ApiOperation(value = "상점 등록 api", notes="상점등록",httpMethod = "POST")
