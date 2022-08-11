@@ -1,5 +1,6 @@
 package com.jangbo.db.entity;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,12 +19,13 @@ public class InterStore {
     private Integer id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_no")
     private Customer customer;
 
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "store_no")
-    private Store store;
+//    @ManyToOne(fetch = LAZY)
+//    @JoinColumn(name = "store_no")
+    private Integer storeNo;
+//    private Store store;
 
 }
