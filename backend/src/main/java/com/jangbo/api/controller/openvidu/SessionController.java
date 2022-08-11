@@ -1,6 +1,6 @@
 package com.jangbo.api.controller.openvidu;
 
-import com.jangbo.api.controller.LoginController;
+import com.jangbo.api.controller.openvidu.LoginController;
 import io.openvidu.java.client.*;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

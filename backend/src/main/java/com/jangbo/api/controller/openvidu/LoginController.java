@@ -1,4 +1,4 @@
-package com.jangbo.api.controller;
+package com.jangbo.api.controller.openvidu;
 
 import io.openvidu.java.client.OpenViduRole;
 import org.json.simple.JSONObject;
