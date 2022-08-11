@@ -51,7 +51,7 @@ public class SellerController {
     @PutMapping("/{seller_no}")
     public boolean updateSeller(
             @PathVariable("seller_no") Integer sellerNo,
-            @Valid SellerDto request
+            @RequestBody @Valid SellerDto request
     ) {
         sellerService.update(sellerNo, request.getBusinessNumber(), request.getSellerName(), request.getSellerPhone());
         return true;

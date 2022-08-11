@@ -56,10 +56,11 @@ public class Customer{
     private List<InterStore> interStores = new ArrayList<>();
 
     //==연관관계 편의 메서드==//
-    public void addInterStore(InterStore interStore, Store store) {
-        interStores.add(interStore);
+    public InterStore addInterStore(InterStore interStore, Integer storeNo) {
         interStore.setCustomer(this);
-        interStore.setStore(store);
+        interStore.setStoreNo(storeNo);
+        interStores.add(interStore);
+        return interStore;
     }
 
     public void addOrders(Orders order) {
