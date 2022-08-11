@@ -7,6 +7,8 @@ public interface SellerRepository extends CrudRepository<Seller, Integer> {
 
     Seller findBySellerId(String sellerId);
 
+    Seller findByBusinessNumber(String businessNumber);
+
     default Seller findOne(Integer sellerNo) {
         return (Seller) findById(sellerNo).orElse(null);
     }

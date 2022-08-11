@@ -25,13 +25,13 @@ public class SellerController {
 
     @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
     @GetMapping("/idcheck/{seller_id}")
-    public CheckSellerIdResponse IdCheck(
+    public CheckResponse idCheck(
             @PathVariable("seller_id") String sellerId
     ) {
         if (sellerRepository.findBySellerId(sellerId) == null) {
-            return new CheckSellerIdResponse(true);
+            return new CheckResponse(true);
         } else {
-            return new CheckSellerIdResponse(false);
+            return new CheckResponse(false);
         }
     }
 
@@ -56,6 +56,20 @@ public class SellerController {
         return true;
     }
 
+    @ApiOperation(value = "사업자등록번호 중복 검사", notes="사업자등록번호를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
+    @PutMapping("/business_number/{business_number}")
+    public CheckResponse businessNumberCheck(
+            @PathVariable("business_number") String businessNumber
+    ) {
+        if (sellerRepository.findByBusinessNumber(businessNumber) == null) {
+            return new CheckResponse(true);
+        } else {
+            return new CheckResponse(false);
+        }
+    }
+
+
+
     @Data
     @AllArgsConstructor
     static class SellerDto {
@@ -67,8 +81,8 @@ public class SellerController {
 
     @Data
     @AllArgsConstructor
-    static class CheckSellerIdResponse {
-        private boolean idCheck;
+    static class CheckResponse {
+        private boolean check;
     }
 
 
