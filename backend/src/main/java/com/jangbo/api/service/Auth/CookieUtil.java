@@ -1,5 +1,6 @@
 package com.jangbo.api.service.Auth;
 
+import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -8,22 +9,20 @@ import javax.servlet.http.HttpServletRequest;
 @Service
 public class CookieUtil {
 
-    public Cookie createCookie(String cookieName, String value){
-        Cookie token = new Cookie(cookieName,value);
-        token.setHttpOnly(true);
-        token.setMaxAge((int)JwtUtil.TOKEN_VALIDATION_SECOND);
-        token.setPath("/");
-        return token;
+    public ResponseCookie createCookie(String cookieName, String value, int idx){
+        if (idx == 0) {
+            return ResponseCookie.from(cookieName, value)
+                    .path("/").sameSite("none").domain("localhost").secure(true).httpOnly(true).maxAge((int) JwtUtil.TOKEN_VALIDATION_SECOND).build();
+        } else {
+            return ResponseCookie.from(cookieName, value)
+                    .path("/").sameSite("none").domain("localhost").secure(true).httpOnly(true).maxAge((int) JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND).build();
+        }
+
     }
 
-    public Cookie getCookie(HttpServletRequest req, String cookieName){
-        final Cookie[] cookies = req.getCookies();
-        if(cookies==null) return null;
-        for(Cookie cookie : cookies){
-            if(cookie.getName().equals(cookieName))
-                return cookie;
-        }
-        return null;
+    public ResponseCookie deleteCookie(String cookieName) {
+        return ResponseCookie.from(cookieName, null)
+                .path("/").sameSite("none").domain("localhost").secure(true).httpOnly(true).maxAge(0).build();
     }
 
 }

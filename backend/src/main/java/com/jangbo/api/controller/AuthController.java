@@ -16,9 +16,9 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -36,10 +36,6 @@ public class AuthController {
 
     private final SellerRepository sellerRepository;
     private final CustomerRepository customerRepository;
-
-    private final Response response;
-
-    private final RedisTemplate redisTemplate;
 
 
     @ApiOperation(value = "회원가입 - 판매자", notes="판매자로 가입한다.",httpMethod = "POST")
@@ -73,11 +69,12 @@ public class AuthController {
             final Customer customer = authService.loginCustomer(user.getUsername(), user.getPassword());
             final String token = jwtUtil.generateToken(customer);
             final String refreshJwt = jwtUtil.generateRefreshToken(customer);
-            Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
-            Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
+            ResponseCookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token, 0);
+            ResponseCookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt, 1);
             redisUtil.setDataExpire(refreshJwt, customer.getCustomerId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-            res.addCookie(accessToken);
-            res.addCookie(refreshToken);
+            res.setHeader("Set-Cookie",accessToken.toString());
+            res.addHeader("Set-Cookie",refreshToken.toString());
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
             return new ResponseSimple("success", "로그인에 성공했습니다.", customer.getCustomerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "로그인에 실패했습니다.", e.getMessage());
@@ -94,11 +91,12 @@ public class AuthController {
             final Seller seller = authService.loginSeller(user.getUsername(), user.getPassword());
             final String token = jwtUtil.generateToken(seller);
             final String refreshJwt = jwtUtil.generateRefreshToken(seller);
-            Cookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token);
-            Cookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt);
+            ResponseCookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token, 0);
+            ResponseCookie refreshToken = cookieUtil.createCookie(JwtUtil.REFRESH_TOKEN_NAME, refreshJwt, 1);
             redisUtil.setDataExpire(refreshJwt, seller.getSellerId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
-            res.addCookie(accessToken);
-            res.addCookie(refreshToken);
+            res.setHeader("Set-Cookie",accessToken.toString());
+            res.addHeader("Set-Cookie",refreshToken.toString());
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
             return new ResponseSimple("success", "로그인에 성공했습니다.", seller.getSellerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "로그인에 실패했습니다.", e.getMessage());
@@ -138,25 +136,22 @@ public class AuthController {
 
 
     @ApiOperation(value = "로그아웃", notes="로그아웃을 한다.",httpMethod = "POST")
-    @PostMapping("/logout")
+    @PostMapping("/logouts")
     public ResponseSimple logout(@RequestBody @Valid TokenDto requestTokenDto,
                                  HttpServletRequest req,
                                  HttpServletResponse res) {
-        // 1. Access Token 검증
+//         1. Access Token 검증
         if (!jwtUtil.validateToken(requestTokenDto.getAccessToken())) {
             return new ResponseSimple("fail","잘못된 요청입니다.",null);
         }
-
         redisUtil.deleteData(requestTokenDto.getRefreshToken());
-
         authService.logout(requestTokenDto.getAccessToken(), requestTokenDto.getRefreshToken());
 
-        Cookie accessToken = cookieUtil.getCookie(req, JwtUtil.ACCESS_TOKEN_NAME);
-        Cookie refreshToken = cookieUtil.getCookie(req, JwtUtil.REFRESH_TOKEN_NAME);
-        accessToken.setMaxAge(0);
-        refreshToken.setMaxAge(0);
-        res.addCookie(accessToken);
-        res.addCookie(refreshToken);
+        ResponseCookie accessToken = cookieUtil.deleteCookie(JwtUtil.ACCESS_TOKEN_NAME);
+        ResponseCookie refreshToken = cookieUtil.deleteCookie(JwtUtil.REFRESH_TOKEN_NAME);
+        res.setHeader("Set-Cookie",accessToken.toString());
+        res.addHeader("Set-Cookie",refreshToken.toString());
+        res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
         return new ResponseSimple("success","로그아웃 되었습니다.",null);
     }
 
