@@ -56,6 +56,7 @@ public class StoreController {
         return new ResponseEntity<StoreInfoRes>(storeInfoRes, HttpStatus.OK);
     }
 
+    /* 상점 정보 조회*/
     @GetMapping("seller/{sellerNo}")
     @ApiOperation(value = "상점 정보 조회 api", notes="판매자번호로 정보조회",httpMethod = "GET")
     public ResponseEntity<Store> findStoreBySellerId(@PathVariable("sellerNo") Integer sellerNo) {

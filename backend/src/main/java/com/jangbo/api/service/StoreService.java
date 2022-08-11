@@ -95,11 +95,10 @@ public class StoreService {
      */
     @Transactional
     public Integer updateStore(Integer storeNo, StoreEditPatchReq storeEditPatchReq) {
-
+        Market market = marketRepository.getOne(storeEditPatchReq.getMarketNo());
         Store store = storeRepository.findById(storeNo)
                 .orElseThrow(() -> new IllegalAccessError("[storeNo=" + storeNo + "] 해당 상점은 존재하지 않습니다."));
-
-        store.updateStore(storeEditPatchReq.getStoreName(), storeEditPatchReq.getStoreCategory(), storeEditPatchReq.getStorePhone(), storeEditPatchReq.getStoreAddr());
+        store.updateStore(storeEditPatchReq.getStoreName(), storeEditPatchReq.getStoreCategory(), storeEditPatchReq.getStorePhone(), storeEditPatchReq.getStoreAddr(), market);
 
         return storeNo;
     }
