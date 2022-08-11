@@ -8,12 +8,13 @@ import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
 import static java.util.Objects.isNull;
-
+@Slf4j
 @Api(value = "판매자api", tags={"판매자"})
 @RestController
 @RequiredArgsConstructor
@@ -57,7 +58,7 @@ public class SellerController {
     }
 
     @ApiOperation(value = "사업자등록번호 중복 검사", notes="사업자등록번호를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
-    @PutMapping("/business_number/{business_number}")
+    @GetMapping("/business_number/{business_number}")
     public CheckResponse businessNumberCheck(
             @PathVariable("business_number") String businessNumber
     ) {
