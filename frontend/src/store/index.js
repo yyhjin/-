@@ -8,6 +8,7 @@ import * as actions from "./actions";
 import marketStore from "@/store/modules/marketStore.js";
 import storeInMarket from "@/store/modules/storeInMarket.js";
 import userInfo from "@/store/modules/userInfo";
+import orderStore from "@/store/modules/orderStore";
 
 const root = {
     namespaced: true,
@@ -18,7 +19,7 @@ const root = {
 };
 
 export default createStore({
-    modules: { root, marketStore, storeInMarket, userInfo },
+    modules: { root, marketStore, storeInMarket, userInfo, orderStore },
     state: {
         //dummy
         userinfo: {

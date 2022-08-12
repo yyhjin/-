@@ -1,7 +1,7 @@
 <template>
     <div>
-        <el-card>
-            <el-row >
+        <el-card @click="dialogVisible = true">
+            <el-row>
                 <el-col :span="6">
                     <div class="order_pic">
                         <el-avatar shape="square" :size="50" />
@@ -9,33 +9,49 @@
                 </el-col>
                 <el-col :span="18">
                     <div class="order_discription">
-                        <div>
-                            {{ order.store.store_name }}
-                        </div>
+                        <div>가게 : {{ order.storeName }}</div>
                         <div class="order_discription_item">
-                            <span>{{order.order_items[0].item_name}}</span>&nbsp;
-                            <span>{{order.order_items[0].count}}</span>&nbsp;
-                            <span>{{order.order_items[0].orderprice*order.order_items[0].count}}</span>
-                        </div>  
+                            <!-- <span>구매 내역 :{{ order.orderItems[0].itemName }} </span> -->
+                            <span>번호 : {{ order.orderNo }}</span
+                            ><br />
+                            <span>상태 : {{ order.status }}</span>
+                        </div>
                     </div>
                 </el-col>
             </el-row>
-
         </el-card>
-
     </div>
+    <el-dialog v-model="dialogVisible" title="상세 내역" width="90%" :before-close="handleClose">
+        <div style="text-align: center">
+            <h2>{{ order.marketName }}</h2>
+            <h3>가게:{{ order.storeName }}</h3>
+            <h3>주문번호:{{ order.orderNo }}</h3>
+            <h4>주문내역:</h4>
+            <div v-for="(item, idx) in order.orderItems" :key="idx">
+                <h3>{{ item.itemName }} {{ item.count }}개 {{ item.price }}원</h3>
+            </div>
+            <h3>상태:{{ order.status }}</h3>
+            <h3>날짜:{{ order.orderDate }}</h3>
+        </div>
+        <template #footer>
+            <span class="dialog-footer">
+                <el-button @click="dialogVisible = false">Cancel</el-button>
+            </span>
+        </template>
+    </el-dialog>
 </template>
 <script>
+import { ref } from "vue";
 export default {
-    name: 'OrderComp',
-    props: ['order'],
-    data() {
-        return {
-            
+    name: "OrderComp",
+    props: ["order"],
+    setup() {
+        const dialogVisible = ref(false);
+        const handleClose = (done) => {
+            done();
+        };
 
-        }
-    }
-
-
-}
+        return { dialogVisible, handleClose };
+    },
+};
 </script>

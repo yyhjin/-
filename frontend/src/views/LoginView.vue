@@ -94,8 +94,9 @@ export default {
                             if (response.data.response == "success") {
                                 this.setUserNo(response.data.data);
                                 this.open();
-                                this.$cookies.set("hi", "hihi", 2, "/");
-                                //this.$cookies.get("accessToken");
+                                //this.$cookies.set("hi", "hihi", 2, "/");
+                               // this.$cookies.get("accessToken");
+                                //console.log(this.$cookies.get("refreshToken"));
                                 //jwt 받아오기
                             } else {
                                 this.open2(response.data.data);

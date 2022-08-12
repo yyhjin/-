@@ -89,11 +89,13 @@ export default {
                 this.userinfo.name = response.data.customerName;
                 this.userinfo.nick = response.data.customerNickname;
                 this.userinfo.phone_number = response.data.customerPhone;
+                                
                 var addr = response.data.customerAddr;
-                var array = addr.split(" ");
+                var array = addr.split("(");
                 this.userinfo.address = array[0];
-                this.userinfo.detailAddress = array[1];
-                this.userinfo.extraAddress = array[2];
+                //this.userinfo.detailAddress = array[1];
+                if(array[1] != undefined){
+                this.userinfo.extraAddress = "("+array[1];}
             },
             (error) => {
                 console.log(error);
