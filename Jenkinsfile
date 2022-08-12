@@ -6,7 +6,7 @@ node {
     app = docker.build("hseol/jangbojang") 
   }
   stage('========== Push image ==========') {
-    docker.withRegistry('https://registry.hub.docker.com', 'hseol') { 
+    docker.withRegistry('https://registry.hub.docker.com', 'jang') { 
       app.push("${env.BUILD_NUMBER}") 
       app.push("latest") 
     }
