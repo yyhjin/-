@@ -39,6 +39,8 @@ export default {
         // var router = this.$router;
         const store = useStore();
         const cookies = useCookies();
+        const access = ref("");
+        const refresh = ref("");
         const id = ref();
         const password = ref();
         const userType = ref("구매자");
@@ -59,7 +61,7 @@ export default {
             });
         };
 
-        return { id, password, open, open2, userno, userType, setUserNo, setUserType, cookies };
+        return { id, password, open, open2, userno, userType, setUserNo, setUserType, cookies, access, refresh };
     },
 
     watch: {
@@ -94,11 +96,17 @@ export default {
                             if (response.data.response == "success") {
                                 this.setUserNo(response.data.data);
                                 this.open();
-                                this.$cookies.set("hi", "hihi", 2, "/");
-                                //this.$cookies.get("accessToken");
+                                //this.$cookies.set("hi", "hihi", 60, "/");
+                                //this.access = document.cookie;
+                                let cook = this.cookies.cookies.get("accessToken");
+                                console.log(cook);
                                 //jwt 받아오기
                             } else {
-                                this.open2(response.data.data);
+                                if (response.data.data == null) {
+                                    this.open2("로그인 실패");
+                                } else {
+                                    this.open2(response.data.data);
+                                }
                             }
                         },
                         (error) => {
@@ -118,7 +126,11 @@ export default {
                                 //this.$cookies.get("accessToken");
                                 //jwt 받아오기
                             } else {
-                                this.open2(response.data.data);
+                                if (response.data.data == null) {
+                                    this.open2("로그인 실패");
+                                } else {
+                                    this.open2(response.data.data);
+                                }
                             }
                         },
                         (error) => {

@@ -6,6 +6,7 @@ function CustomerInstance() {
         headers: {
             "content-type": "application/json",
         },
+        withCredentials: true,
     });
     return instance;
 }

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import HomeView from "../views/HomeView.vue";
+//import HomeView from "../views/HomeView.vue";
 import LoginView from "../views/LoginView.vue";
 import SelectState from "../views/SelectState.vue";
 import CustomerJoinView from "../views/Customer/CustomerJoinView.vue";
@@ -17,15 +17,26 @@ import StoreBillsView from "../views/Seller/StoreBillsView.vue";
 import StoreRegisterView from "../views/Seller/StoreRegisterView.vue";
 import SellerRoomView from "../views/Seller/SellerRoomView.vue";
 import SellerProfileView from "../views/Seller/SellerProfileView";
+import OpenVidu from "../views/OpenVidu2";
 
 import store from "@/store/index";
+import { ElMessage } from "element-plus";
+
+const open = () => {
+    ElMessage({
+        message: "로그인후 사용하세요",
+        type: "warning",
+    });
+};
 
 const beforeAuth = (isAuth) => (from, to, next) => {
     const isAuthenticated = store.getters["userInfo/isAuthenticated"];
-    if (isAuthenticated && isAuth) {
+
+    if (isAuthenticated != 9999 && isAuth) {
         return next();
     } else {
         // 홈 화면으로 이동
+        open();
         next("/login");
     }
 };
@@ -34,7 +45,7 @@ const routes = [
     {
         path: "/",
         name: "home",
-        component: HomeView,
+        component: OpenVidu,
     },
     {
         path: "/selectjoin",

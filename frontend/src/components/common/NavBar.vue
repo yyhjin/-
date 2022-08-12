@@ -2,7 +2,7 @@
     <nav class="nav_room" v-if="$route.path.substring(0, 5) == '/room'">room 안에 진입했을때 변경된 navbar</nav>
     <nav class="nav_default" v-else>
         <router-link to="/">Home</router-link> | <router-link to="/selectjoin">회원가입</router-link> | <router-link to="/login">로그인</router-link> |
-        <router-link to="/search">시장검색</router-link> | <router-link :to="{ name: 'mypage', params: { id: 1 } }">마이페이지 </router-link> |
+        <router-link to="/search">시장검색</router-link> | <router-link :to="{ name: 'mypage', params: { id: this.userNo } }">마이페이지 </router-link> |
         <router-link :to="{ name: 'mystore', params: { id: 1 } }">내 가게</router-link> |
         <span @click="logout">로그아웃</span>
     </nav>
@@ -10,12 +10,15 @@
 
 <script>
 import { useStore } from "vuex";
+import { computed } from "vue";
 import { ElMessage } from "element-plus";
+import { logout } from "@/api/market";
 
 export default {
     name: "SearchAddress",
     setup() {
         const store = useStore();
+        const userNo = computed(() => store.state.userInfo.userNo);
 
         const logOut = () => {
             store.dispatch(`userInfo/logout`);
@@ -29,14 +32,36 @@ export default {
                 type: "warning",
             });
         };
-        return { logOut, logOutMarket, out };
+        return { userNo, logOut, logOutMarket, out };
     },
     methods: {
+        remove() {
+            // const accessToken = this.$cookies.get("accessToken");
+            // const refreshToken = this.$cookies.get("refreshToken");
+            const laccessToken = "1";
+            const lrefreshToken = this.$cookies.get("refreshToken");
+            console.log(laccessToken);
+            console.log(lrefreshToken);
+            logout(
+                {
+                    accessToken: laccessToken,
+                    refreshToken: lrefreshToken,
+                },
+                (success) => {
+                    console.log(success);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        },
         logout() {
             console.log("logout");
+            this.remove();
             this.logOut();
             this.logOutMarket();
             this.out();
+            this.$cookies.remove("refreshToken");
             this.$router.push({ name: "login" });
         },
     },

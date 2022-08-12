@@ -18,4 +18,8 @@ async function marketByName(params, success, fail) {
     await api.get(`/market/name`, { params: params }).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, marketList, marketByName };
+async function logout(params, success, fail) {
+    await api.post("/logouts", params).then(success).catch(fail);
+}
+
+export { sidoList, gugunList, marketList, marketByName, logout };

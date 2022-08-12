@@ -2,7 +2,7 @@
     <div class="div_div">
         <div class="div_big">
             <ModalView v-if="isModalViewed" @close-modal="isModalViewed = false">
-                <Content msg="Hello Vue in CodeSandbox!" @close-modal="isModalViewed = false" />
+                <Content msg="Hello" @close-modal="isModalViewed = false" />
             </ModalView>
             <div class="div_title">
                 <h1>가게오픈 {{ this.$route.params.seller_id }}</h1>
@@ -89,13 +89,12 @@ export default {
 
             // 오픈버튼 임시로 만들어 둿어요.
             this.$router.push({
-        name: 'seller_room',
-        params: { id:1 }
-      })
+                name: "seller_room",
+                params: { id: 1 },
+            });
         },
         cl_add() {
             console.log(this.file);
-            
         },
         item_delete(file) {
             for (var i = 0; i < this.fileList.length; i++) {

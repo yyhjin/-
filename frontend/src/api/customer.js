@@ -19,11 +19,16 @@ async function loginCustomer(params, success, fail) {
 
 //회원수정
 async function updateCustomer(no, params, success, fail) {
-    await api.patch(`/${no}`, params).then(success).catch(fail);
+    await api.put(`/${no}`, params).then(success).catch(fail);
 }
 
 //회원조회
 async function getCustomer(no, success, fail) {
     await api.get(`/${no}`).then(success).catch(fail);
 }
-export { getId, joinCustomer, loginCustomer, updateCustomer, getCustomer };
+
+//주문내역조회
+async function getOrderList(no, success, fail) {
+    await api.get(`/${no}/orders`).then(success).catch(fail);
+}
+export { getId, joinCustomer, loginCustomer, updateCustomer, getCustomer, getOrderList };

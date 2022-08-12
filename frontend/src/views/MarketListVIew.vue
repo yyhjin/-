@@ -19,6 +19,7 @@
         <div style="margin-top: 50px">
             <search-list></search-list>
         </div>
+        <button @click="cl_cl"></button>
     </div>
 </template>
 
@@ -26,6 +27,7 @@
 import SearchAddress from "@/components/SearchMarket/SearchAddress.vue";
 import SearchName from "@/components/SearchMarket/SearchName.vue";
 import SearchList from "@/components/SearchMarket/SearchList.vue";
+import { useCookies } from "vue3-cookies";
 
 export default {
     name: "MarketListView",
@@ -34,6 +36,16 @@ export default {
         return {
             searchType: "주소검색",
         };
+    },
+    setup() {},
+    methods: {
+        cl_cl() {
+            const cookies = useCookies();
+
+            console.log(this.$cookies.keys().forEach((cookie) => this.$cookies.remove(cookie)));
+            console.log(cookies.cookies.remove("accessToken"));
+            console.log(cookies.cookies.isKey("accessToken"));
+        },
     },
 };
 </script>

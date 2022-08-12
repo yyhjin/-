@@ -2,7 +2,7 @@ const userInfo = {
     namespaced: true,
     state: {
         userType: "0",
-        userNo: "0",
+        userNo: "9999",
         tokken: "3",
     },
     getters: {
@@ -24,7 +24,7 @@ const userInfo = {
             state.userType = "";
         },
         CLEAR_USERNO: (state) => {
-            state.userNo = "";
+            state.userNo = "9999";
         },
         CLEAR_TOKKEN: (state) => {
             state.tokken = "";
