@@ -29,10 +29,10 @@ import java.util.Date;
 @Service
 @Transactional(readOnly = true)
 public class FileService {
+
     private final StoreRepository storeRepository;
 
     private AmazonS3 amazonS3;
-
 
     @Value("${cloud.aws.credentials.access-key}")
     private String accessKey;
@@ -50,7 +50,7 @@ public class FileService {
     @PostConstruct
     public void amazonS3Client() {
         BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
-        amazonS3 = AmazonS3ClientBuilder.standard()
+        amazonS3= AmazonS3ClientBuilder.standard()
                 .withRegion(region)
                 .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                 .build();
@@ -63,6 +63,7 @@ public class FileService {
                 .withCannedAcl(CannedAccessControlList.PublicRead));
         return fileName;
     }
+
     @Transactional
     public void updateImg(Integer storeNo, MultipartFile file) throws IOException {
         Store store = storeRepository.findById(storeNo)
@@ -78,7 +79,8 @@ public class FileService {
         }
 
       store.updateImg(fileName);
-        System.out.println(fileName+"생겼어");
+        System.out.println(fileName+"생겼어")
+
 
     }
 
@@ -119,7 +121,6 @@ public class FileService {
         return changedName.concat(getFileExtension(fileName));
     }
 
-
     private String getFileExtension(String fileName) {
         try {
             return fileName.substring(fileName.lastIndexOf("."));
@@ -128,3 +129,6 @@ public class FileService {
         }
     }
 }
+
+
+

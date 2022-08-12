@@ -27,9 +27,10 @@ public class StoreService {
     private final FileService fileService;
 
 
-    /**
-     * 상점- 전체 목록 조회
-     */
+
+
+
+    /** 상점- 전체 목록 조회  */
     @Transactional(readOnly = true)
     public List<StoreInfoRes> findAll() {
 
