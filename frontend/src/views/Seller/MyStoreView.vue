@@ -66,10 +66,10 @@ import {menuList} from "@/api/item.js"
 import {sellerOrderList} from "@/api/order.js"
 // import MyStoreBtnComp from '@/components/Mystore/MyStoreBtnComp.vue'
 export default {
-  mounted() { 
-    this.loadData(this.$store.state.userInfo.userNo);
+    mounted() {
+      this.loadData(this.$store.state.userInfo.userNo);
 
-  },
+    },
 
   // components:{ MyStoreBtnComp },
   data() {
@@ -147,39 +147,35 @@ export default {
 </script>
 <style scoped>
 .root_div {
-  width: 90%;
-  max-width:400px;
-  margin:auto;
+    width: 90%;
+    max-width: 400px;
+    margin: auto;
 }
 
 .profile_pic {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 70%;
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 70%;
 }
 
 /* root */
 .profile_register {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
 }
 
 .el-card__body {
-  width: 100%;
-  display: flex !important;
-  flex-direction: row !important;
-
+    width: 100%;
+    display: flex !important;
+    flex-direction: row !important;
 }
 .mystore_btn {
-  width: 100%;
-  height: 70px !important;
-  margin-top: 10px;
-  font-size: larger;
-  margin-left:0!important;
+    width: 100%;
+    height: 70px !important;
+    margin-top: 10px;
+    font-size: larger;
+    margin-left: 0 !important;
 }
-
-
-
 </style>

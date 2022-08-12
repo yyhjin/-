@@ -14,4 +14,14 @@ async function loginSeller(params, success, fail) {
     await api.post(`/login`, params).then(success).catch(fail);
 }
 
-export { getId, joinSeller, loginSeller };
+//회원수정
+async function updateSeller(no, params, success, fail) {
+    await api.put(`/${no}`, params).then(success).catch(fail);
+}
+
+//회원조회
+async function getSeller(no, success, fail) {
+    await api.get(`/${no}`).then(success).catch(fail);
+}
+
+export { getId, joinSeller, loginSeller, updateSeller, getSeller };

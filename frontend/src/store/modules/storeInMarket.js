@@ -23,6 +23,12 @@ const storeInMarket = {
         CLEAR_STORE_LIST: (state) => {
             state.stores = [];
         },
+        CLEAR_MARKETNO: (state) => {
+            state.market_no = "";
+        },
+        CLEAR_MARKETNAME: (state) => {
+            state.market_name = "";
+        },
     },
 
     actions: {
@@ -39,6 +45,11 @@ const storeInMarket = {
                     console.log(error);
                 }
             );
+        },
+        logout: ({ commit }) => {
+            commit("CLEAR_STORE_LIST");
+            commit("CLEAR_MARKETNO");
+            commit("CLEAR_MARKETNAME");
         },
     },
 };
