@@ -26,25 +26,29 @@
                         </el-row>
                     </el-card>
                 </div>
-                <el-form-item label="상점 이름">
-                    <el-input v-model="form.store_name" />
-                </el-form-item>
-                 <el-form-item label="사업자등록번호">
-                    <el-input v-model="form.store_id" />
+               <el-form-item label="상점 이름">
+                    <el-input v-model="form.storeName" />
                 </el-form-item>
                  <el-form-item label="업종">
-                    <el-input v-model="form.store_category" />
+                    <el-input v-model="form.storeCategory" />
                 </el-form-item>
                  <el-form-item label="전화번호">
-                    <el-input v-model="form.store_phone" />
+                    <el-input v-model="form.storePhone" />
                 </el-form-item>
-                 <el-form-item label="위치">
-                    <el-input v-model="form.store_location" />
+                 <el-form-item label="시장">
+                    <el-input v-model="form.marketNo" />
+                </el-form-item>
+                 <el-form-item label="상세위치">
+                    <el-input v-model="form.storeAddr" />
                 </el-form-item>
 
                 <el-button @click="goBack()" type="danger">
                     뒤로
                 </el-button>
+                <el-button @click="commitProfile(this.$route.params.storeNo,this.form)" type="danger">
+                    수정
+                </el-button>
+                
 
             </el-form>
         </el-card>
@@ -52,22 +56,53 @@
 </template>
 
 <script>
-
+import {StoreDetail,modifyStore} from "@/api/store.js"
 export default {
+  mounted(){
+    StoreDetail(this.$route.params.storeNo,
+    (res)=>{
+      this.storeDetail=res.data
+      //새로 mount
+      this.form.storeName= this.storeDetail.storeName
+      this.form.storeCategory= this.storeDetail.storeCategory
+      this.form.storePhone= this.storeDetail.storePhone
+      this.form.marketNo= this.storeDetail.market.marketNo
+      this.form.storeAddr= this.storeDetail.storeAddr
+    },
+    (err)=>{
+      console.log(err)
+    })
+
+    
+
+  },
   data() {
     return {
+      size:"default",
+      storeDetail:{},
       form: {
-        store_name: '재승이네 청과',
-        store_id: '********',
-        store_category: '청과',
-        store_phone: '010-2222-3333',
-        store_location: "xx시장 or 도로명주소",
+        storeName:"",
+        storeCategory:"",
+        storePhone: "",
+        marketNo: "",
+        storeAddr:"" ,  
       }
     }
   },
   methods: {
     goBack() {
       this.$router.go(-1)
+    },
+    //수정버튼
+    commitProfile(storeNo,form){
+      modifyStore(storeNo,form,
+      (res)=>{
+        res
+    },
+    (err)=>{
+      console.log(err)
+    })
+    this.goBack()
     }
   }
 

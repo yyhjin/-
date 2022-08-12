@@ -2,7 +2,7 @@ const userInfo = {
     namespaced: true,
     state: {
         userType: "1",
-        userNo: "2",
+        userNo: "5",
         tokken: "3",
     },
     mutations: {

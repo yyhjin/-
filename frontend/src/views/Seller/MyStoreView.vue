@@ -1,12 +1,12 @@
 <template>
   <div class="root_div">
-    등록 여부<el-radio-group v-model="isRegistered" size="small">
+    <!-- 등록 여부<el-radio-group v-model="isRegistered" size="small">
       <el-radio-button label="true" />
       <el-radio-button label="false" />
-    </el-radio-group>
+    </el-radio-group> -->
     <h1>내 상점</h1>
     <!---------------가게 등록 -------------------->
-    <div class="mystore_registered" v-if="isRegistered == 'true'">
+    <div class="mystore_registered" v-if="isRegistered">
       <div class=mystore_profile>
         <el-card>
           <el-row>
@@ -21,11 +21,12 @@
           </el-row>
         </el-card>
       </div>
+      <!-- smartphone 사이즈 일 때. -->
       <div class="mystore_btns">
           <el-button class="mystore_btn" type="danger" plain @click="routerPush('openStore')">가게 오픈</el-button>
-          <el-button class="mystore_btn" plain @click="routerPush('store_profile')">상점정보 관리</el-button>
-          <el-button class="mystore_btn" plain @click="routerPush('store_menu')">메뉴 관리</el-button>
-          <el-button class="mystore_btn" plain @click="routerPush('store_bills')">판매 내역</el-button>
+          <el-button class="mystore_btn" plain @click="routerPush('store_profile',{storeNo:this.shopInfo.storeNo})">상점정보 관리</el-button>
+          <el-button class="mystore_btn" plain @click="routerPush('store_menu',{storeNo:this.shopInfo.storeNo})">메뉴 관리</el-button>
+          <el-button class="mystore_btn" plain @click="routerPush('store_bills',{storeNo:this.shopInfo.storeNo})">판매 내역</el-button>
         <!-- <el-row>
         <el-col :span="12"><MyStoreBtnComp/></el-col>
          <el-col :span="12"><MyStoreBtnComp/></el-col>
@@ -53,54 +54,90 @@
   </div>
 </template>
 <script>
-//백엔드에서 기본이미지 못 준다고 하면 이걸로 해결해보자.
-import defaultimage from '@/assets/defaultshop.png'
+/*
+data flow: 
+seller id(from vuex)
+=>storeNo ->없으면 등록화면으로. 
+=>BillList,Menus
+*/
+
+import {getStoreBySellerNo} from "@/api/store.js"
+import {menuList} from "@/api/item.js"
+import {sellerOrderList} from "@/api/order.js"
 // import MyStoreBtnComp from '@/components/Mystore/MyStoreBtnComp.vue'
 export default {
-  // mounted: { 
-  //   //axios: vuex 데이터 갱신 할 것.
+  mounted() { 
+    this.loadData(this.$store.state.userInfo.userNo);
 
-  // },
+  },
 
   // components:{ MyStoreBtnComp },
   data() {
     return {
-      isRegistered: "true",
+      isRegistered: true,
       //vuex에서 가져오기. 
       shopInfo: {},
-      menus: [],
-      //dummy
-      bills
-        : [{
-          order_no: 2,
-          customer_id: 1,
-          order_items: [{
-            item_name: "사과",
-            count: 3,
-            price: 2000
-          },
-          {
-            item_name: "배",
-            count: 2,
-            price: 3000
-          },
-          {
-            item_name: "수박",
-            count: 1,
-            price: 10000
-          }],
-          orderdate: "20220803",
-          status: 1
-        }],
-      defaultimage: defaultimage,
+      menuList: [],
+      billList: [],
     }
   },
   methods: {
-    routerPush(to) {
+    routerPush(to,params) {
+      console.log(params)
       this.$router.push({
         name: to,
-        params: { id:1 }
+        params: params
       });
+    },
+    //this.$store.state.userInfo.userNo
+    loadData(sellerNo){
+      console.log(sellerNo+'의 상점정보 로드')
+      getStoreBySellerNo(sellerNo
+      ,(res) => {
+        this.shopInfo=res.data
+
+        //상점정보가 없다면 등록페이지로 넘어가도록
+        if(res.data==""){
+          this.isRegistered=false
+        }
+        console.log(`상점정보: ${JSON.stringify(res.data)}`)
+        const storeNo=res.data.storeNo
+
+        //상점이 등록된 상태라면 나머지 정보도 조회..
+        if(res.data.length!=0){
+          console.log("상점정보 확인 완료.추가정보 조회")
+          this.loadBillList(storeNo)
+          this.loadMenuList(storeNo)
+        }
+        
+      },
+      //catch
+      (err) => {
+          console.log(err);
+      })
+    },
+    loadBillList(storeNo){
+      sellerOrderList(storeNo
+      ,(res) => {
+        this.billList=res.data
+        console.log(`주문서조회완료+${JSON.stringify(res.data)}`)
+      },
+      //catch
+      (err) => {
+          console.log(err);
+      })
+
+    },
+    loadMenuList(storeNo){
+      menuList(storeNo
+      ,(res) => {
+        this.menuList=res.data
+        console.log(`메뉴조회완료+${JSON.stringify(res.data)}`)
+      },
+      //catch
+      (err) => {
+          console.log(err);
+      })
     }
 
 

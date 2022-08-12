@@ -4,7 +4,11 @@ import router from "./router";
 import store from "./store";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
-
+import * as ElementPlusIconsVue  from '@element-plus/icons-vue'
 createApp(App).use(store).use(router).use(ElementPlus).mount("#app");
+
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  App.component(key, component)
+}
 
 window.Kakao.init("7f4fe16346b6216e38bc88071db9e21b");

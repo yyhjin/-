@@ -6,6 +6,7 @@ function CustomerInstance() {
         headers: {
             "content-type": "application/json",
         },
+        withCredentials: true // 쿠키 cors 통신 설정
     });
     return instance;
 }
@@ -16,12 +17,13 @@ function SellerInstance() {
         header: {
             "content-type": "application/json",
         },
+        // withCredentials: true // 쿠키 cors 통신 설정
     });
     return instance;
 }
 
 function MarketInstance() {
-    const instance = axios.create({
+    const instance = axios.create({ 
         baseURL: "http://localhost:8080",
         headers: {
             "Content-type": "application/json",
@@ -39,5 +41,32 @@ function StoreInstance() {
     });
     return instance;
 }
+function StoreRegisterInstance() {
+    const instance = axios.create({
+        baseURL: "http://localhost:8080/store",
+        headers: {
+            "Content-type": "multipart/form-data"
+        },
+    });
+    return instance;
+}
+function ItemInstance() {
+    const instance = axios.create({
+        baseURL: "http://localhost:8080/item",
+        headers: {
+            "Content-type": "application/json",
+        },
+    });
+    return instance;
+}
+function OrderInstance() {
+    const instance = axios.create({
+        baseURL: "http://localhost:8080/order",
+        headers: {
+            "Content-type": "application/json",
+        },
+    });
+    return instance;
+}
 
-export { MarketInstance, SellerInstance, CustomerInstance, StoreInstance };
+export { MarketInstance, SellerInstance, CustomerInstance, StoreInstance,StoreRegisterInstance,ItemInstance,OrderInstance };
