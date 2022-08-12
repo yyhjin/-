@@ -2,6 +2,7 @@ package com.jangbo.api.controller.openvidu;
 
 import com.jangbo.api.controller.openvidu.LoginController;
 import io.openvidu.java.client.*;
+import lombok.extern.slf4j.Slf4j;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
+@Slf4j
 @RestController
 @RequestMapping("/api-sessions")
 public class SessionController {
@@ -44,18 +45,24 @@ public class SessionController {
 	@RequestMapping(value = "/get-token", method = RequestMethod.POST)
 	public ResponseEntity<JSONObject> getToken(@RequestBody String sessionNameParam, HttpSession httpSession)
 			throws ParseException {
+		JSONObject sessionJSON = (JSONObject) new JSONParser().parse(sessionNameParam);
+
+		String user = (String) sessionJSON.get("user");
+		String sessionName = (String) sessionJSON.get("sessionName");
+		httpSession.setAttribute("loggedUser",user);
 
 		try {
 			checkUserLogged(httpSession);
 		} catch (Exception e) {
+			log.info("0");
 			return getErrorResponse(e);
 		}
 		System.out.println("Getting a token from OpenVidu Server | {sessionName}=" + sessionNameParam);
 
-		JSONObject sessionJSON = (JSONObject) new JSONParser().parse(sessionNameParam);
+//		JSONObject sessionJSON = (JSONObject) new JSONParser().parse(sessionNameParam);
 
 		// The video-call to connect
-		String sessionName = (String) sessionJSON.get("sessionName");
+//		String sessionName = (String) sessionJSON.get("sessionName");
 
 		// Role associated to this user
 		OpenViduRole role = LoginController.users.get(httpSession.getAttribute("loggedUser")).role;
@@ -83,11 +90,12 @@ public class SessionController {
 
 				// Prepare the response with the token
 				responseJson.put(0, token);
-
+				log.info("1");
 				// Return the response to the client
 				return new ResponseEntity<>(responseJson, HttpStatus.OK);
 			} catch (OpenViduJavaClientException e1) {
 				// If internal error generate an error message and return it to client
+				log.info("2");
 				return getErrorResponse(e1);
 			} catch (OpenViduHttpException e2) {
 				if (404 == e2.getStatus()) {
@@ -115,12 +123,13 @@ public class SessionController {
 
 			// Prepare the response with the token
 			responseJson.put(0, token);
-
+			log.info("3");
 			// Return the response to the client
 			return new ResponseEntity<>(responseJson, HttpStatus.OK);
 
 		} catch (Exception e) {
 			// If error generate an error message and return it to client
+			log.info("4");
 			return getErrorResponse(e);
 		}
 	}

@@ -53,10 +53,12 @@ public class LoginController {
 			// Validate session and return OK
 			// Value stored in HttpSession allows us to identify the user in future requests
 			httpSession.setAttribute("loggedUser", user);
+			httpSession.setAttribute("Access-Control-Allow-Origin", "http://localhost:8081");
 			return new ResponseEntity<>(HttpStatus.OK);
 		} else { // Wrong user-pass
 			// Invalidate session and return error
 			httpSession.invalidate();
+			httpSession.setAttribute("Access-Control-Allow-Origin", "http://localhost:8081");
 			return new ResponseEntity<>("User/Pass incorrect", HttpStatus.UNAUTHORIZED);
 		}
 	}
@@ -65,6 +67,7 @@ public class LoginController {
 	public ResponseEntity<Object> logout(HttpSession session) {
 		System.out.println("'" + session.getAttribute("loggedUser") + "' has logged out");
 		session.invalidate();
+//		session.setAttribute("Access-Control-Allow-Origin", "http://localhost:8081");
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
