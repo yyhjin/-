@@ -163,14 +163,14 @@ export default {
                         $("#session-title").text(this.sessionName);
                         $("#join").hide();
                         $("#session").show();
-
+                        console.log(1);
                         // Here we check somehow if the user has 'PUBLISHER' role before
                         // trying to publish its stream. Even if someone modified the client's code and
                         // published the stream, it wouldn't work if the token sent in Session.connect
                         // method is not recognized as 'PUBLIHSER' role by OpenVidu Server
                         if (this.isPublisher(this.userName)) {
                             // --- 6) Get your own camera stream ---
-
+                            console.log(2);
                             var publisher = this.OV.initPublisher("video-container", {
                                 audioSource: undefined, // The source of audio. If undefined default microphone
                                 videoSource: undefined, // The source of video. If undefined default webcam
@@ -181,7 +181,7 @@ export default {
                                 insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
                                 mirror: false, // Whether to mirror your local video or not
                             });
-
+                            console.log(3);
                             // --- 7) Specify the actions when events take place in our publisher ---
 
                             // When our HTML video has been added to DOM...
@@ -191,25 +191,29 @@ export default {
                                     nickName: this.nickName,
                                     userName: this.userName,
                                 };
-
+                                console.log(4);
                                 this.initMainVideo(event.element, userData);
                                 this.appendUserData(event.element, userData);
                                 $(event.element).prop("muted", true); // Mute local video
+                                console.log(5);
                             });
 
                             // --- 8) Publish your stream ---
-
+                            console.log(6);
                             this.session.publish(publisher);
+                            console.log(7);
                         } else {
                             console.warn("You don't have permissions to publish");
                             this.initMainVideoThumbnail(); // Show SUBSCRIBER message in main video
+                            console.log(8);
                         }
                     })
                     .catch((error) => {
+                        console.log(9);
                         console.warn("There was an error connecting to the session:", error.code, error.message);
                     });
             });
-
+            console.log(10);
             return false;
         },
 
@@ -263,7 +267,7 @@ export default {
         getToken(callback) {
             // Video-call chosen by the user
 
-            this.httpPostRequest("http://localhost:8080/api-sessions/get-token", { sessionName: this.sessionName }, "Request of TOKEN gone WRONG:", (response) => {
+            this.httpPostRequest("http://localhost:8080/api-sessions/get-token", { sessionName: this.sessionName, user: this.user }, "Request of TOKEN gone WRONG:", (response) => {
                 this.token = response[0]; // Get token from response
                 console.warn("Request of TOKEN gone WELL (TOKEN:" + this.token + ")");
                 callback(this.token); // Continue the join operation
@@ -372,8 +376,8 @@ export default {
         },
 
         isPublisher(userName) {
-            // return userName.includes("publisher");
-            return userName.includes("1");
+            return userName.includes("publisher");
+            // return userName.includes("1");
         },
 
         cleanSessionView() {
