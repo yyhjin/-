@@ -1,6 +1,5 @@
 package com.jangbo.api.request;
 
-import com.jangbo.db.entity.File;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -53,11 +52,6 @@ public class StoreRegisterPostReq {
         this.sellerNo = sellerNo;
         this.storeImg=storeImg;
     }
-
-
-
-
-
 
 
 }

@@ -2,6 +2,8 @@ plugins {
     id 'org.springframework.boot' version '2.7.2'
     id 'io.spring.dependency-management' version '1.0.12.RELEASE'
     id 'java'
+    //추가
+    id 'com.google.cloud.tools.jib' version '3.1.4'
 
 }
 
@@ -15,6 +17,17 @@ configurations {
     }
 }
 
+
+jib {
+    to {
+        image = project.findProperty("docker.repository") + "/" + project.findProperty("docker.image.name")
+        tags = [project.findProperty("docker.image.tag")]
+        auth {
+            username = project.findProperty("docker.repository.username")
+            password = project.findProperty("docker.repository.password")
+        }
+    }
+}
 
 repositories {
     mavenCentral()
@@ -49,8 +62,8 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
-        //s3 의존성 추가
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE'
+    //s3 의존성 추가
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
 
 
