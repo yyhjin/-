@@ -79,7 +79,7 @@ public class FileService {
         }
 
       store.updateImg(fileName);
-        System.out.println(fileName+"생겼어")
+        System.out.println(fileName+"생겼어");
 
 
     }
