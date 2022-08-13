@@ -1,41 +1,70 @@
 <template>
-    <div id="main-container" class="container">
-        <div id="join" v-if="!session">
-            <div id="join-dialog" class="vertical-center">
-                <h1>Join a video session</h1>
-                <div class="form-group">
-                    <p>
-                        <label>Participant</label>
-                        <input v-model="myUserName" class="form-control" type="text" required />
-                    </p>
-                    <p>
-                        <label>Session</label>
-                        <input v-model="mySessionId" class="form-control" type="text" required />
-                    </p>
-                    <p class="text-center">
-                        <button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
-                    </p>
-                </div>
-            </div>
+  <div id="main-container" class="container">
+    <div id="join" v-if="!session">
+      <div id="join-dialog" class="vertical-center">
+        <h1>Join a video session</h1>
+        <div class="form-group">
+          <p>
+            <label>Participant</label>
+            <input
+              v-model="myUserName"
+              class="form-control"
+              type="text"
+              required
+            />
+          </p>
+          <p>
+            <label>Session</label>
+            <input
+              v-model="mySessionId"
+              class="form-control"
+              type="text"
+              required
+            />
+          </p>
+          <p class="text-center">
+            <button class="btn btn-lg btn-success" @click="joinSession()">
+              Join!
+            </button>
+          </p>
         </div>
-
-        <div id="session" v-if="session">
-            <div id="session-header">
-                <div style="display: block; float: right">
-                    <input type="button" id="buttonLeaveSession" @click="leaveSession" value="방 나가기" style="margin-right: 15px" />
-                </div>
-                <h1 id="session-title" style="text-align: left; margin-left: 15px">{{ mySessionId }}</h1>
-            </div>
-            <div id="main-video" class="col-md-6">
-                <user-video :stream-manager="mainStreamManager" />
-            </div>
-            <div id="video-container" class="col-md-6">
-                <user-video :stream-manager="publisher" @click="updateMainVideoStreamManager(publisher)" />
-                <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" @click="updateMainVideoStreamManager(sub)" style="margin-left: 10px" />
-            </div>
-            <button @click="shutdown()"></button>
-        </div>
+      </div>
     </div>
+
+    <div id="session" v-if="session">
+      <div id="session-header">
+        <div style="display: block; float: right">
+          <input
+            type="button"
+            id="buttonLeaveSession"
+            @click="leaveSession"
+            value="방 나가기"
+            style="margin-right: 15px"
+          />
+        </div>
+        <h1 id="session-title" style="text-align: left; margin-left: 15px">
+          {{ mySessionId }}
+        </h1>
+      </div>
+      <div id="main-video" class="col-md-6">
+        <user-video :stream-manager="mainStreamManager" />
+      </div>
+      <div id="video-container" class="col-md-6">
+        <user-video
+          :stream-manager="publisher"
+          @click="updateMainVideoStreamManager(publisher)"
+        />
+        <user-video
+          v-for="sub in subscribers"
+          :key="sub.stream.connection.connectionId"
+          :stream-manager="sub"
+          @click="updateMainVideoStreamManager(sub)"
+          style="margin-left: 10px"
+        />
+      </div>
+      <button @click="shutdown()"></button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -381,6 +410,6 @@ function cleanSessionView() {
 </script>
 <style scope>
 #app {
-    text-align: center;
+  text-align: center;
 }
 </style>

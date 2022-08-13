@@ -1,390 +1,353 @@
 <template>
-    <div id="main-container" class="container">
-        <div id="not-logged" class="vertical-center">
-            <div id="img-div"><img src="https://localhost:5000/images/openvidu_grey_bg_transp_cropped.png" /></div>
-            <form class="form-group jumbotron" onsubmit="return false">
-                <p><label>User</label><input class="form-control" type="text" id="user" v-model="user" required /></p>
-                <p><label>Pass</label><input class="form-control" type="password" id="pass" v-model="pass" required /></p>
-                <p class="text-center">
-                    <button class="btn btn-lg btn-info" @click="logIn()">Log in</button>
-                </p>
-            </form>
-            <table class="table">
-                <tr>
-                    <th>User</th>
-                    <th>Pass</th>
-                    <th>
-                        Role<i
-                            data-toggle="tooltip"
-                            data-placement="bottom"
-                            title=""
-                            data-original-title="<div id='tooltip-div'>PUBLISHER<div>Send and receive media<hr></div>SUBSCRIBER<div>Receive media</div></div>"
-                            class="glyphicon glyphicon-info-sign"
-                        ></i>
-                    </th>
-                </tr>
-                <tr>
-                    <td>publisher1</td>
-                    <td>pass</td>
-                    <td>PUBLISHER</td>
-                </tr>
-                <tr>
-                    <td>publisher2</td>
-                    <td>pass</td>
-                    <td>PUBLISHER</td>
-                </tr>
-                <tr>
-                    <td>subscriber</td>
-                    <td>pass</td>
-                    <td>SUBSCRIBER</td>
-                </tr>
-            </table>
+  <div id="main-container" class="container">
+    <div id="join" v-if="!session">
+      <div id="img-div">
+        <img src="resources/images/openvidu_grey_bg_transp_cropped.png" />
+      </div>
+      <div id="join-dialog" class="jumbotron vertical-center">
+        <h1>Join a video session</h1>
+        <div class="form-group">
+          <p>
+            <label>Participant</label>
+            <input
+              v-model="myUserName"
+              class="form-control"
+              type="text"
+              required
+            />
+          </p>
+          <p>
+            <label>Session</label>
+            <input
+              v-model="mySessionId"
+              class="form-control"
+              type="text"
+              required
+            />
+          </p>
+          <p class="text-center">
+            <button class="btn btn-lg btn-success" @click="joinSession()">
+              Join!
+            </button>
+          </p>
         </div>
-
-        <div id="logged" hidden>
-            <div id="join" class="vertical-center">
-                <div id="img-div"><img src="https://localhost:5000/images/openvidu_grey_bg_transp_cropped.png" /></div>
-                <div id="join-dialog" class="jumbotron">
-                    <h1>Join a video session</h1>
-                    <form class="form-group" onsubmit="return false">
-                        <p>
-                            <label>Participant</label>
-                            <input class="form-control" type="text" id="nickName" v-model="nickName" required />
-                        </p>
-                        <p>
-                            <label>Session</label>
-                            <input class="form-control" type="text" id="sessionName" v-model="sessionName" required />
-                        </p>
-                        <p class="text-center">
-                            <button class="btn btn-lg btn-success" @click="joinSession()">Join!</button>
-                        </p>
-                    </form>
-                    <hr />
-                    <div id="login-info">
-                        <div>Logged as <span id="name-user"></span></div>
-                        <button id="logout-btn" class="btn btn-warning" @click="logOut()">Log out</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="session" style="display: none">
-                <div id="session-header">
-                    <h1 id="session-title"></h1>
-                    <input class="btn btn-large btn-danger" type="button" id="buttonLeaveSession" onmouseup="removeUser(); leaveSession()" value="Leave session" />
-                </div>
-                <div id="main-video" class="col-md-6">
-                    <p class="nickName"></p>
-                    <p class="userName"></p>
-                    <video autoplay playsinline="true"></video>
-                </div>
-                <div id="video-container" class="col-md-6"></div>
-            </div>
-        </div>
+      </div>
     </div>
+
+    <div id="session" v-if="session">
+      <div id="session-header">
+        <h1 id="session-title">{{ mySessionId }}</h1>
+        <input
+          class="btn btn-large btn-danger"
+          type="button"
+          id="buttonLeaveSession"
+          @click="leaveSession"
+          value="Leave session"
+        />
+      </div>
+      <div id="main-video" class="col-md-6">
+        <user-video :stream-manager="mainStreamManager" />
+      </div>
+      <div id="video-container" class="col-md-6">
+        <user-video :stream-manager="publisher" />
+
+        <user-video
+          v-for="sub in subscribers"
+          :key="sub.stream.connection.connectionId"
+          :stream-manager="sub"
+        />
+      </div>
+
+      <room-chat
+        ref="chat"
+        @message="sendMessage"
+        :subscribers="subscribers"
+      ></room-chat>
+    </div>
+  </div>
 </template>
 
 <script>
-//import axios from "axios";
+import axios from "axios";
 import { OpenVidu } from "openvidu-browser";
-import { ref } from "vue";
-import $ from "jquery";
+// import { ref } from "vue";
+// import $ from "jquery";
+import UserVideo from "../components/Openvidu/UserVideo";
 //var OV;
 //var session;
+import RoomChat from "../components/Openvidu/RoomChat.vue";
 
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
+const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 //var sessionName; // Name of the video session the user will connect to
 //var token; // Token retrieved from OpenVidu Server
 
 window.onbeforeunload = () => {
-    // Gracefully leave session
-    if (this.session) {
-        this.removeUser();
-        this.leaveSession();
-    }
+  // Gracefully leave session
+  if (this.session) {
+    this.removeUser();
+    this.leaveSession();
+  }
 };
 /* OPENVIDU METHODS */
 
 export default {
-    setup() {
-        const OV = ref();
-        const session = ref();
-        const user = ref();
-        const pass = ref();
-        const sessionName = ref();
-        const nickName = ref();
-        const token = ref();
-        return { user, pass, sessionName, nickName, OV, session, token };
+  components: {
+    UserVideo,
+    RoomChat,
+  },
+  data() {
+    return {
+      OV: undefined,
+      session: undefined,
+      mainStreamManager: undefined,
+      publisher: undefined,
+      subscribers: [],
+
+      mySessionId: "SessionA",
+      myUserName: "Participant" + Math.floor(Math.random() * 100),
+    };
+  },
+  // setup() {
+  //   const OV = ref();
+  //   const session = ref();
+  //   const user = ref();
+  //   const pass = ref();
+  //   const sessionName = ref();
+  //   const nickName = ref();
+  //   const token = ref();
+  //   return { user, pass, sessionName, nickName, OV, session, token };
+  // },
+  methods: {
+    joinSession() {
+      // --- Get an OpenVidu object ---
+      this.OV = new OpenVidu();
+
+      // --- Init a session ---
+      this.session = this.OV.initSession();
+
+      // --- Specify the actions when events take place in the session ---
+
+      // On every new Stream received...
+      this.session.on("streamCreated", ({ stream }) => {
+        // this.$store.commit('increase')
+        this.count++;
+        const subscriber = this.session.subscribe(stream);
+        this.subscribers.push(subscriber);
+      });
+
+      // On every Stream destroyed...
+      this.session.on("streamDestroyed", ({ stream }) => {
+        // this.$store.commit('decrease')
+        this.count--;
+        const index = this.subscribers.indexOf(stream.streamManager, 0);
+        if (index >= 0) {
+          this.subscribers.splice(index, 1);
+        }
+      });
+
+      // On every asynchronous exception...
+      this.session.on("exception", ({ exception }) => {
+        console.warn(exception);
+      });
+
+      // public 채팅 signal 받기
+      this.session.on("signal:public-chat", (event) => {
+        this.$refs.chat.addMessage(
+          event.data,
+          JSON.parse(event.data).sender === this.myUserName,
+          false
+        );
+      });
+
+      // private 채팅 signal 받기
+      this.session.on("signal:private-chat", (event) => {
+        this.$refs.chat.addMessage(event.data, false, true);
+      });
+      // --- Connect to the session with a valid user token ---
+
+      // 'getToken' method is simulating what your server-side should do.
+      // 'token' parameter should be retrieved and returned by your own backend
+      this.getToken(this.mySessionId).then((token) => {
+        this.session
+          .connect(token, { clientData: this.myUserName })
+          .then(() => {
+            // --- Get your own camera stream with the desired properties ---
+
+            let publisher = this.OV.initPublisher(undefined, {
+              audioSource: undefined, // The source of audio. If undefined default microphone
+              videoSource: undefined, // The source of video. If undefined default webcam
+              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+              publishVideo: true, // Whether you want to start publishing with your video enabled or not
+              resolution: "640x480", // The resolution of your video
+              frameRate: 30, // The frame rate of your video
+              insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
+              mirror: false, // Whether to mirror your local video or not
+            });
+
+            this.mainStreamManager = publisher;
+            this.publisher = publisher;
+
+            // --- Publish your stream ---
+
+            this.session.publish(this.publisher);
+          })
+          .catch((error) => {
+            console.log(
+              "There was an error connecting to the session:",
+              error.code,
+              error.message
+            );
+          });
+      });
+
+      window.addEventListener("beforeunload", this.leaveSession);
     },
-    methods: {
-        joinSession() {
-            this.getToken((token) => {
-                // --- 1) Get an OpenVidu object ---
-                console.log("hi");
-                this.OV = new OpenVidu();
 
-                // --- 2) Init a session ---
+    sendMessage({ content, to }) {
+      let now = new Date();
+      let current = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false, // true인 경우 오후 10:25와 같이 나타냄.
+      });
 
-                this.session = this.OV.initSession();
+      let messageData = {
+        content: content,
+        sender: this.myUserName,
+        time: current,
+      };
 
-                // --- 3) Specify the actions when events take place in the session ---
+      // 전체 메시지
+      if (to === "all") {
+        this.session
+          .signal({
+            data: JSON.stringify(messageData),
+            to: [],
+            type: "public-chat",
+          })
+          .then(() => {
+            console.log("메시지 전송 완료");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
 
-                // On every new Stream received...
-                this.session.on("streamCreated", (event) => {
-                    // Subscribe to the Stream to receive it
-                    // HTML video will be appended to element with 'video-container' id
-                    var subscriber = this.session.subscribe(event.stream, "video-container");
+      // 개인 메시지
+      if (to !== "all") {
+        this.session
+          .signal({
+            data: JSON.stringify(messageData),
+            to: [to],
+            type: "private-chat",
+          })
+          .then(() => {
+            // 내가 보낸 개인 메시지 추가
+            this.$refs.chat.addMessage(JSON.stringify(messageData), true, true);
+            console.log("메시지 전송 완료");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
 
-                    // When the HTML video has been appended to DOM...
-                    subscriber.on("videoElementCreated", (event) => {
-                        // Add a new HTML element for the user's name and nickname over its video
-                        this.appendUserData(event.element, subscriber.stream.connection);
-                    });
-                });
+    leaveSession() {
+      // --- Leave the session by calling 'disconnect' method over the Session object ---
+      if (this.session) this.session.disconnect();
 
-                // On every Stream destroyed...
-                this.session.on("streamDestroyed", (event) => {
-                    // Delete the HTML element with the user's name and nickname
-                    this.removeUserData(event.stream.connection);
-                });
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
 
-                // On every asynchronous exception...
-                this.session.on("exception", (exception) => {
-                    console.warn(exception);
-                });
+      window.removeEventListener("beforeunload", this.leaveSession);
+    },
 
-                // --- 4) Connect to the session passing the retrieved token and some more data from
-                //        the client (in this case a JSON with the nickname chosen by the user) ---
+    updateMainVideoStreamManager(stream) {
+      if (this.mainStreamManager === stream) return;
+      this.mainStreamManager = stream;
+    },
 
-                this.session
-                    .connect(token, { clientData: this.nickName })
-                    .then(() => {
-                        // --- 5) Set page layout for active call ---
+    /**
+     * --------------------------
+     * SERVER-SIDE RESPONSIBILITY
+     * --------------------------
+     * These methods retrieve the mandatory user token from OpenVidu Server.
+     * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
+     * the API REST, openvidu-java-client or openvidu-node-client):
+     *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
+     *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
+     *   3) The Connection.token must be consumed in Session.connect() method
+     */
 
-                        //var userName = $("#user").val();
-                        $("#session-title").text(this.sessionName);
-                        $("#join").hide();
-                        $("#session").show();
-                        console.log(1);
-                        // Here we check somehow if the user has 'PUBLISHER' role before
-                        // trying to publish its stream. Even if someone modified the client's code and
-                        // published the stream, it wouldn't work if the token sent in Session.connect
-                        // method is not recognized as 'PUBLIHSER' role by OpenVidu Server
-                        if (this.isPublisher(this.userName)) {
-                            // --- 6) Get your own camera stream ---
-                            console.log(2);
-                            var publisher = this.OV.initPublisher("video-container", {
-                                audioSource: undefined, // The source of audio. If undefined default microphone
-                                videoSource: undefined, // The source of video. If undefined default webcam
-                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                                publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                                resolution: "640x480", // The resolution of your video
-                                frameRate: 30, // The frame rate of your video
-                                insertMode: "APPEND", // How the video is inserted in the target element 'video-container'
-                                mirror: false, // Whether to mirror your local video or not
-                            });
-                            console.log(3);
-                            // --- 7) Specify the actions when events take place in our publisher ---
+    getToken(mySessionId) {
+      return this.createSession(mySessionId).then((sessionId) =>
+        this.createToken(sessionId)
+      );
+    },
 
-                            // When our HTML video has been added to DOM...
-                            publisher.on("videoElementCreated", (event) => {
-                                // Init the main video with ours and append our data
-                                var userData = {
-                                    nickName: this.nickName,
-                                    userName: this.userName,
-                                };
-                                console.log(4);
-                                this.initMainVideo(event.element, userData);
-                                this.appendUserData(event.element, userData);
-                                $(event.element).prop("muted", true); // Mute local video
-                                console.log(5);
-                            });
-
-                            // --- 8) Publish your stream ---
-                            console.log(6);
-                            this.session.publish(publisher);
-                            console.log(7);
-                        } else {
-                            console.warn("You don't have permissions to publish");
-                            this.initMainVideoThumbnail(); // Show SUBSCRIBER message in main video
-                            console.log(8);
-                        }
-                    })
-                    .catch((error) => {
-                        console.log(9);
-                        console.warn("There was an error connecting to the session:", error.code, error.message);
-                    });
-            });
-            console.log(10);
-            return false;
-        },
-
-        leaveSession() {
-            // --- 9) Leave the session by calling 'disconnect' method over the Session object ---
-
-            this.session.disconnect();
-            this.session = null;
-
-            // Removing all HTML elements with the user's nicknames
-            this.cleanSessionView();
-
-            $("#join").show();
-            $("#session").hide();
-        },
-
-        /* OPENVIDU METHODS */
-
-        /* APPLICATION REST METHODS */
-
-        logIn() {
-            /*
-            if (this.pass == "1") {
-                $("#name-user").text(this.user);
-                $("#not-logged").hide();
-                $("#logged").show();
-                // Random nickName and session
-                this.sessionName = "Session " + Math.floor(Math.random() * 10);
-                this.nickName = "Participant " + Math.floor(Math.random() * 100);
-            }*/
-
-            this.httpPostRequest("http://localhost:8080/api-login/login", { user: this.user, pass: this.pass }, "Login WRONG", (response) => {
-                console.log(response);
-                $("#name-user").text(this.user);
-                $("#not-logged").hide();
-                $("#logged").show();
-                // Random nickName and session
-                $("#sessionName").val("Session " + Math.floor(Math.random() * 10));
-                $("#nickName").val("Participant " + Math.floor(Math.random() * 100));
-            });
-        },
-
-        logOut() {
-            this.httpPostRequest("http://localhost:8080/api-login/logout", {}, "Logout WRONG", (response) => {
-                console.log(response);
-                $("#not-logged").show();
-                $("#logged").hide();
-            });
-        },
-
-        getToken(callback) {
-            // Video-call chosen by the user
-
-            this.httpPostRequest("http://localhost:8080/api-sessions/get-token", { sessionName: this.sessionName, user: this.user }, "Request of TOKEN gone WRONG:", (response) => {
-                this.token = response[0]; // Get token from response
-                console.warn("Request of TOKEN gone WELL (TOKEN:" + this.token + ")");
-                callback(this.token); // Continue the join operation
-            });
-        },
-
-        removeUser() {
-            this.httpPostRequest("http://localhost:8080/api-sessions/remove-user", { sessionName: this.sessionName, token: this.token }, "User couldn't be removed from session", (response) => {
-                console.log(response);
-                console.warn("You have been removed from session " + this.sessionName);
-            });
-        },
-
-        httpPostRequest(url, body, errorMsg, callback) {
-            var http = new XMLHttpRequest();
-            http.open("POST", url, true);
-            http.setRequestHeader("Content-type", "application/json");
-            http.addEventListener("readystatechange", processRequest, false);
-            http.send(JSON.stringify(body));
-
-            function processRequest() {
-                if (http.readyState == 4) {
-                    console.log(http.status);
-                    if (http.status == 200) {
-                        try {
-                            callback(JSON.parse(http.responseText));
-                        } catch (e) {
-                            callback();
-                        }
-                    } else {
-                        console.warn(errorMsg);
-                        console.warn(http.responseText);
-                    }
-                }
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
+    createSession(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
+            JSON.stringify({
+              customSessionId: sessionId,
+            }),
+            {
+              auth: {
+                username: "OPENVIDUAPP",
+                password: OPENVIDU_SERVER_SECRET,
+              },
             }
-        },
-
-        /* APPLICATION REST METHODS */
-
-        /* APPLICATION BROWSER METHODS */
-
-        appendUserData(videoElement, connection) {
-            var clientData;
-            var serverData;
-            var nodeId;
-            if (connection.nickName) {
-                // Appending local video data
-                clientData = connection.nickName;
-                serverData = connection.userName;
-                nodeId = "main-videodata";
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.id))
+          .catch((error) => {
+            if (error.response.status === 409) {
+              resolve(sessionId);
             } else {
-                clientData = JSON.parse(connection.data.split("%/%")[0]).clientData;
-                serverData = JSON.parse(connection.data.split("%/%")[1]).serverData;
-                nodeId = connection.connectionId;
+              console.warn(
+                `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`
+              );
+              if (
+                window.confirm(
+                  `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+                )
+              ) {
+                location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+              }
+              reject(error.response);
             }
-            var dataNode = document.createElement("div");
-            dataNode.className = "data-node";
-            dataNode.id = "data-" + nodeId;
-            dataNode.innerHTML = "<p class='nickName'>" + clientData + "</p><p class='userName'>" + serverData + "</p>";
-            videoElement.parentNode.insertBefore(dataNode, videoElement.nextSibling);
-            this.addClickListener(videoElement, clientData, serverData);
-        },
-
-        removeUserData(connection) {
-            var userNameRemoved = $("#data-" + connection.connectionId);
-            if ($(userNameRemoved).find("p.userName").html() === $("#main-video p.userName").html()) {
-                this.cleanMainVideo(); // The participant focused in the main video has left
-            }
-            $("#data-" + connection.connectionId).remove();
-        },
-
-        removeAllUserData() {
-            $(".data-node").remove();
-        },
-
-        cleanMainVideo() {
-            $("#main-video video").get(0).srcObject = null;
-            $("#main-video p").each(function () {
-                $(this).html("");
-            });
-        },
-
-        addClickListener(videoElement, clientData, serverData) {
-            videoElement.addEventListener("click", function () {
-                var mainVideo = $("#main-video video").get(0);
-                if (mainVideo.srcObject !== videoElement.srcObject) {
-                    $("#main-video").fadeOut("fast", () => {
-                        $("#main-video p.nickName").html(clientData);
-                        $("#main-video p.userName").html(serverData);
-                        mainVideo.srcObject = videoElement.srcObject;
-                        $("#main-video").fadeIn("fast");
-                    });
-                }
-            });
-        },
-
-        initMainVideo(videoElement, userData) {
-            $("#main-video video").get(0).srcObject = videoElement.srcObject;
-            $("#main-video p.nickName").html(userData.nickName);
-            $("#main-video p.userName").html(userData.userName);
-            $("#main-video video").prop("muted", true);
-        },
-
-        initMainVideoThumbnail() {
-            $("#main-video video").css("background", "url('images/subscriber-msg.jpg') round");
-        },
-
-        isPublisher(userName) {
-            return userName.includes("publisher");
-            // return userName.includes("1");
-        },
-
-        cleanSessionView() {
-            this.removeAllUserData();
-            this.cleanMainVideo();
-            $("#main-video video").css("background", "");
-        },
+          });
+      });
     },
+
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
+    createToken(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+            {},
+            {
+              auth: {
+                username: "OPENVIDUAPP",
+                password: OPENVIDU_SERVER_SECRET,
+              },
+            }
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.token))
+          .catch((error) => reject(error.response));
+      });
+    },
+  },
 };
 </script>
