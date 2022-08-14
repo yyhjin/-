@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # install project dependencies leaving out dev dependencies
-RUN npm install --production
+RUN npm install 
 
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
@@ -20,5 +20,5 @@ FROM nginx:stable-alpine as production-stage
 RUN npm run build
 
 COPY --from=build-stage /app/dist /usr/share/nginx/html
-EXPOSE 443
+EXPOSE 7602
 CMD [ "nginx","-g", "daemon off;" ]

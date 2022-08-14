@@ -2,7 +2,7 @@ import axios from "axios";
 
 function CustomerInstance() {
     const instance = axios.create({
-        baseURL: "http://localhost:8080/customer",
+        baseURL: "http://localhost:8080/be/customer",
         headers: {
             "content-type": "application/json",
         },
@@ -13,7 +13,7 @@ function CustomerInstance() {
 
 function SellerInstance() {
     const instance = axios.create({
-        baseURL: "http://localhost:8080/seller",
+        baseURL: "http://localhost:8080/be/seller",
         header: {
             "content-type": "application/json",
         },
@@ -24,7 +24,7 @@ function SellerInstance() {
 
 function MarketInstance() {
     const instance = axios.create({ 
-        baseURL: "http://localhost:8080",
+        baseURL: "http://localhost:8080/be",
         headers: {
             "Content-type": "application/json",
         },
@@ -34,7 +34,7 @@ function MarketInstance() {
 
 function StoreInstance() {
     const instance = axios.create({
-        baseURL: "http://localhost:8080/store",
+        baseURL: "http://localhost:8080/be/store",
         headers: {
             "Content-type": "application/json",
         },
@@ -43,7 +43,7 @@ function StoreInstance() {
 }
 function StoreRegisterInstance() {
     const instance = axios.create({
-        baseURL: "http://localhost:8080/store",
+        baseURL: "http://localhost:8080/be/store",
         headers: {
             "Content-type": "multipart/form-data"
         },
@@ -52,7 +52,7 @@ function StoreRegisterInstance() {
 }
 function ItemInstance() {
     const instance = axios.create({
-        baseURL: "http://localhost:8080/item",
+        baseURL: "http://localhost:8080/be/item",
         headers: {
             "Content-type": "application/json",
         },
@@ -61,7 +61,7 @@ function ItemInstance() {
 }
 function OrderInstance() {
     const instance = axios.create({
-        baseURL: "http://localhost:8080/order",
+        baseURL: "http://localhost:8080/be/order",
         headers: {
             "Content-type": "application/json",
         },
