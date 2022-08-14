@@ -1,12 +1,9 @@
-pipeline{
-    agent any
+node{
     stages {
         stage('Prepare') {
             steps {
                 sh 'echo "Clonning Repository"'
-                git branch: 'dev',
-                    url: 'https://jangbojang:_vJ69kGzqdJARyys-4As@lab.ssafy.com/s07-webmobile1-sub2/S07P12A602.git',
-                    credentialsId: 'jang'
+                checkout csm
             }
             post {
                 success {
@@ -17,35 +14,29 @@ pipeline{
                  }
             }
         }
-        stage('Bulid Gradle'){
+        stage('Bulid Image'){
             steps{
-                sh "enter backend!!"
-                sh "cd backend"
-                sh 'echo "Bulid Gradle Start"'
-                dir('.'){
-                sh "./gradlew clean build"
-                }
+                sh 'echo " Image Bulid Start"'
+                image = docker.build("hseol/jangbojang")
             }
             post {
                       success {
-                     sh 'echo "Successfully Built Gradle"'
+                     sh 'echo "Successfully Build Image"'
                  }
                  failure {
-                     sh 'echo "Bulid Gradle Fail"'
+                     sh 'echo "Bulid Image Fail"'
                 }
             }
         }
 
         stage('Bulid Docker'){
             steps{
-                script{
-                sh 'echo " Image Bulid Start"'
+                sh 'echo " Image Push Start"'
                  docker.withRegistry('https://registry.hub.docker.com','jang'){
-                image = docker.build("hseol/jangbojang:v4")
-                image.push()
+                image.push("latest")
                 }
              
-                 }
+                 
                 
                 
                
