@@ -1,7 +1,5 @@
 package com.jangbo.db.repository;
 
-import com.jangbo.api.response.StoreInfoRes;
-import com.jangbo.db.dto.MarketDto;
 import com.jangbo.db.entity.Market;
 import com.jangbo.db.entity.Seller;
 import com.jangbo.db.entity.Store;
@@ -17,4 +15,6 @@ public interface StoreRepository extends JpaRepository<Store, Integer> {
 
     List<Store>findByMarket(Market market);
     Store findBySeller(Seller seller);
+
+    Store findByStoreNo(Integer sellerNo);
 }
