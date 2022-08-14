@@ -1,17 +1,18 @@
 <template>
     <el-scrollbar max-height="600px">
-        <div class="listDiv" @click="cl_market()">
+        <div class="listDiv">
             <h1>시장 검색결과</h1>
-            <div v-for="item in marketList" :key="item.name">
-                {{ item.name }}
-                {{ item.address }}
+            <div class="div_list" v-for="item in marketList" :key="item.name" @click="cl_market(item)">
+                <h3>{{ item.name }}</h3>
+                <h5>{{ item.address }}</h5>
+                <div v-if="false" v-bind="market">{{ item.no }}</div>
             </div>
         </div>
     </el-scrollbar>
 </template>
 
 <script>
-import { computed } from "vue";
+import { ref, computed } from "vue";
 import { useStore } from "vuex";
 
 export default {
@@ -19,10 +20,14 @@ export default {
 
     setup() {
         const store = useStore();
+        const market = ref({ name: "", no: "" });
 
         const marketList = computed(() => store.state.marketStore.markets);
 
-        return { marketList };
+        const setMarket = (no) => store.commit("storeInMarket/SET_MARKETNO", no);
+        const setMarketName = (name) => store.commit("storeInMarket/SET_MARKETNAME", name);
+
+        return { marketList, market, setMarket, setMarketName };
     },
 
     data() {
@@ -32,18 +37,29 @@ export default {
     mounted() {},
 
     methods: {
-        cl_market() {
-            this.$router.push({ name: "searchStore", params: { market_name: this.market_name } });
+        cl_market(item) {
+            this.market.no = item.no;
+            this.market.name = item.name;
+            this.setMarket(this.market.no);
+            this.setMarketName(this.market.name);
+            console.log(this.market);
+            this.$router.push({ name: "searchStore" });
         },
     },
 };
 </script>
 
 <style>
+.div_list {
+    margin: 10px 0px;
+    border: 1px solid black;
+    border-radius: 15%;
+    background-color: rgba(255, 111, 97, 0.5);
+}
+
 .listDiv {
     margin-top: 30px;
     display: inline-block;
     width: 300px;
-    background-color: rgba(255, 111, 97, 0.5);
 }
 </style>

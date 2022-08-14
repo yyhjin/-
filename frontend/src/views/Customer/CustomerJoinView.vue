@@ -10,11 +10,11 @@
                         <el-button color="#FF6F61" round class="btn_idCheck" @click="cl_idCheck">중복 확인</el-button>
                         <h5 style="padding-top: 20px">닉네임</h5>
                         <el-input placeholder="닉네임" v-model="nick" class="input_nick" />
-                        <el-button color="#FF6F61" round class="btn_nickCheck" @click="cl_nickCheck">중복 확인</el-button>
-                        <h5 style="padding-top: 20px">비밀번호</h5>
+                        <h5>비밀번호</h5>
                         <el-input placeholder="패스워드" v-model="password" class="input_pass" type="password" />
                         <h5>비밀번호 확인</h5>
                         <el-input placeholder="패스워드 확인" v-model="password_double" class="input_pass" type="password" />
+                        <h5 style="text-align: right; color: red">{{ same }}</h5>
                         <h5>이름</h5>
                         <el-input placeholder="이름" v-model="name" class="input_name" />
                         <h5>연락처</h5>
@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import { getId, joinCustomer } from "@/api/customer.js";
 export default {
     name: "JoinView",
 
@@ -49,39 +50,87 @@ export default {
             nick: "",
             password: "",
             password_double: "",
+            same: "",
             name: "",
             phone_number: "",
             address: "",
-            postcode: "",
             detailAddress: "",
             extraAddress: "",
-            birthday: "",
-            gender: "",
-            userType: "",
         };
     },
 
     mounted() {
         this.userType = this.$route.params.userType;
     },
+    watch: {
+        password_double() {
+            if (this.password != this.password_double) {
+                this.same = "다름";
+            } else if (this.password == this.password_double) {
+                this.same = "같음";
+            }
+        },
+    },
 
     methods: {
         cl_idCheck() {
-            console.log(this.id);
-        },
-        cl_nickCheck() {
-            console.log(this.nick);
+            if (this.id) {
+                getId(
+                    this.id,
+                    (response) => {
+                        if (response.data.idCheck) {
+                            console.log(response);
+                            alert("사용 가능합니다.");
+                        } else if (!response.data.idCheck) {
+                            alert("중복된 아이디입니다.");
+                        } else {
+                            alert("아이디 입력!!");
+                        }
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            } else {
+                alert("아이디 입력하세요");
+            }
         },
         cl_register() {
-            console.log("상태 : " + this.userType + " 아이디:" + this.id + " 비밀번호:" + this.password + " 비밀번호검증:" + this.password_double);
-            console.log("이름 :" + this.name + "닉네임 :" + this.nick + " 번호:" + this.phone_number);
-            console.log("주소:" + this.address + " 우편번호:" + this.postcode + " 상세주소:" + this.detailAddress + " 추가:" + this.extraAddress);
+            if (this.id != "" && this.name != "" && this.password != "" && this.nick != "" && this.phone_number != "") {
+                if (this.same == "같음") {
+                    const params = {
+                        customerId: this.id,
+                        customerName: this.name,
+                        customerPwd: this.password,
+                        customerNickname: this.nick,
+                        customerPhone: this.phone_number,
+                        customerAddr: this.address + " " + this.detailAddress + " " + this.extraAddress,
+                    };
+                    joinCustomer(
+                        params,
+                        (response) => {
+                            if (response.data.response == "success") {
+                                alert("회원가입이 완료되었습니다.");
+                                this.$router.push({ name: "home" });
+                            } else {
+                                alert("회원가입에 실패하였습니다.");
+                            }
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+                } else {
+                    alert("비밀번호가 다름니다");
+                }
+            } else {
+                alert("칸을 모두 채워주세요");
+            }
         },
         cl_cancle() {
             this.$router.push({ name: "selectjoin" });
         },
         execDaumPostcode() {
-            console.log("hi");
             new window.daum.Postcode({
                 oncomplete: (data) => {
                     if (this.extraAddress !== "") {
@@ -113,8 +162,6 @@ export default {
                     } else {
                         this.extraAddress = "";
                     }
-                    // 우편번호를 입력한다.
-                    this.postcode = data.zonecode;
                 },
             }).open();
         },
@@ -138,7 +185,7 @@ export default {
 }
 
 .btn_idCheck {
-    color:white;
+    color: white;
     margin-top: 10px;
     float: right;
     width: 80px;
@@ -151,7 +198,7 @@ export default {
 }
 
 .btn_address {
-    color:white;
+    color: white;
     float: right;
     margin-top: 20px;
     width: 80px;
@@ -170,9 +217,8 @@ export default {
     text-align: left !important;
 }
 
-
 .btn_register {
-    color:white;
+    color: white;
     height: 40px !important;
     margin-top: 40px;
 }
@@ -182,5 +228,4 @@ export default {
     height: 40px !important;
     margin-top: 40px;
 }
-
 </style>
