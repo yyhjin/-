@@ -20,5 +20,11 @@ node{
                 image.push("latest")
                  }
         }
+        stage('Run Docker'){
+                sh 'echo " Container Run"'
+                docker.image('hseol/jangbojang:latest').withRun(' -p 8080:8080'){
+                        sh 'echo "hello"'
+                }
+        }
 
 }
