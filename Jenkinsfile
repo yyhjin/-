@@ -8,7 +8,9 @@ node{
         stage('Build Image'){
             
                 sh 'echo " Image Bulid Start"'
+                dir('backend'){
                 image = docker.build("hseol/jangbojang")
+                }
         }
 
         stage('Bulid Docker'){
