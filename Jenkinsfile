@@ -22,7 +22,7 @@ node{
         }
         stage('Run Docker'){
                 sh 'echo " Container Run"'
-                docker.image('hseol/jangbojang:latest').withRun(' -rm -p 8080:8080'){
+                docker.image('hseol/jangbojang:latest').withRun(' -p --rm 8080:8080'){
                         sh 'echo "hello"'
                 }
         }
