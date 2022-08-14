@@ -27,43 +27,119 @@
 </template>
 
 <script>
-import axios from "axios";
-import { ref } from "vue";
+import { loginCustomer } from "@/api/customer";
+import { loginSeller } from "@/api/seller";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
+import { ElMessage } from "element-plus";
+import { useCookies } from "vue3-cookies";
 
 export default {
     setup() {
+        // var router = this.$router;
+        const store = useStore();
+        const cookies = useCookies();
         const id = ref();
         const password = ref();
-        const userType = ref();
+        const userType = ref("구매자");
+        const userno = computed(() => store.state.userInfo.userNo);
 
-        function ck_login() {
-            if (this.userType == "") {
-                alert("구매자? 판매자?");
-            } else if (this.id == "") {
+        const setUserType = (type) => store.commit("userInfo/SET_USERTYPE", type);
+        const setUserNo = (no) => store.commit("userInfo/SET_USERNO", no);
+        const open = () => {
+            ElMessage({
+                message: "로그인 성공",
+                type: "success",
+            });
+        };
+        const open2 = (message) => {
+            ElMessage({
+                message: message,
+                type: "error",
+            });
+        };
+
+        return { id, password, open, open2, userno, userType, setUserNo, setUserType, cookies };
+    },
+
+    watch: {
+        userno() {
+            console.log(this.userno);
+            if (this.userType == "구매자") {
+                this.$router.push({ name: "search" });
+            } else {
+                this.$router.push({ name: "mystore", params: { id: this.userno } });
+            }
+        },
+    },
+
+    methods: {
+        ck_login() {
+            if (this.id == undefined) {
                 alert("아이디입력 필요");
-            } else if (this.password == "") {
+            } else if (this.password == undefined) {
                 alert("비밀번호 입력 필요");
             } else {
-                axios
-                    .get("https://jsonplaceholder.typicode.com/users/")
-                    .then(function (response) {
-                        console.log(response);
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                console.log("상태 " + this.userType);
-                console.log("id " + this.id);
-                console.log("pass " + this.password);
-            }
-        }
+                const params = {
+                    username: this.id,
+                    password: this.password,
+                };
 
-        return { id, password, userType, ck_login };
+                if (this.userType == "구매자") {
+                    this.setUserType(this.userType);
+                    loginCustomer(
+                        { username: this.id, password: this.password },
+                        (response) => {
+                            console.log(response);
+                            if (response.data.response == "success") {
+                                this.setUserNo(response.data.data);
+                                this.open();
+                                //this.$cookies.set("hi", "hihi", 2, "/");
+                               // this.$cookies.get("accessToken");
+                                //console.log(this.$cookies.get("refreshToken"));
+                                //jwt 받아오기
+                            } else {
+                                this.open2(response.data.data);
+                            }
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+                } else {
+                    this.setUserType(this.userType);
+                    loginSeller(
+                        params,
+                        (response) => {
+                            console.log(response);
+                            if (response.data.response == "success") {
+                                this.setUserNo(response.data.data);
+                                this.open();
+                                //localStorage.setItem("test", "test");
+                                //this.$cookies.get("accessToken");
+                                //jwt 받아오기
+                            } else {
+                                this.open2(response.data.data);
+                            }
+                        },
+                        (error) => {
+                            console.log(error);
+                        }
+                    );
+                }
+            }
+        },
     },
 };
 </script>
 
 <style scoped>
+.el-alert {
+    margin: 20px 0 0;
+}
+.el-alert:first-child {
+    margin: 0;
+}
 .adjustC {
     --el-color-primary: #ff6f61;
 }

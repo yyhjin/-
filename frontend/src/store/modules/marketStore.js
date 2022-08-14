@@ -5,10 +5,7 @@ const marketStore = {
     state: {
         sidos: [{ value: "없음", text: "선택하세요" }],
         guguns: [{ value: "없음", text: "선택하세요" }],
-        markets: [
-            { name: "시장장", address: "서울시 어딘가" },
-            { name: "우리동네최고시장", address: "대한민국 저기어딘가" },
-        ],
+        markets: [{ name: "시장에 놀러오세요~", address: "대한민국 어딘가", no: "" }],
     },
 
     mutations: {
@@ -17,70 +14,88 @@ const marketStore = {
                 state.sidos.push({ value: sido.sidoCode, text: sido.sidoName });
             });
         },
-        SET_GUGUN_LISt: (state, guguns) => {
+        SET_GUGUN_LIST: (state, guguns) => {
             guguns.forEach((gugun) => {
                 state.guguns.push({ value: gugun.gugunCode, text: gugun.gugunName });
             });
         },
-        SET_MARKET_LIST: (state, market) => {
-            state.market = market;
+        SET_MARKET_LIST: (state, markets) => {
+            markets.forEach((market) => {
+                state.markets.push({ name: market.marketName, address: market.marketAddr, no: market.marketNo });
+            });
+        },
+        SET_MARKET_INIT: (state) => {
+            state.markets = [{ name: "시장에 놀러오세요~", address: "대한민국 어딘가", no: "" }];
         },
         CLEAR_SIDO_LIST: (state) => {
-            state.sido = [{ value: null, text: "선택하세요" }];
+            state.sido = [{ value: "없음", text: "선택하세요" }];
         },
         CLEAR_GUGUN_LIST: (state) => {
-            state.guguns = [{ value: null, text: "선택하세요" }];
+            state.guguns = [{ value: "없음", text: "선택하세요" }];
+        },
+        CLEAR_MARKET_LIST: (state) => {
+            state.markets = [];
         },
     },
 
     actions: {
         getSido: ({ commit }) => {
+            commit("CLEAR_SIDO_LIST");
+            commit("CLEAR_GUGUN_LIST");
             sidoList(
-                ({ data }) => {
-                    commit("SET_SIDO_LIST", data);
+                (data) => {
+                    commit("SET_SIDO_LIST", data.data);
                 },
                 (error) => {
                     console.log(error);
                 }
             );
         },
-        getGugun: ({ commit }, sidoCode) => {
+        getGugun: ({ commit }, param) => {
+            commit("CLEAR_GUGUN_LIST");
+            //console.log(param.value);
             const params = {
-                sido: sidoCode,
+                sidocode: param.value,
             };
             gugunList(
                 params,
-                ({ data }) => {
-                    commit("SET_GUGUN_LIST", data);
+                (response) => {
+                    //console.log(response);
+                    commit("SET_GUGUN_LIST", response.data);
                 },
                 (error) => {
                     console.log(error);
                 }
             );
         },
-        getMarketList: ({ commit }, sidoName, gugunName) => {
+        getMarketList: ({ commit }, param) => {
+            commit("CLEAR_MARKET_LIST");
             const params = {
-                sido_name: sidoName,
-                gugun_name: gugunName,
+                sidogugun: param,
             };
             marketList(
                 params,
                 (response) => {
-                    commit("SET_MARKET_LIST", response.data.response.body.items.item);
+                    console.log(response);
+                    commit("SET_MARKET_LIST", response.data);
                 },
                 (error) => {
                     console.log(error);
                 }
             );
         },
-        getMarketListByName: ({ commit }, marketName) => {
+
+        getMarketListByName: ({ commit }, param) => {
+            commit("CLEAR_MARKET_LIST");
             const params = {
-                marketName: marketName,
+                marketname: param,
             };
+            console.log(params);
             marketByName(
                 params,
                 (response) => {
-                    commit("SET_MARKET_LIST", response.data.response.body.items.item);
+                    console.log(response);
+                    commit("SET_MARKET_LIST", response.data);
                 },
                 (error) => {
                     console.log(error);

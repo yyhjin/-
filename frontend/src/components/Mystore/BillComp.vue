@@ -8,16 +8,13 @@
                     주문번호:{{ bill.order_no }} 상태: {{bill.status}}
             </div>
         </div>
-        
-        
-        
-
         <div class="custmer_name">
             {{ bill.customer_id }}
         </div>
         <div class="order_items" v-for="(item,idx) in this.bill.order_items" :key="idx">
             <div class="item">{{ item.item_name }} x {{ item.count }} | {{ item.price*item.count }}원</div>
         </div>
+        <el-button @click="innerDrawer = true">덤 추가!</el-button>
  
     </el-card>
 

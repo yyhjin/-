@@ -18,17 +18,4 @@ export default {
 #app {
 }
 
-nav {
-    padding: 30px;
-    text-align: center;
-}
-
-nav a {
-    font-weight: bold;
-    color: #ff6f61;
-}
-
-nav a.router-link-exact-active {
-    color: #3cbd92;
-}
 </style>
