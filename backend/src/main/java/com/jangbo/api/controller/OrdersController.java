@@ -21,7 +21,7 @@ import java.util.List;
 
 @Api(value = "주문 api", tags={"주문"})
 @RestController
-@RequestMapping("order")
+@RequestMapping("/be/order")
 public class OrdersController {
 
     @Autowired

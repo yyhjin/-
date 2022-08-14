@@ -18,7 +18,7 @@ import static java.util.Objects.isNull;
 @Api(value = "판매자api", tags={"판매자"})
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/seller")
+@RequestMapping("/be/seller")
 public class SellerController {
 
     private final SellerService sellerService;
