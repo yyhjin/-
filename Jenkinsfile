@@ -2,7 +2,7 @@ node{
 
         stage('Prepare') {
                 sh 'echo "Clonning Repository"'
-                checkout csm
+                checkout scm
          
         }
         stage('Build Image'){
