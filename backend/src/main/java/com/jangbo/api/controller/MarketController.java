@@ -19,7 +19,7 @@ import java.util.List;
 
 @Api(value = "시장 api", tags={"시장"})
 @RestController
-@RequestMapping("market")
+@RequestMapping("/be/market")
 public class MarketController {
 
     @Autowired
@@ -46,10 +46,4 @@ public class MarketController {
         MarketDto market = marketService.findMarketByMarketNo(marketno);
         return new ResponseEntity(market, HttpStatus.OK);
     }
-
-//    @PostMapping("/create")
-//    public ResponseEntity<List<Market>> createMarket(String marketname, String marketaddr, Float lat, Float lng, String sidogugun) {
-//        Market market = marketService.insertMarket(marketname, marketaddr, lat, lng, sidogugun);
-//        return new ResponseEntity(market, HttpStatus.OK);
-//    }
 }

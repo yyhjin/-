@@ -26,6 +26,7 @@ import javax.validation.Valid;
 @Api(value = "권한api", tags={"권한"})
 @Slf4j
 @RestController
+@RequestMapping("/be")
 @RequiredArgsConstructor
 public class AuthController {
 

@@ -21,7 +21,7 @@ import java.util.List;
 
 @Api(value="상품API",tags={"상품"})
 @RestController
-@RequestMapping("/item")
+@RequestMapping("/be/item")
 public class ItemController {
 
     @Autowired
