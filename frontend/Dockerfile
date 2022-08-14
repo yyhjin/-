@@ -13,12 +13,15 @@ RUN npm install
 # copy project files and folders to the current working directory (i.e. 'app' folder)
 COPY . .
 
+# build app for production with minification
+RUN npm run build --prod
+
 #production stage 
 FROM nginx:stable-alpine as production-stage
 
-# build app for production with minification
-RUN npm run build
+RUN rm -rf /usr/share/nginx/html/*
 
 COPY --from=build-stage /app/dist /usr/share/nginx/html
+
 EXPOSE 7602
 CMD [ "nginx","-g", "daemon off;" ]
