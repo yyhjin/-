@@ -8,8 +8,10 @@ import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.FileService;
 import com.jangbo.api.service.StoreService;
 import com.jangbo.db.entity.Store;
+import com.jangbo.db.repository.StoreRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +29,8 @@ public class StoreController {
     @Autowired
     StoreService storeService;
 
+    @Autowired
+    StoreRepository storeRepository;
 
     @Autowired
     FileService fileService;
@@ -141,4 +145,10 @@ public class StoreController {
         return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.NO_CONTENT);
     }
 
+    @PostMapping("/room/{storeNo}")
+    @ApiOperation(value = "store_idx 변경", notes = "true이면 false으로 변경, false이면 true로 변경", httpMethod = "POST")
+    public ResponseEntity<Integer> updateRoomIsOpen(@PathVariable("storeNo") Integer storeNo) {
+        Integer updatedStoreNo = storeService.updateStoreIdx(storeNo);
+        return new ResponseEntity<Integer>(updatedStoreNo, HttpStatus.NO_CONTENT);
+    }
 }
