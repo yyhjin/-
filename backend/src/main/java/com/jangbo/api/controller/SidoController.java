@@ -21,7 +21,7 @@ import java.util.List;
 
 @Api(value = "시,도api", tags={"시,도"})
 @RestController
-@RequestMapping("sido")
+@RequestMapping("/be/sido")
 public class SidoController {
 
     @Autowired

@@ -29,6 +29,10 @@ public class CustomerService {
         }
     }
 
+    public List<Customer> findByCustomerId(String customerId) {
+        return customerRepository.findByCustomerId(customerId);
+    }
+
     public Customer findOne(Integer customerNo) {
         return customerRepository.findOne(customerNo);
     }

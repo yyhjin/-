@@ -1,9 +1,10 @@
 package com.jangbo.api.controller;
 
+import com.jangbo.api.request.InterStoreReq;
 import com.jangbo.api.service.CustomerService;
+import com.jangbo.api.service.InterStoreService;
+import com.jangbo.api.service.StoreService;
 import com.jangbo.db.entity.*;
-import com.jangbo.db.repository.CustomerRepository;
-import com.jangbo.db.repository.StoreRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -12,42 +13,41 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.Objects.isNull;
 
 @Api(value = "소비자api", tags={"소비자"})
 @RestController
+@RequestMapping("/be/customer")
 @RequiredArgsConstructor
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final CustomerRepository customerRepository;
 
-    private final StoreRepository storeRepository;
+    private final InterStoreService interStoreService;
+
+    private final StoreService storeService;
 
     @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
-    @GetMapping("/customer/idcheck/{customer_id}")
-    public CheckCustomerIdResponse IdCheck(
+    @GetMapping("/idcheck/{customer_id}")
+    public CheckResponse IdCheck(
             @PathVariable("customer_id") String customerId
     ) {
-        if (customerRepository.findByCustomerId(customerId) == null) {
-            return new CheckCustomerIdResponse(true);
+        if (customerService.findByCustomerId(customerId).isEmpty()) {
+            return new CheckResponse(true);
         } else {
-            return new CheckCustomerIdResponse(false);
+            return new CheckResponse(false);
         }
     }
 
     //회원정보 조회 - 개인정보
     @ApiOperation(value = "회원정보 조회 - 개인정보", notes="소비자 회원정보를 조회한다.",httpMethod = "GET")
-    @GetMapping("/customer/{customer_no}")
+    @GetMapping("/{customer_no}")
     public CustomerRequest SearchSeller(@PathVariable("customer_no") Integer customerNo) {
-        Customer customer = customerRepository.findOne(customerNo);
+        Customer customer = customerService.findOne(customerNo);
         if (isNull(customer)) {
             return new CustomerRequest(null, null, null, null, null);
         } else {
@@ -56,41 +56,33 @@ public class CustomerController {
     }
 
     @ApiOperation(value = "회원정보 수정", notes="소비자 회원정보를 수정한다.",httpMethod = "PUT")
-    @PutMapping("/customer/{customer_no}")
+    @PutMapping("/{customer_no}")
     public boolean updateCustomer(
             @PathVariable("customer_no") Integer customerNo,
-            @Valid CustomerUpdateReq request
+            @RequestBody @Valid CustomerUpdateReq request
     ) {
         return customerService.update(customerNo, request.getCustomerName(), request.getCustomerNickname(), request.getCustomerAddr(), request.getCustomerPhone());
     }
 
 //    회원정보 조회 - 찜목록
     @ApiOperation(value = "회원정보 조회 - 찜목록", notes = "소비자 찜목록을 조회한다.", httpMethod = "GET")
-    @GetMapping("/customer/{customer_no}/interstore")
+    @GetMapping("/{customer_no}/interstore")
     public List<InterStoreDto> findInterStores(@PathVariable("customer_no") Integer customerNo) {
-        List<InterStore> interStores = customerRepository.findOne(customerNo).getInterStores();
+        List<InterStore> interStores = customerService.findOne(customerNo).getInterStores();
         List<InterStoreDto> result = interStores.stream()
-                .map(i -> new InterStoreDto(i))
+                .map(i -> new InterStoreDto(i, storeService.findStoreById(i.getStoreNo()).getStoreName()))
                 .collect(Collectors.toList());
         return result;
     }
 
 
-    //회원정보 조회 - 주문내역 조회
-    @ApiOperation(value = "회원정보 조회 - 주문내역 조회", notes = "소비자 주문내역을 조회한다.", httpMethod = "GET")
-    @GetMapping("/customer/{customer_no}/orders")
-    public List<OrdersDto> findOrders(@PathVariable("customer_no") Integer customerNo) {
-        List<Orders> orders = customerRepository.findOne(customerNo).getOrders();
-        List<OrdersDto> result = orders.stream()
-                .map(o -> new OrdersDto(o.getOrderDate(),
-                                        o.getStatus(),
-                                        storeRepository.getReferenceById(o.getStoreNo()).getStoreName(),
-                                        o.getOrderItems().stream().map(oi -> new OrderItemDto(oi.getItemName(),oi.getCount(), oi.getPrice())
-                                        )))
-                .collect(Collectors.toList());
-        return result;
+    @ApiOperation(value = "찜 목록 등록", notes = "소비자 상점을 찜 목록에 등록, 삭제한다. true 반환: 등록, false 반환: 삭제", httpMethod = "POST")
+    @PostMapping("/{customer_no}/interstore")
+    public CheckResponse interstoreUpdate(
+            @PathVariable("customer_no") Integer customerNo,
+            @RequestBody @Valid InterStoreReq interStoreReq) {
+        return new CheckResponse(interStoreService.update(customerNo, interStoreReq));
     }
-
 
     @Data
     @AllArgsConstructor
@@ -111,28 +103,6 @@ public class CustomerController {
         private String customerPhone;
     }
 
-    @Data
-    @AllArgsConstructor
-    static class OrdersDto<T> {
-        private Integer orderNo;
-        private String orderDate;
-        private String status;
-        private String storeNo;
-        private String storeName; // store 에서 가져와야함
-        private T order_item; //
-
-        public OrdersDto(Date orderDate, @NotBlank String status, @NotBlank String storeName, Stream<OrderItemDto> orderItemDtoStream) {
-        }
-    }
-
-    @Data
-    @AllArgsConstructor
-    static class OrderItemDto {
-        private String itemName;
-        private Integer count;
-        private Integer price;
-    }
-
 
     @Data
     @AllArgsConstructor
@@ -140,10 +110,9 @@ public class CustomerController {
         private Integer storeNo;
         private String storeName;
 
-        public InterStoreDto(InterStore interStore) {
-            Store store = interStore.getStore();
-            storeNo = store.getStoreNo();
-            storeName = store.getStoreName();
+        public InterStoreDto(InterStore interStore, String storeName) {
+            this.storeNo = interStore.getStoreNo();
+            this.storeName = storeName;
         }
 
     }
@@ -160,8 +129,8 @@ public class CustomerController {
 
     @Data
     @AllArgsConstructor
-    static class CheckCustomerIdResponse {
-        private boolean idCheck;
+    static class CheckResponse {
+        private boolean Check;
     }
 
 

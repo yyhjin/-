@@ -1,17 +1,23 @@
 package com.jangbo.api.service.Auth;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.stereotype.Service;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 
-@Service
+@Component
+@RequiredArgsConstructor
 public class RedisUtil {
 
-    @Autowired
-    private StringRedisTemplate stringRedisTemplate;
+    private final StringRedisTemplate stringRedisTemplate;
+
+    private final RedisTemplate<String, Object> redisBlackListTemplate;
+
 
     public String getData(String key){
         ValueOperations<String,String> valueOperations = stringRedisTemplate.opsForValue();
@@ -33,4 +39,21 @@ public class RedisUtil {
         stringRedisTemplate.delete(key);
     }
 
+
+    public void setBlackList(String key, Object o, Long minutes) {
+        redisBlackListTemplate.setValueSerializer(new Jackson2JsonRedisSerializer(o.getClass()));
+        redisBlackListTemplate.opsForValue().set(key, o, minutes, TimeUnit.MILLISECONDS);
+    }
+
+    public Object getBlackList(String key) {
+        return redisBlackListTemplate.opsForValue().get(key);
+    }
+
+    public boolean deleteBlackList(String key) {
+        return redisBlackListTemplate.delete(key);
+    }
+
+    public boolean hasKeyBlackList(String key) {
+        return redisBlackListTemplate.hasKey(key);
+    }
 }
