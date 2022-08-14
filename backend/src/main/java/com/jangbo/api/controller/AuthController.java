@@ -75,7 +75,7 @@ public class AuthController {
             redisUtil.setDataExpire(refreshJwt, customer.getCustomerId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.setHeader("Set-Cookie",accessToken.toString());
             res.addHeader("Set-Cookie",refreshToken.toString());
-            res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
             return new ResponseSimple("success", "로그인에 성공했습니다.", customer.getCustomerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "로그인에 실패했습니다.", e.getMessage());
@@ -97,7 +97,7 @@ public class AuthController {
             redisUtil.setDataExpire(refreshJwt, seller.getSellerId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.setHeader("Set-Cookie",accessToken.toString());
             res.addHeader("Set-Cookie",refreshToken.toString());
-            res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
             return new ResponseSimple("success", "로그인에 성공했습니다.", seller.getSellerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "로그인에 실패했습니다.", e.getMessage());
@@ -163,7 +163,7 @@ public class AuthController {
         ResponseCookie refreshToken = cookieUtil.deleteCookie(JwtUtil.REFRESH_TOKEN_NAME);
         res.setHeader("Set-Cookie",accessToken.toString());
         res.addHeader("Set-Cookie",refreshToken.toString());
-        res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+        res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
         return new ResponseSimple("success","로그아웃 되었습니다.",null);
     }
 
@@ -182,7 +182,7 @@ public class AuthController {
             final String token = jwtUtil.generateToken(customer);
             ResponseCookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token, 0);
             res.setHeader("Set-Cookie",accessToken.toString());
-            res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
             return new ResponseSimple("success", "accessToken 재발급에 성공했습니다.", customer.getCustomerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "accessToken 재발급에 실패했습니다.", null);
@@ -204,7 +204,7 @@ public class AuthController {
             final String token = jwtUtil.generateToken(seller);
             ResponseCookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token, 0);
             res.setHeader("Set-Cookie",accessToken.toString());
-            res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
             return new ResponseSimple("success", "accessToken 재발급에 성공했습니다.", seller.getSellerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "accessToken 재발급에 실패했습니다.", null);
