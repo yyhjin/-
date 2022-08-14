@@ -12,18 +12,18 @@ node{
                 image = docker.build("hseol/jangbojang")
                 }
         }
-          # stage('Build vue Image'){
+  /*         stage('Build vue Image'){
                # sh 'echo " Image Bulid Start"'
-               # dir('frontend'){
-                #vuevue = docker.build("hseol/front-vue")
-               # }
-       # }
-
+                dir('frontend'){
+                vuevue = docker.build("hseol/front-vue")
+                }
+        }
+*/
         stage('Bulid Docker'){
                 sh 'echo " Image Push Start"'
                  docker.withRegistry('https://registry.hub.docker.com','jang'){         
                 image.push("latest")
-                #vuevue.push("latest")
+                //vuevue.push("latest")
                  }
         }
      
