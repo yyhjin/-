@@ -1,5 +1,5 @@
 node{
-    stages {
+
         stage('Prepare') {
             steps {
                 sh 'echo "Clonning Repository"'
@@ -48,6 +48,6 @@ node{
             }
         }
 
-    }
+    
 
 }
