@@ -11,7 +11,7 @@ public class WebConfig implements WebMvcConfigurer {
 //        registry.addMapping("/**").allowedOrigins("*");
         registry.addMapping("/**")
                 //.allowedOriginPatterns("http://localhost:7602")
-                .allowedOriginPatterns("https://i7a602.p.ssafy.io:7602")
+                .allowedOriginPatterns("https://i7a602.p.ssafy.io")
                 .allowedMethods("POST", "GET", "PUT", "OPTIONS", "DELETE", "HEAD")
                 .allowedHeaders("*")
                 .exposedHeaders("Set-Cookie")
