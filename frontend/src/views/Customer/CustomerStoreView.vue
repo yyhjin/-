@@ -593,6 +593,10 @@ export default {
     border-radius: 10px;
 }
 
+.el-button {
+    color: black !important;
+}
+
 .scrollbar-flex-content {
     display: flex;
     border: 1px solid #ff6f61;

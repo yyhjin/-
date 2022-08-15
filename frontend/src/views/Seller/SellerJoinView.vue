@@ -215,6 +215,8 @@ export default {
     width: 300px !important;
     margin-top: 40px;
     text-align: center;
+    border: 2px solid #ff6f61;
+    border-radius: 30px;
 }
 
 .btn_sellerCheck {

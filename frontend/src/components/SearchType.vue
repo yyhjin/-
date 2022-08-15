@@ -15,7 +15,7 @@
 
     <el-dialog v-model="dialogVisible" title="방 정보" width="90%" :before-close="handleClose">
         <div>
-            <div>
+            <div style="margin-top: -40px">
                 <h3>{{ this.one_market.storeName }}</h3>
             </div>
             <div style="display: inline-block">
@@ -80,7 +80,7 @@ export default {
 
     methods: {
         cl_no() {
-            this.open("라이브 중이 아닙니다");
+            this.open("상점 CLOSE");
         },
         cl_enter(item) {
             this.item = item;

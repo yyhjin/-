@@ -28,10 +28,16 @@ async function getCustomer(no, success, fail) {
 }
 
 async function getOrderList(no, success, fail) {
-    await api.get(`/{no}/ordrs`).then(success).catch(fail);
+    await api.get(`/${no}/ordrs`).then(success).catch(fail);
 }
-
+//찜등록
 async function setJJim(no, params, success, fail) {
     await api.post(`/${no}/interstore`, params).then(success).catch(fail);
 }
-export { getId, joinCustomer, loginCustomer, updateCustomer, getCustomer, getOrderList, setJJim };
+
+//찜목록 조회 (마이페이지)
+async function getJJim(no, success, fail) {
+    await api.get(`/${no}/interstore`).then(success).catch(fail);
+}
+
+export { getId, joinCustomer, loginCustomer, updateCustomer, getCustomer, getOrderList, setJJim, getJJim };
