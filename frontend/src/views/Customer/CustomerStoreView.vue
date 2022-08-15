@@ -153,13 +153,12 @@ export default {
         return {
             OV: undefined,
             session: undefined,
-            mainStreamManager: undefined,
             publisher: undefined,
             subscribers: [],
 
             //myUserNo: "",
             //오픈비두 필수입력
-            mySessionId: 1,
+            mySessionId: "1",
             myUserName: "",
         };
     },
@@ -232,7 +231,14 @@ export default {
             ElMessage.error(message);
         };
 
-        return { router, Check, Star, StarFilled, jjim, myUserNo, number, userId, params, customerNo, storeName, menus, selected, orderItems, hochul, content, deleteRow, open };
+        const clientdata = ref({
+            //myUserName
+            type: 1, //0,1
+            userName: userId,
+            userNo: myUserNo,
+        });
+
+        return { clientdata, router, Check, Star, StarFilled, jjim, myUserNo, number, userId, params, customerNo, storeName, menus, selected, orderItems, hochul, content, deleteRow, open };
     },
     computed: {
         money() {
@@ -361,8 +367,11 @@ export default {
             this.session.on("streamCreated", ({ stream }) => {
                 this.count++;
                 const subscriber = this.session.subscribe(stream);
-                console.log(stream.connection);
-                this.subscribers.push(subscriber);
+                console.log(JSON.parse(stream.connection.data));
+                //판매자만 sub에 넣기
+                if (JSON.parse(stream.connection.data).clientData.type == 0) {
+                    this.subscribers.push(subscriber);
+                }
             });
 
             // On every Stream destroyed...
@@ -382,7 +391,8 @@ export default {
 
             // public 채팅 signal 받기
             this.session.on("signal:public-chat", (event) => {
-                this.$refs.chat.addMessage(event.data, JSON.parse(event.data).sender === this.myUserName, false);
+                console.log(JSON.parse(event.data).sender);
+                this.$refs.chat.addMessage(event.data, JSON.parse(event.data).sender === this.userId, false);
             });
 
             // private 채팅 signal 받기
@@ -395,45 +405,24 @@ export default {
             // 'token' parameter should be retrieved and returned by your own backend
             this.getToken(this.mySessionId).then((token) => {
                 this.session
-                    .connect(token, { clientData: this.myUserName })
+                    .connect(token, { clientData: this.clientdata })
                     .then(() => {
-                        let publisher = "";
                         // --- Get your own camera stream with the desired properties ---
-                        if (this.isPublisher(this.myUserName)) {
-                            publisher = this.OV.initPublisher(undefined, {
-                                audioSource: undefined, // The source of audio. If undefined default microphone
-                                videoSource: undefined, // The source of video. If undefined default webcam
-                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                                publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                                //resolution: "640x480", // The resolution of your video
-                                resolution: "120x80",
-                                frameRate: 30, // The frame rate of your video
-                                insertMode: "PREPEND", // How the video is inserted in the target element 'video-container'
-                                mirror: false, // Whether to mirror your local video or not
-                            });
-                            this.mainStreamManager = publisher;
 
-                            // --- Publish your stream ---
-                        } else {
-                            publisher = this.OV.initPublisher(undefined, {
-                                audioSource: undefined, // The source of audio. If undefined default microphone
-                                videoSource: undefined, // The source of video. If undefined default webcam
-                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                                publishVideo: false, // Whether you want to start publishing with your video enabled or not
-                                resolution: "120x80", // The resolution of your video
-                                frameRate: 30, // The frame rate of your video
-                                insertMode: "AFTER", // How the video is inserted in the target element 'video-container'
-                                mirror: false, // Whether to mirror your local video or not
-                            });
-                            this.publisher = publisher;
-                        }
+                        let publisher = this.OV.initPublisher(undefined, {
+                            audioSource: undefined, // The source of audio. If undefined default microphone
+                            videoSource: undefined, // The source of video. If undefined default webcam
+                            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                            publishVideo: false, // Whether you want to start publishing with your video enabled or not
+                            //resolution: "640x480", // The resolution of your video
+                            resolution: "120x80",
+                            frameRate: 30, // The frame rate of your video
+                            insertMode: "PREPEND", // How the video is inserted in the target element 'video-container'
+                            mirror: false, // Whether to mirror your local video or not
+                        });
+                        this.publisher = publisher;
 
-                        if (this.isPublisher(this.myUserName)) {
-                            this.session.publish(this.mainStreamManager);
-                        } else {
-                            //소비자일때 이렇게 하고 uservideo만 갔다쓰면됨
-                            //this.session.publish(this.publisher);
-                        }
+                        this.session.publish(this.publisher);
                     })
                     .catch((error) => {
                         console.log("There was an error connecting to the session:", error.code, error.message);
@@ -453,7 +442,7 @@ export default {
 
             let messageData = {
                 content: content,
-                sender: this.myUserName,
+                sender: this.userId,
                 time: current,
             };
 

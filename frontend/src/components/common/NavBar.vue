@@ -7,7 +7,7 @@
     </nav>
 
     <nav>
-        <img src="@/assets/jang.png" alt="logo" style="width: 100px" />
+        <img src="@/assets/jang.png" alt="logo" style="width: 100px" @click="cl_img()" />
         <div class="div_nav" style="float: right; margin-top: 30px">
             <router-link style="margin-right: 20px" to="/login" v-if="this.userNo == '9999'">로그인</router-link>
             <router-link style="margin-right: 20px" to="/selectjoin" v-if="this.userNo == '9999'">회원가입</router-link>
@@ -18,7 +18,7 @@
             <router-link style="margin-right: 20px" :to="{ name: 'mystore', params: { id: $store.state.userInfo.userNo } }" v-if="this.userType == '판매자' && this.userNo != '9999'"
                 >내 가게</router-link
             >
-            <span style="margin-right: 10px" v-if="this.userNo != '9999'" @click="logout">로그아웃</span>
+            <span style="margin-right: 10px; font-weight: bold" v-if="this.userNo != '9999'" @click="logout">로그아웃</span>
         </div>
     </nav>
 </template>
@@ -58,6 +58,9 @@ export default {
             this.out();
             this.$router.push({ name: "login" });
         },
+        cl_img() {
+            this.$router.push({ name: "login" });
+        },
     },
 };
 </script>
@@ -74,6 +77,7 @@ export default {
 nav a {
     font-weight: bold;
     color: #ff6f61;
+    text-decoration: none;
 }
 
 nav a.router-link-exact-active {

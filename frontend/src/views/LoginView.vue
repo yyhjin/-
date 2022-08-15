@@ -1,4 +1,5 @@
 <template>
+    <router-link to="/">home</router-link>
     <div class="firstDiv">
         <el-space wrap>
             <el-card class="card">
@@ -36,7 +37,6 @@ import { useCookies } from "vue3-cookies";
 
 export default {
     setup() {
-        // var router = this.$router;
         const store = useStore();
         const cookies = useCookies();
         const id = ref();
