@@ -1,131 +1,83 @@
 <template>
-  <nav
-    class="nav_room"
-    v-if="$route.path.substring(0, 5) == '/room'"
-    style="display: flex; justify-content: space-between"
-  >
-    <span>room 안에 진입했을때 변경된 navbar</span>
-    <span>
-      <el-button
-        type="danger"
-        size="large"
-        @click="
-          $router.push({
-            name: 'mystore',
-            params: { id: $store.state.userInfo.userNo },
-          })
-        "
-        >가게 닫기</el-button
-      >
-    </span>
-  </nav>
-
-  <nav>
-    <img
-      src="@/assets/jangbojang-logo.png"
-      alt="logo"
-      style="width: 100px"
-      @click="cl_img()"
-    />
-    <div class="div_nav" style="float: right; margin-top: 30px">
-      <router-link
-        style="margin-right: 20px"
-        to="/login"
-        v-if="this.userNo == '9999'"
-        >로그인</router-link
-      >
-      <router-link
-        style="margin-right: 20px"
-        to="/selectjoin"
-        v-if="this.userNo == '9999'"
-        >회원가입</router-link
-      >
-      <router-link
-        style="margin-right: 10px"
-        to="/search"
-        v-if="this.userType == '구매자' && this.userNo != '9999'"
-        >시장검색</router-link
-      >
-      <router-link
-        style="margin-right: 10px"
-        :to="{ name: 'mypage', params: { id: $store.state.userInfo.userNo } }"
-        v-if="this.userType == '구매자' && this.userNo != '9999'"
-        >마이페이지</router-link
-      >
-      <router-link
-        style="margin-right: 20px"
-        :to="{ name: 'mystore', params: { id: $store.state.userInfo.userNo } }"
-        v-if="this.userType == '판매자' && this.userNo != '9999'"
-        >내 가게</router-link
-      >
-      <span
-        style="margin-right: 10px; font-weight: bold"
-        v-if="this.userNo != '9999'"
-        @click="logout"
-        >로그아웃</span
-      >
-    </div>
-  </nav>
+  <div>
+    <el-card class="card1">
+      <el-row>
+        <el-col :span="6">
+          <div class="zzimstore_pic">
+            <el-avatar shape="square" :size="50" style="margin-top: 10px" />
+          </div>
+        </el-col>
+        <el-col :span="18">
+          <div class="zzimstore_description">
+            <div style="display: inline-block">
+              <h3 style="margin-left: 5px">{{ zzimstore.storeName }}</h3>
+            </div>
+            <div class="zzimstore_btn" style="float: right; margin-top: 15px">
+              <el-button
+                type="danger"
+                round
+                @click="cl_enter(zzimstore)"
+                style="margin-right: 10px"
+                v-if="zzimstore.storeIdx == true"
+                >입장</el-button
+              >
+              <el-button
+                type="info"
+                round
+                @click="cl_no()"
+                style="margin-right: 10px"
+                v-else
+                >입장</el-button
+              >
+            </div>
+          </div>
+        </el-col>
+      </el-row>
+    </el-card>
+  </div>
 </template>
-
 <script>
-import { useStore } from "vuex";
-import { computed } from "vue";
 import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
 
 export default {
-  name: "SearchAddress",
-  setup() {
-    const store = useStore();
-    const userType = computed(() => store.state.userInfo.userType);
-    const userNo = computed(() => store.state.userInfo.userNo);
+  props: ["zzimstore"],
 
-    const logOut = () => {
-      store.dispatch(`userInfo/logout`);
-    };
-    const logOutMarket = () => {
-      store.dispatch(`storeInMarket/logout`);
-    };
-    const out = () => {
+  setup() {
+    const router = useRouter();
+    const open = (message) => {
       ElMessage({
-        message: "로그아웃 완료",
+        showClose: true,
+        message: message,
         type: "warning",
       });
     };
-
-    return { userType, userNo, logOut, logOutMarket, out };
+    return { open, router };
   },
   methods: {
-    logout() {
-      console.log("logout");
-      this.logOut();
-      this.logOutMarket();
-      this.out();
-      this.$router.push({ name: "login" });
+    cl_no() {
+      this.open("상점 CLOSE");
     },
-    cl_img() {
-      this.$router.push({ name: "login" });
+    cl_enter(item) {
+      console.log(item);
+      const params = {
+        storeNo: item.storeNo,
+        storeName: item.storeName,
+        storeJJim: true,
+      };
+      console.log(params);
+      this.router.push({
+        name: "customer_room",
+        params: params,
+      });
     },
   },
 };
 </script>
-
 <style scoped>
-.nav_room {
-  height: 40px;
-}
-.logo {
-  max-width: 100%;
-  max-height: 100%;
-}
-
-nav a {
-  font-weight: bold;
-  color: #ff6f61;
-  text-decoration: none;
-}
-
-nav a.router-link-exact-active {
-  color: #3cbd92;
+.card1 {
+  margin-bottom: 10px;
+  border: 2px solid rgb(60, 189, 146);
+  border-radius: 10px;
 }
 </style>
