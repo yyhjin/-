@@ -4,6 +4,7 @@ const userInfo = {
         userType: "0",
         userNo: "0",
         tokken: "3",
+        userId: "",
     },
     getters: {
         isAuthenticated: function (state) {
@@ -20,6 +21,9 @@ const userInfo = {
         SET_USERTOKKEN: (state, tokken) => {
             state.tokken = tokken;
         },
+        SET_USERID: (state, id) => {
+            state.userId = id;
+        },
         CLEAR_USERTYPE: (state) => {
             state.userType = "";
         },
@@ -29,12 +33,16 @@ const userInfo = {
         CLEAR_TOKKEN: (state) => {
             state.tokken = "";
         },
+        CLEAR_USERID: (state) => {
+            state.userId = "";
+        },
     },
     actions: {
         logout: ({ commit }) => {
             commit("CLEAR_USERTYPE");
             commit("CLEAR_USERNO");
             commit("CLEAR_TOKKEN");
+            commit("CLEAR_USERID");
         },
     },
 };

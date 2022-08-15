@@ -7,7 +7,7 @@ function CustomerInstance() {
         headers: {
             "content-type": "application/json",
         },
-        withCredentials: true // 쿠키 cors 통신 설정
+        withCredentials: true, // 쿠키 cors 통신 설정
     });
     return instance;
 }
@@ -46,7 +46,7 @@ function StoreRegisterInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/store",
         headers: {
-            "Content-type": "multipart/form-data"
+            "Content-type": "multipart/form-data",
         },
     });
     return instance;
@@ -70,4 +70,14 @@ function OrderInstance() {
     return instance;
 }
 
-export { MarketInstance, SellerInstance, CustomerInstance, StoreInstance,StoreRegisterInstance,ItemInstance,OrderInstance };
+function CallInstance() {
+    const instance = axios.create({
+        baseURL: "http://localhost:8080/be/",
+        headers: {
+            "content-type": "application/json",
+        },
+    });
+    return instance;
+}
+
+export { MarketInstance, SellerInstance, CustomerInstance, StoreInstance, StoreRegisterInstance, ItemInstance, OrderInstance, CallInstance };

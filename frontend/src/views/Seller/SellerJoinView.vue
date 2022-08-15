@@ -7,7 +7,8 @@
                     <div class="inputRegister">
                         <h5>사업자 등록 번호</h5>
                         <el-input placeholder="사업자 등록 번호" v-model="seller_number" class="input_Snumber" />
-                        <h5>업종</h5>
+                        <el-button color="#FF6F61" round class="btn_idCheck" @click="cl_busiCheck">중복 확인</el-button>
+                        <h5 style="margin-top: 40px">업종</h5>
                         <el-input placeholder="업종" v-model="sellItem" class="input_sellItem" />
                         <h5>아이디</h5>
                         <el-input placeholder="아이디 (이메일 형식)" v-model="id" class="input_id" />
@@ -42,7 +43,7 @@
 </template>
 
 <script>
-import { getId, joinSeller } from "@/api/seller.js";
+import { getId, joinSeller, getbusiId } from "@/api/seller.js";
 export default {
     name: "JoinView",
 
@@ -83,6 +84,27 @@ export default {
         },
     },
     methods: {
+        cl_busiCheck() {
+            console.log(this.seller_number);
+            if (this.seller_number) {
+                getbusiId(
+                    this.seller_number,
+                    (response) => {
+                        if (response.data.check) {
+                            console.log(response);
+                            alert("사용 가능합니다");
+                        } else if (!response.data.check) {
+                            alert("중복된 아이디입니다.");
+                        }
+                    },
+                    (error) => {
+                        console.log(error);
+                    }
+                );
+            } else {
+                alert("아이디를 입력하세요");
+            }
+        },
         cl_idCheck() {
             console.log(this.id);
             if (this.id) {
