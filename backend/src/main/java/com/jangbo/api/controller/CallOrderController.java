@@ -1,18 +1,15 @@
 package com.jangbo.api.controller;
 
-import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.CallOrderService;
 import com.jangbo.api.service.StoreService;
 import com.jangbo.db.dto.CallOrderDto;
 import com.jangbo.db.entity.CallOrder;
-import com.jangbo.db.entity.Store;
 import com.jangbo.db.repository.StoreRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
