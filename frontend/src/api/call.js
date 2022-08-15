@@ -3,7 +3,7 @@ import { CallInstance } from "./index.js";
 const api = CallInstance();
 
 async function getCall(storeno, success, fail) {
-    await api.get(`/call?customerId=${storeno}`).then(success).catch(fail);
+    await api.get(`/call?storeno=${storeno}`).then(success).catch(fail);
 }
 
 async function makeCall(id, no, success, fail) {

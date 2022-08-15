@@ -69,7 +69,7 @@
                                     </el-input>
                                 </div>
                                 <div style="text-align: right">
-                                    <el-button type="danger" :icon="Check" circle @click="btn_add()" style="margin: 10px 20px" />
+                                    <el-button type="danger" :icon="Check" circle @click="cl_add()" style="margin: 10px 20px" />
                                 </div>
                             </div>
                         </div>
@@ -93,7 +93,7 @@ import StoreMenu from "@/components/Room/StoreMenu.vue";
 import UserVideo from "@/components/Openvidu/UserVideo";
 import RoomChat from "@/components/Openvidu/RoomChat.vue";
 import { Check, Star, StarFilled } from "@element-plus/icons-vue";
-import { makeCall, deleteCall } from "@/api/call";
+import { makeCall, deleteCall, getCall } from "@/api/call";
 import { setJJim } from "@/api/customer";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -271,8 +271,9 @@ export default {
         },
         //뒤로가기 만들기
         btn_out() {
-            this.$router.push({ name: "home" });
+            this.cl_cancleho();
             this.leaveSession();
+            this.$router.push({ name: "home" });
         },
         //주문하기
         btn_order() {
@@ -292,6 +293,24 @@ export default {
         cl_item(menu) {
             //메뉴 선택
             this.selected = menu;
+        },
+        //전체 호출 내역반환
+        totalhochul() {
+            getCall(
+                this.mySessionId,
+                (response) => {
+                    console.log(response.data);
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].customerId == this.userId) {
+                            this.number = response.data[i].orderNo;
+                            console.log(this.number);
+                        }
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
         },
         //호출하기
         cl_hochul() {
@@ -399,6 +418,12 @@ export default {
             this.session.on("signal:private-chat", (event) => {
                 this.$refs.chat.addMessage(event.data, false, true);
             });
+
+            //호출삭제되면 시그널받아서 순번 다시 조회하기
+            this.session.on("signal:delete-hochul", (event) => {
+                this.console.log(event);
+            });
+
             // --- Connect to the session with a valid user token ---
 
             // 'getToken' method is simulating what your server-side should do.
@@ -430,6 +455,36 @@ export default {
             });
 
             window.addEventListener("beforeunload", this.leaveSession);
+        },
+        // 판매자에서 호출삭제하면 받을 시그널
+        reHocul() {
+            this.session
+                .signal({
+                    data: {},
+                    to: [],
+                    type: "delete-hochul",
+                })
+                .then(() => {
+                    console.log("호출 삭제");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getHocul() {
+            this.session
+                .signal({
+                    data: {},
+                    to: [],
+                    type: "add-hochul",
+                })
+                .then(() => {
+                    console.log("호출 완료");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         sendMessage({ content, to }) {
