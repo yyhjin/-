@@ -381,7 +381,7 @@ const items = ref([])
     //chatting
     
     //menues
-    drawer_menues,innerDrawer,items,clickMenues,,clickMenues,
+    drawer_menues,innerDrawer,items,clickMenues,clickMenues,
     }
 
   }// setup 종료.
