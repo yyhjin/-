@@ -12,7 +12,6 @@
 				<CustomerComp 
                 v-for="(sub,idx) in subscribers" :key="idx" 
                 :stream-manager="sub" :customerData="customers[idx]" @click="connectCustomer(customers[idx])"
-                
                 />
 			</div>
 
@@ -22,6 +21,7 @@
                 <div>{{user.name}}</div>
             </el-card>
         </div> -->
+
 
         <!-- 상점 버튼 -->
         <div class="btns">
@@ -35,29 +35,12 @@
 
         <!-- 메뉴수정 drawer -->
         <el-drawer v-model="drawer_menues" title="메뉴수정" size="50%" @click="clickMenues">
-            <div>메뉴 수정</div>
-            
+            <MenuComp/>
         </el-drawer>
          <!-- 주문서 drawer -->
         <el-drawer v-model="drawer_bills" title="주문서" size="50%">
             <div>
-                <el-card class="bill_root" v-for="bill in bills" :key="bill">
-                    <div class="bill_header">
-                        <div class="order_date">
-                            주문일자:{{ bill.orderdate }}
-                        </div>
-                        <div class="order_no">
-                            주문번호:{{ bill.order_no }} 상태: {{ bill.status }}
-                        </div>
-                    </div>
-                    <div class="custmer_name">
-                        {{ bill.customer_id }}
-                    </div>
-                    <div class="order_items" v-for="(item, idx) in bill.order_items" :key="idx">
-                        <div class="item">{{ item.item_name }} x {{ item.count }} | {{ item.price * item.count }}원</div>
-                    </div>
-                    <el-button @click="innerDrawer = true">덤 추가!</el-button>
-                </el-card>
+                <BillComp v-for="bill in bills" :bill="bill" :key="bill.orderNo"/>
 
                 <!-- <div v-for="bill in bills" :key="bill">
                     <BillComp :bill="bill" />
@@ -84,9 +67,12 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { OpenVidu } from "openvidu-browser";
 //Comps
+//Comps
 import UserVideo from '@/components/Openvidu/UserVideo.vue';
 import CustomerComp from '@/components/Openvidu/CustomerComp.vue';
 import ChatComp from '@/components/Openvidu/RoomChat.vue'
+import MenuComp from '@/components/Room/MenuComp.vue'
+import BillComp from '@/components/Mystore/BillComp.vue'
 //APIs
 import {sellerOrderList} from '@/api/order.js'
 import {menuList ,getItem,delelteItem,modifyItem,addItem} from '@/api/item.js'
@@ -110,7 +96,7 @@ beforeRouteLeave (to, from, next) {
   }
 },
 components:{
-    ChatComp,UserVideo,CustomerComp 
+    ChatComp,UserVideo,CustomerComp,MenuComp,BillComp
 },
 
 setup(){
@@ -343,14 +329,19 @@ const bills = ref([])
 const loadBills = function(storeId){
     sellerOrderList(storeId,
     (res)=>{
+        //dummy
+        res.data=[{orderNo:1,customerId:"재승",orderItems:[{itemName:"사과",count:3,price:2000 },{itemName:"배",count:2,price:3000 },{itemName:"수박",count:1,price:10000 }],orderDate:"20220803",status:0 },
+        {orderNo:1,customerId:"재승",orderItems:[{itemName:"사과",count:3,price:2000 },{itemName:"배",count:2,price:3000 },{itemName:"수박",count:1,price:10000 }],orderDate:"20220803",status:1 }]
+
         this.bills=res.data
-        console.log(JSON.parse(this.bills))
     },
     ()=>{})
 }
 const clickBills = function(){
-    this.drawer_bills=true;
     this.loadBills(route.params.storeNo)
+    console.log(JSON.stringify(this.bills))
+    this.drawer_bills=true;
+    
 }
 
 
@@ -390,10 +381,10 @@ const items = ref([])
     //chatting
     
     //menues
-    drawer_menues,innerDrawer,items,clickMenues,
+    drawer_menues,innerDrawer,items,clickMenues,,clickMenues,
     }
 
- }// setup 종료.
+  }// setup 종료.
 }
 </script>
 
