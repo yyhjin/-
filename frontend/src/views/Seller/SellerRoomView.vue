@@ -22,6 +22,7 @@
             </el-card>
         </div> -->
 
+
         <!-- 상점 버튼 -->
         <div class="btns">
             <el-button type="primary" style="margin-left: 16px" @click="clickBills()">
@@ -65,6 +66,7 @@ import axios from 'axios';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { OpenVidu } from "openvidu-browser";
+//Comps
 //Comps
 import UserVideo from '@/components/Openvidu/UserVideo.vue';
 import CustomerComp from '@/components/Openvidu/CustomerComp.vue';
@@ -379,10 +381,10 @@ const items = ref([])
     //chatting
     
     //menues
-    drawer_menues,innerDrawer,items,clickMenues,
+    drawer_menues,innerDrawer,items,clickMenues,,clickMenues,
     }
 
- }// setup 종료.
+  }// setup 종료.
 }
 </script>
 
