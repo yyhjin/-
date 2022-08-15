@@ -30,8 +30,6 @@ public class CustomerController {
 
     private final InterStoreService interStoreService;
 
-    private final StoreService storeService;
-
     private final StoreRepository storeRepository;
 
     @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
@@ -39,7 +37,7 @@ public class CustomerController {
     public CheckResponse IdCheck(
             @PathVariable("customer_id") String customerId
     ) {
-        if (customerService.findByCustomerId(customerId).isEmpty()) {
+        if (customerService.findByCustomerId(customerId) == null) {
             return new CheckResponse(true);
         } else {
             return new CheckResponse(false);
