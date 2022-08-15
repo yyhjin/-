@@ -72,7 +72,9 @@
           </div>
 
           <div v-else>
-            <room-chat></room-chat>
+            <room-chat ref="chat"
+        @message="sendMessage"
+        :subscribers="subscribers"></room-chat>
           </div>
         </div>
       </div>
@@ -348,7 +350,7 @@ export default {
         this.session
           .connect(token, { clientData: this.myUserName })
           .then(() => {
-              let publisher = "";
+            let publisher = "";
             // --- Get your own camera stream with the desired properties ---
             if(this.isPublisher(this.myUserName)){
             publisher = this.OV.initPublisher(undefined, {
@@ -385,7 +387,7 @@ export default {
               this.session.publish(this.mainStreamManager);
           }else {
               //소비자일때 이렇게 하고 uservideo만 갔다쓰면됨
-             // this.session.publish(this.publisher);
+              //this.session.publish(this.publisher);
           }
             
            
