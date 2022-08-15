@@ -89,10 +89,10 @@ export default {
                 getId(
                     this.id,
                     (response) => {
-                        if (response.data.idCheck) {
+                        if (response.data.check) {
                             console.log(response);
                             alert("사용 가능합니다");
-                        } else if (!response.data.idCheck) {
+                        } else if (!response.data.check) {
                             alert("중복된 아이디입니다.");
                         }
                     },
