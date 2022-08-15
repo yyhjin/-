@@ -2,7 +2,6 @@ package com.jangbo.api.service;
 
 import com.jangbo.db.dto.CallOrderDto;
 import com.jangbo.db.entity.CallOrder;
-import com.jangbo.db.entity.Store;
 import com.jangbo.db.repository.CallOrderRepository;
 import com.jangbo.db.repository.StoreRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +14,6 @@ public class CallOrderService {
 
     @Autowired
     CallOrderRepository callOrderRepository;
-    StoreRepository storeRepository;
 
     public Integer getCount(Integer storeno) {
         return callOrderRepository.countByStoreNo(storeno);
@@ -26,15 +24,25 @@ public class CallOrderService {
     }
 
 
-    public List<CallOrderDto> findAllByStore_StoreNoOrderByCallOrderNoAsc(Integer storeno) {
-        return callOrderRepository.findAllByStoreNoOrderByCallOrderNoAsc(storeno);
+    public List<CallOrderDto> findAllByStoreNoOrderByOrderNoAsc(Integer storeno) {
+        return callOrderRepository.findAllByStoreNoOrderByOrderNoAsc(storeno);
     }
 
 
-    public void delete(Integer storeNo, String customerId) {
-        CallOrder callOrder = callOrderRepository.findByStoreNoAndCustomerId(storeNo, customerId);
+    public CallOrder findByStoreNoAndCustomerId(Integer storeNo, String customerId) {
+        return callOrderRepository.findByStoreNoAndCustomerId(storeNo, customerId);
+    }
+
+    public void delete(CallOrder callOrder) {
         callOrderRepository.delete(callOrder);
     }
 
 
+    public Integer updateAll(Integer storeNo) {
+        return callOrderRepository.updateAll(storeNo);
+    }
+
+    public Integer updateByIndex(Integer storeNo, int index) {
+        return callOrderRepository.updateByIndex(storeNo, index);
+    }
 }
