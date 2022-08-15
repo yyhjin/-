@@ -3,7 +3,6 @@ package com.jangbo.api.service;
 import com.jangbo.api.request.ItemEditPatchReq;
 import com.jangbo.api.request.ItemRecentPatchReq;
 import com.jangbo.api.request.ItemRegisterPostReq;
-import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.db.entity.Item;
 import com.jangbo.db.entity.Store;
 import com.jangbo.db.repository.ItemRepository;
@@ -12,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
-
 
 @RequiredArgsConstructor
 @Service

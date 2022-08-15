@@ -1,8 +1,6 @@
 package com.jangbo.api.service;
 
 import com.jangbo.db.dto.MarketDto;
-import com.jangbo.db.dto.StoreDto;
-import com.jangbo.db.entity.Market;
 import com.jangbo.db.repository.MarketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
