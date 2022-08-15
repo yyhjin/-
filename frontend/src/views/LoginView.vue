@@ -155,7 +155,7 @@ export default {
     margin-top: 40px;
     text-align: center;
     border: 2px solid #ff6f61;
-    border-radius: 30px;
+    border-radius: 20px;
 }
 
 .loginMenu {

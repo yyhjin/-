@@ -182,7 +182,7 @@ export default {
     width: 300px !important;
     margin-top: 40px;
     border: 2px solid #ff6f61;
-    border-radius: 30px;
+    border-radius: 20px;
     text-align: center;
 }
 
