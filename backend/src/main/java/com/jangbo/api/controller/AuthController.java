@@ -1,7 +1,6 @@
 package com.jangbo.api.controller;
 
 import com.jangbo.api.request.*;
-import com.jangbo.api.response.Response;
 import com.jangbo.api.response.ResponseSimple;
 import com.jangbo.api.service.Auth.AuthService;
 import com.jangbo.api.service.Auth.CookieUtil;
@@ -13,9 +12,10 @@ import com.jangbo.db.repository.CustomerRepository;
 import com.jangbo.db.repository.SellerRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.ResponseCookie;
 import org.springframework.web.bind.annotation.*;
 
@@ -75,7 +75,7 @@ public class AuthController {
             redisUtil.setDataExpire(refreshJwt, customer.getCustomerId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.setHeader("Set-Cookie",accessToken.toString());
             res.addHeader("Set-Cookie",refreshToken.toString());
-            res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
             return new ResponseSimple("success", "로그인에 성공했습니다.", customer.getCustomerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "로그인에 실패했습니다.", e.getMessage());
@@ -97,7 +97,7 @@ public class AuthController {
             redisUtil.setDataExpire(refreshJwt, seller.getSellerId(), JwtUtil.REFRESH_TOKEN_VALIDATION_SECOND);
             res.setHeader("Set-Cookie",accessToken.toString());
             res.addHeader("Set-Cookie",refreshToken.toString());
-            res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
             return new ResponseSimple("success", "로그인에 성공했습니다.", seller.getSellerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "로그인에 실패했습니다.", e.getMessage());
@@ -143,8 +143,19 @@ public class AuthController {
                                  HttpServletResponse res) {
 //         1. Access Token 검증
         if (!jwtUtil.validateToken(requestTokenDto.getAccessToken())) {
+            System.out.println("Accesstoken error");
             return new ResponseSimple("fail","잘못된 요청입니다.",null);
         }
+
+        if(!jwtUtil.validateToken(requestTokenDto.getRefreshToken())) {
+            System.out.println("RefreshToken error");
+            return new ResponseSimple("fail","잘못된 요청입니다.",null);
+        }
+
+        if (redisUtil.getBlackList(requestTokenDto.getAccessToken()) != null){
+            return new ResponseSimple("fail","이미 로그아웃된 유저입니다.",null);
+        }
+
         redisUtil.deleteData(requestTokenDto.getRefreshToken());
         authService.logout(requestTokenDto.getAccessToken(), requestTokenDto.getRefreshToken());
 
@@ -152,8 +163,84 @@ public class AuthController {
         ResponseCookie refreshToken = cookieUtil.deleteCookie(JwtUtil.REFRESH_TOKEN_NAME);
         res.setHeader("Set-Cookie",accessToken.toString());
         res.addHeader("Set-Cookie",refreshToken.toString());
-        res.setHeader("Access-Control-Allow-Origin", "http://localhost:8081");
+        res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
         return new ResponseSimple("success","로그아웃 되었습니다.",null);
     }
+
+    @ApiOperation(value = "getAccessToken - 소비자", notes="소비자의 accessToken 만료시에 refreshToken의 유효성 검사를 하고 accessToken을 재발급한다.",httpMethod = "POST")
+    @PostMapping("/re-issue/customer/{customer_no}")
+    public ResponseSimple customerReIssue(@PathVariable("customer_no") Integer customerNo,
+                                  @RequestBody @Valid RefreshTokenResponse refreshTokenRes,
+                                 HttpServletRequest req,
+                                 HttpServletResponse res) {
+
+        if (redisUtil.getData(refreshTokenRes.getRefreshToken()) == null){
+            return new ResponseSimple("fail","refreshToken error",null);
+        }
+        try {
+            final Customer customer = customerRepository.findOne(customerNo);
+            final String token = jwtUtil.generateToken(customer);
+            ResponseCookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token, 0);
+            res.setHeader("Set-Cookie",accessToken.toString());
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
+            return new ResponseSimple("success", "accessToken 재발급에 성공했습니다.", customer.getCustomerNo());
+        } catch (Exception e) {
+            return new ResponseSimple("error", "accessToken 재발급에 실패했습니다.", null);
+        }
+    }
+
+    @ApiOperation(value = "getAccessToken - 판매자", notes="판매자의 accessToken 만료시에 refreshToken의 유효성 검사를 하고 accessToken을 재발급한다.",httpMethod = "POST")
+    @PostMapping("/re-issue/seller/{seller_no}")
+    public ResponseSimple sellerReIssue(@PathVariable("seller_no") Integer sellerNo,
+                                  @RequestBody @Valid RefreshTokenResponse refreshTokenRes,
+                                  HttpServletRequest req,
+                                  HttpServletResponse res) {
+
+        if (redisUtil.getData(refreshTokenRes.getRefreshToken()) == null){
+            return new ResponseSimple("fail","refreshToken error",null);
+        }
+        try {
+            final Seller seller = sellerRepository.findOne(sellerNo);
+            final String token = jwtUtil.generateToken(seller);
+            ResponseCookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token, 0);
+            res.setHeader("Set-Cookie",accessToken.toString());
+            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
+            return new ResponseSimple("success", "accessToken 재발급에 성공했습니다.", seller.getSellerNo());
+        } catch (Exception e) {
+            return new ResponseSimple("error", "accessToken 재발급에 실패했습니다.", null);
+        }
+    }
+
+
+    @ApiOperation(value = "AccessToken의 유효성 확인", notes="accessToken의 유효성 검사를 한다.",httpMethod = "POST")
+    @PostMapping("/auth")
+    public boolean validation(@RequestBody @Valid AccessTokenResponse accessTokenRes,
+                                        HttpServletRequest req,
+                                        HttpServletResponse res) {
+
+        if (!jwtUtil.validateToken(accessTokenRes.getAccessToken())) {
+            log.info("잘못된 accessToken 입니다.");
+            return false;
+        } else if (redisUtil.getBlackList(accessTokenRes.getAccessToken()) != null) {
+            log.info("로그아웃된 accessToken 입니다.");
+            return false;
+        }
+        log.info("유효한 accessToken 입니다.");
+        return true;
+    }
+
+    @Data
+    @NoArgsConstructor
+    static class RefreshTokenResponse {
+        private String refreshToken;
+    }
+
+
+    @Data
+    @NoArgsConstructor
+    static class AccessTokenResponse {
+        private String accessToken;
+    }
+
 
 }

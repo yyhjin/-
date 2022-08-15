@@ -1,16 +1,13 @@
 package com.jangbo.api.controller;
 
+import com.jangbo.api.request.OrderItemsDto;
 import com.jangbo.api.request.OrderRegisterReq;
 import com.jangbo.api.request.OrderStateEditReq;
-import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.*;
-import com.jangbo.db.dto.OrderItemDto;
 import com.jangbo.db.dto.OrdersDto;
 import com.jangbo.db.entity.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Builder;
-import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -80,9 +77,12 @@ public class OrdersController {
 
 
     @ApiOperation(value = "주문" , notes="주문서를 생성한다.",httpMethod = "POST")
-    @PostMapping
+    @PostMapping("/{customer_no}/{store_no}")
     @Transactional
-    public ResponseEntity<Integer> createOrders(Integer storeNo, Integer customerNo, @RequestBody List<OrderRegisterReq> body) {
+    public ResponseEntity<Integer> createOrders(
+            @PathVariable("customer_no") Integer customerNo,
+            @PathVariable("store_no") Integer storeNo,
+            @RequestBody OrderRegisterReq body) {
 
         // 주문서 생성
         Integer marketno = storeService.findStoreById(storeNo).getMarket().getMarketNo();
@@ -97,21 +97,21 @@ public class OrdersController {
 
         Integer orderno = ordersService.ordersave(createorder).getOrderNo();
 
+
         // 주문 아이템 생성
-        for(int i = 0; i < body.size(); i++) {
-            Item item = itemService.findItemByItemNo(body.get(i).getItemNo());
+        for(int i = 0; i < body.getProducts().size(); i++) {
+            Item item = itemService.findItemByItemNo(body.getProducts().get(i).getItemNo());
 
             OrderItem orderitem = new OrderItem();
             orderitem.setOrders(createorder);
-            orderitem.setCount(body.get(i).getCount());
+            orderitem.setCount(body.getProducts().get(i).getCount());
             orderitem.setItemName(item.getItemName());
-            orderitem.setPrice(item.getPrice() * body.get(i).getCount());
+            orderitem.setPrice(item.getPrice() * body.getProducts().get(i).getCount());
 
 
             Integer orderitemno = orderItemService.orderitemsave(orderitem).getOrderItemNo();
         }
-//        Orders update = ordersService.findOrdersByOrderNo(orderno);
-//        OrdersDto result = new OrdersDto(update);
+
         return new ResponseEntity(orderno, HttpStatus.OK);
     }
 

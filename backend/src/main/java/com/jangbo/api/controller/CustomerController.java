@@ -5,6 +5,7 @@ import com.jangbo.api.service.CustomerService;
 import com.jangbo.api.service.InterStoreService;
 import com.jangbo.api.service.StoreService;
 import com.jangbo.db.entity.*;
+import com.jangbo.db.repository.StoreRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -30,6 +31,8 @@ public class CustomerController {
     private final InterStoreService interStoreService;
 
     private final StoreService storeService;
+
+    private final StoreRepository storeRepository;
 
     @ApiOperation(value = "아이디 중복 검사", notes="판매자 아이디를 중복 검사한다. 중복이 안되면 true, 중복이면 false",httpMethod = "GET")
     @GetMapping("/idcheck/{customer_id}")
@@ -70,7 +73,7 @@ public class CustomerController {
     public List<InterStoreDto> findInterStores(@PathVariable("customer_no") Integer customerNo) {
         List<InterStore> interStores = customerService.findOne(customerNo).getInterStores();
         List<InterStoreDto> result = interStores.stream()
-                .map(i -> new InterStoreDto(i, storeService.findStoreById(i.getStoreNo()).getStoreName()))
+                .map(i -> new InterStoreDto(i, storeRepository.findByStoreNo(i.getStoreNo()).getStoreName(), storeRepository.findByStoreNo(i.getStoreNo()).isStoreIdx()))
                 .collect(Collectors.toList());
         return result;
     }
@@ -110,9 +113,12 @@ public class CustomerController {
         private Integer storeNo;
         private String storeName;
 
-        public InterStoreDto(InterStore interStore, String storeName) {
+        private boolean storeIdx;
+
+        public InterStoreDto(InterStore interStore, String storeName, boolean storeIdx) {
             this.storeNo = interStore.getStoreNo();
             this.storeName = storeName;
+            this.storeIdx = storeIdx;
         }
 
     }
