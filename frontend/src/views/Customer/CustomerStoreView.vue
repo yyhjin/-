@@ -1,20 +1,24 @@
 <template>
 <div>
   <el-scrollbar height="800px">
-    <div class="about">
-      <h3 style="margin-left:10px; display:inline-block">{{this.storeName}}</h3>
-      <el-button type="danger" plain @click="btn_out()" style="float:right; margin:20px;">나가기</el-button>
+    <div class="about" style="margin-top:-10px; maring-bottom:-10px;">
+      <h3 style="margin-left:10px; display:inline-block ">{{this.storeName}}</h3>
+      <el-button type="danger" plain @click="btn_out()" style="float:right; margin-top:20px; margin-right:10px">나가기</el-button>
     </div>
-    <div style="height :200px">
-      오픈비두
+    <div style="height :250px;">
+      <user-video
+          v-for="sub in subscribers"
+          :key="sub.stream.connection.connectionId"
+          :stream-manager="sub"
+        />
     </div>
-    <div style="text-align : center">
+    <div style="text-align : center; margin-top:10px">
       <h3 style="display:inline-block"  v-if="this.hochul == true">호출 대기 중 입니다.....</h3>
       <h3 style="display:inline-block"  v-else > 호출을 눌러 문의하세요 </h3>
-      <button @click="cl_hochul()" v-if="this.hochul == false" style="float:right; margin-top:20px; margin-right:10px">호출하기
-      </button>
-      <button @click="cl_hochul()" v-else style="float:right; margin-top:20px; margin-right:10px">호출취소
-      </button>
+      <el-button type="danger" plain @click="cl_hochul()" v-if="this.hochul == false" style="float:right; margin-top:15px; margin-right:10px">호출하기
+      </el-button>
+      <el-button type="success" plain @click="cl_hochul()" v-else style="float:right; margin-top:15px; margin-right:10px">호출취소
+      </el-button>
     </div>
     <div class="scrollbar-flex-content ">
         <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" @click=cl_item(menu)>
@@ -82,20 +86,21 @@
 </template>
 <script>
 import StoreMenu from "@/components/Room/StoreMenu.vue";
-//import UserVideo from "@/components/Openvidu/UserVideo";
+import UserVideo from "@/components/Openvidu/UserVideo";
 import RoomChat from "@/components/Openvidu/RoomChat.vue";
 import {Check} from "@element-plus/icons-vue";
+import axios from 'axios';
 //import {useStore} from "vuex";
 //import {getItem} from "@/api/market";
 import {getOrder} from "@/api/market";
 import { ref } from "vue";
 import { ElMessage } from 'element-plus'
-//import { OpenVidu } from "openvidu-browser";
+import { OpenVidu } from "openvidu-browser";
 
-//axios.defaults.headers.post["Content-Type"] = "application/json";
+axios.defaults.headers.post["Content-Type"] = "application/json";
 
-//const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-//const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
+const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 window.onbeforeunload = () => {
   // Gracefully leave session
@@ -108,7 +113,34 @@ window.onbeforeunload = () => {
 export default {
   components: {
     StoreMenu,
+    UserVideo,
     RoomChat,
+  },
+
+  mounted(){
+    this.joinSession();
+  },
+  created() {
+   
+    this.myUserName = this.$route.params.userName;
+    this.myUserNo = this.$route.params.userNo;
+    this.mySessionId = this.$route.params.storeNo;
+    this.storeName = this.$route.params.storeName;
+    //this.sellerNo = this.$route.path.no (판매자 번호 받기)
+    //this.storeName = this.$route.params.storeName (가게 이름 받ㄱ기)
+    this.no = "1";
+    /* 메뉴검색
+    getItem(
+      12,
+      (response)=> {
+        console.log(response);
+        //this.menus = response.data;
+      },
+      (error) => {
+        console.log(error);
+      }
+      )
+      */
   },
   data(){
     return {
@@ -117,19 +149,21 @@ export default {
       mainStreamManager: undefined,
       publisher: undefined,
       subscribers: [],
-      new_subscribers: [],
 
-      mySessionId: "SessionA",
-      myUserName: "Participant" + Math.floor(Math.random() * 100),
+      myUserNo: "",
+      //오픈비두 필수입력
+      mySessionId: 1,
+      myUserName: "",
     };
   },
   setup(){
     //const store = useStore();
    // const customerNo = computed(() => store.state.userInfo.userNo);
     //const sellerNo = ref();
-    const storeName = ref("싱싱청과물");
+    const storeName = ref();
     const customerNo= ref("1");
     const sellerNo= ref("1");
+
     
     const menus = ref([{
       itemName:"고기",
@@ -197,26 +231,12 @@ export default {
 
     },
   },
-  created() {
-    //this.sellerNo = this.$route.path.no (판매자 번호 받기)
-    //this.storeName = this.$route.params.storeName (가게 이름 받ㄱ기)
-    this.no = "1";
-    /* 메뉴검색
-    getItem(
-      12,
-      (response)=> {
-        console.log(response);
-        //this.menus = response.data;
-      },
-      (error) => {
-        console.log(error);
-      }
-      )
-      */
-  },
+  
   methods: {
     btn_out(){
       //뒤로가기 만들기
+      this.$router.push({ name: "home" });
+      this.leaveSession();
     },
     btn_order(){
 
@@ -268,6 +288,263 @@ export default {
       }
       
     },
+    // 오픈비두
+    isPublisher(userName) {
+      return userName.includes("pu");
+    },
+
+    joinSession() {
+      // --- Get an OpenVidu object ---
+      this.OV = new OpenVidu();
+
+      // --- Init a session ---
+      this.session = this.OV.initSession();
+
+      // --- Specify the actions when events take place in the session ---
+
+      // On every new Stream received...
+      this.session.on("streamCreated", ({ stream }) => {
+
+        this.count++;
+        const subscriber = this.session.subscribe(stream);
+        console.log(stream.connection)
+        this.subscribers.push(subscriber);
+      });
+      
+
+      // On every Stream destroyed...
+      this.session.on("streamDestroyed", ({ stream }) => {
+        // this.$store.commit('decrease')
+        this.count--;
+        const index = this.subscribers.indexOf(stream.streamManager, 0);
+        if (index >= 0) {
+          this.subscribers.splice(index, 1);
+        }
+      });
+
+      // On every asynchronous exception...
+      this.session.on("exception", ({ exception }) => {
+        console.warn(exception);
+      });
+
+      // public 채팅 signal 받기
+      this.session.on("signal:public-chat", (event) => {
+        this.$refs.chat.addMessage(
+          event.data,
+          JSON.parse(event.data).sender === this.myUserName,
+          false
+        );
+      });
+
+      // private 채팅 signal 받기
+      this.session.on("signal:private-chat", (event) => {
+        this.$refs.chat.addMessage(event.data, false, true);
+      });
+      // --- Connect to the session with a valid user token ---
+
+      // 'getToken' method is simulating what your server-side should do.
+      // 'token' parameter should be retrieved and returned by your own backend
+      this.getToken(this.mySessionId).then((token) => {
+        this.session
+          .connect(token, { clientData: this.myUserName })
+          .then(() => {
+              let publisher = "";
+            // --- Get your own camera stream with the desired properties ---
+            if(this.isPublisher(this.myUserName)){
+            publisher = this.OV.initPublisher(undefined, {
+              audioSource: undefined, // The source of audio. If undefined default microphone
+              videoSource: undefined, // The source of video. If undefined default webcam
+              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+              publishVideo: true, // Whether you want to start publishing with your video enabled or not
+              //resolution: "640x480", // The resolution of your video
+              resolution: "120x80",
+              frameRate: 30, // The frame rate of your video
+              insertMode: "PREPEND", // How the video is inserted in the target element 'video-container'
+              mirror: false, // Whether to mirror your local video or not
+            });
+                this.mainStreamManager = publisher;
+
+            // --- Publish your stream ---
+           
+            }
+            else{
+            publisher = this.OV.initPublisher(undefined, {
+              audioSource: undefined, // The source of audio. If undefined default microphone
+              videoSource: undefined, // The source of video. If undefined default webcam
+              publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+              publishVideo: false, // Whether you want to start publishing with your video enabled or not
+              resolution: "120x80", // The resolution of your video
+              frameRate: 30, // The frame rate of your video
+              insertMode: "AFTER", // How the video is inserted in the target element 'video-container'
+              mirror: false, // Whether to mirror your local video or not
+            });
+              this.publisher = publisher;
+            }
+
+          if(this.isPublisher(this.myUserName)){
+              this.session.publish(this.mainStreamManager);
+          }else {
+              //소비자일때 이렇게 하고 uservideo만 갔다쓰면됨
+             // this.session.publish(this.publisher);
+          }
+            
+           
+          })
+          .catch((error) => {
+            console.log(
+              "There was an error connecting to the session:",
+              error.code,
+              error.message
+            );
+          });
+      });
+
+      window.addEventListener("beforeunload", this.leaveSession);
+    },
+
+    sendMessage({ content, to }) {
+      let now = new Date();
+      let current = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false, // true인 경우 오후 10:25와 같이 나타냄.
+      });
+
+      let messageData = {
+        content: content,
+        sender: this.myUserName,
+        time: current,
+      };
+
+      // 전체 메시지
+      if (to === "all") {
+        this.session
+          .signal({
+            data: JSON.stringify(messageData),
+            to: [],
+            type: "public-chat",
+          })
+          .then(() => {
+            console.log("메시지 전송 완료");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      // 개인 메시지
+      if (to !== "all") {
+        this.session
+          .signal({
+            data: JSON.stringify(messageData),
+            to: [to],
+            type: "private-chat",
+          })
+          .then(() => {
+            // 내가 보낸 개인 메시지 추가
+            this.$refs.chat.addMessage(JSON.stringify(messageData), true, true);
+            console.log("메시지 전송 완료");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
+
+    leaveSession() {
+      // --- Leave the session by calling 'disconnect' method over the Session object ---
+      if (this.session) this.session.disconnect();
+
+      this.session = undefined;
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
+
+      window.removeEventListener("beforeunload", this.leaveSession);
+    },
+/*
+    updateMainVideoStreamManager(stream) {
+      if (this.mainStreamManager === stream) return;
+      this.mainStreamManager = stream;
+    },
+*/
+    /**
+     * --------------------------
+     * SERVER-SIDE RESPONSIBILITY
+     * --------------------------
+     * These methods retrieve the mandatory user token from OpenVidu Server.
+     * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
+     * the API REST, openvidu-java-client or openvidu-node-client):
+     *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
+     *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
+     *   3) The Connection.token must be consumed in Session.connect() method
+     */
+
+    getToken(mySessionId) {
+      return this.createSession(mySessionId).then((sessionId) =>
+        this.createToken(sessionId)
+      );
+    },
+
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
+    createSession(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
+            JSON.stringify({
+              customSessionId: sessionId,
+            }),
+            {
+              auth: {
+                username: "OPENVIDUAPP",
+                password: OPENVIDU_SERVER_SECRET,
+              },
+            }
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.id))
+          .catch((error) => {
+            if (error.response.status === 409) {
+              resolve(sessionId);
+            } else {
+              console.warn(
+                `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`
+              );
+              if (
+                window.confirm(
+                  `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+                )
+              ) {
+                location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+              }
+              reject(error.response);
+            }
+          });
+      });
+    },
+
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
+    createToken(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+            {},
+            {
+              auth: {
+                username: "OPENVIDUAPP",
+                password: OPENVIDU_SERVER_SECRET,
+              },
+            }
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.token))
+          .catch((error) => reject(error.response));
+      });
+    },
+
 
 
   },
