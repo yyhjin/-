@@ -1,18 +1,25 @@
 <template>
     <div class="div_big">
         <div class="div_market" v-for="item in storeList" v-bind:key="item">
-            <img class="mk_img" src="@/assets/logo.png" alt="상점사진" @click="cl_detail" />
+            <img class="mk_img" src="@/assets/defaultshop.png" alt="상점사진" @click="cl_detail" style="margin-top: 5px; margin-left: 5px" />
 
             <h3 class="mk_name">{{ item.name }}</h3>
-            <button @click="cl_detail(item.no)">방 정보보기</button>
-            <button @click="cl_enter(item)">입장하기</button>
             <h4 class="mk_items">{{ item.item }}</h4>
+            <div style="float: right">
+                <el-button type="success" round size="small" @click="cl_detail(item.no)">정보</el-button>
+                <el-button type="danger" round size="small" @click="cl_enter(item)" style="margin-right: 10px" v-if="item.idx == true">입장</el-button>
+                <el-button type="info" round size="small" @click="cl_no" style="margin-right: 10px" v-else>입장</el-button>
+            </div>
         </div>
     </div>
+
     <el-dialog v-model="dialogVisible" title="방 정보" width="90%" :before-close="handleClose">
         <div>
             <div>
                 <h3>{{ this.one_market.storeName }}</h3>
+            </div>
+            <div style="display: inline-block">
+                <img class="mk_img" src="@/assets/defaultshop.png" alt="상점사진" />
             </div>
             <div>
                 <h4>판매 품목 : {{ this.one_market.storeCategory }}</h4>
@@ -34,6 +41,7 @@
 import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { StoreDetail, StoreRoomDetail } from "@/api/store.js";
+import { ElMessage } from "element-plus";
 
 export default {
     name: "SearchType",
@@ -54,17 +62,26 @@ export default {
             storeSubject: "",
             storeIntro: "",
         });
+        const img = ref();
         const dialogVisible = ref(false);
         const handleClose = (done) => {
             done();
         };
+        const open = (message) => {
+            ElMessage({
+                showClose: true,
+                message: message,
+                type: "warning",
+            });
+        };
         const storeList = computed(() => store.state.storeInMarket.stores);
-        return { one_market, storeList, dialogVisible, handleClose };
+        return { img, one_market, storeList, dialogVisible, handleClose, open };
     },
 
-    mounted() {},
-
     methods: {
+        cl_no() {
+            this.open("라이브 중이 아닙니다");
+        },
         cl_enter(item) {
             this.item = item;
             console.log(this.item);
@@ -95,6 +112,18 @@ export default {
                     console.log(error);
                 }
             );
+            /*
+            getIMG(
+                no,
+                (response) => {
+                    console.log(response);
+                    this.img = response;
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+            */
             console.log("자세히");
         },
     },
