@@ -1,6 +1,8 @@
 import axios from "axios";
 //i7a602.p.ssafy.io
 //localhost
+axios.defaults.headers.post['Access-Control-Allow-Origin']='*';
+
 function CustomerInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/customer",
@@ -18,7 +20,7 @@ function SellerInstance() {
         header: {
             "content-type": "application/json",
         },
-        // withCredentials: true // 쿠키 cors 통신 설정
+         withCredentials: true // 쿠키 cors 통신 설정
     });
     return instance;
 }
