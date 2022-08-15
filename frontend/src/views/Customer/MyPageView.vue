@@ -80,6 +80,7 @@ export default {
     components: { OrderComp },
     setup() {
         const store = useStore();
+        const userNo = computed(() => store.state.userInfo.userNo);
         const userinfo = reactive({
             id: "",
             name: "",
@@ -90,8 +91,6 @@ export default {
         };
 
         const orderList = computed(() => store.state.orderStore.orderList);
-        const userNo = computed(() => store.state.userInfo.userNo);
-
         const getOrder = (no) => {
             store.dispatch(`orderStore/getOrder`, no);
         };
@@ -102,48 +101,8 @@ export default {
   data(){
     return{
       // dummy data from vuex
-      dummy : this.$store.state.userinfo,
-
-      userType:this.$store.state.userinfo.userType,
-
+      userType : this.$store.state.userinfo.userType,
       zzimlist:[],
-      dummyorder: [{
-                order_no: 1,
-                order_items: [
-                    { item_no: 1, item_name: "사과", count: 3, orderprice: 2000 },
-                    { item_no: 2, item_name: "포도", count: 2, orderprice: 3000 },
-                    { item_no: 3, item_name: "수박", count: 1, orderprice: 10000 },
-                    { item_no: 4, item_name: "샤인머스켓", count: 1, orderprice: 20000 }
-                ],
-                orderdate: "20220302",
-                status: 1,
-                store: { store_no: 1, store_name: "재승이네 청과", store_img: null }
-            },
-            {
-                order_no: 1,
-                order_items: [
-                    { item_no: 1, item_name: "사과", count: 3, orderprice: 2000 },
-                    { item_no: 2, item_name: "포도", count: 2, orderprice: 3000 },
-                    { item_no: 3, item_name: "수박", count: 1, orderprice: 10000 },
-                    { item_no: 4, item_name: "샤인머스켓", count: 1, orderprice: 20000 }
-                ],
-                orderdate: "20220302",
-                status: 1,
-                store: { store_no: 1, store_name: "재승이네 청과", store_img: null }
-            },
-            {
-                order_no: 1,
-                order_items: [
-                    { item_no: 1, item_name: "사과", count: 3, orderprice: 2000 },
-                    { item_no: 2, item_name: "포도", count: 2, orderprice: 3000 },
-                    { item_no: 3, item_name: "수박", count: 1, orderprice: 10000 },
-                    { item_no: 4, item_name: "샤인머스켓", count: 1, orderprice: 20000 }
-                ],
-                orderdate: "20220302",
-                status: 1,
-                store: { store_no: 1, store_name: "재승이네 청과", store_img: null }
-            }
-          ],
     }
   },
   created() {

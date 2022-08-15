@@ -12,7 +12,6 @@
 				<CustomerComp 
                 v-for="(sub,idx) in subscribers" :key="idx" 
                 :stream-manager="sub" :customerData="customers[idx]" @click="connectCustomer(customers[idx])"
-                
                 />
 			</div>
 
@@ -22,48 +21,32 @@
                 <div>{{user.name}}</div>
             </el-card>
         </div> -->
+
         <!-- 상점 버튼 -->
         <div class="btns">
-            <el-button type="primary" style="margin-left: 16px" @click="drawer_bills = true">
+            <el-button type="primary" style="margin-left: 16px" @click="clickBills()">
                 주문서
             </el-button>
-            <el-button type="primary" style="margin-left: 16px" @click="drawer_menues = true">
+            <el-button type="primary" style="margin-left: 16px" @click="clickMenues()">
                 메뉴수정
             </el-button>
         </div>
 
         <!-- 메뉴수정 drawer -->
-        <el-drawer v-model="drawer_menues" title="메뉴수정" size="50%">
-            <div>메뉴 수정</div>
+        <el-drawer v-model="drawer_menues" title="메뉴수정" size="50%" @click="clickMenues">
+            <MenuComp/>
         </el-drawer>
          <!-- 주문서 drawer -->
         <el-drawer v-model="drawer_bills" title="주문서" size="50%">
             <div>
-                <el-card class="bill_root" v-for="bill in bills" :key="bill">
-                    <div class="bill_header">
-                        <div class="order_date">
-                            주문일자:{{ bill.orderdate }}
-                        </div>
-                        <div class="order_no">
-                            주문번호:{{ bill.order_no }} 상태: {{ bill.status }}
-                        </div>
-                    </div>
-                    <div class="custmer_name">
-                        {{ bill.customer_id }}
-                    </div>
-                    <div class="order_items" v-for="(item, idx) in bill.order_items" :key="idx">
-                        <div class="item">{{ item.item_name }} x {{ item.count }} | {{ item.price * item.count }}원</div>
-                    </div>
-                    <el-button @click="innerDrawer = true">덤 추가!</el-button>
-                </el-card>
+                <BillComp v-for="bill in bills" :bill="bill" :key="bill.orderNo"/>
 
                 <!-- <div v-for="bill in bills" :key="bill">
                     <BillComp :bill="bill" />
                     <el-button @click="innerDrawer = true">덤 추가!</el-button>
                 </div> -->
                 <!-- 덤 추가 INNER DRAWER -->
-                <el-drawer v-model="innerDrawer" title="I'm inner Drawer" :append-to-body="true"
-                    :before-close="handleClose">
+                <el-drawer v-model="innerDrawer" title="I'm inner Drawer" :append-to-body="true">
                     <el-button v-for="item in items" :key="item" @click="addService()">
                         {{ item }}
                     </el-button>
@@ -82,9 +65,15 @@ import axios from 'axios';
 import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import { OpenVidu } from "openvidu-browser";
+//Comps
 import UserVideo from '@/components/Openvidu/UserVideo.vue';
 import CustomerComp from '@/components/Openvidu/CustomerComp.vue';
-import ChatComp from '@/components/Room/ChatComp.vue'
+import ChatComp from '@/components/Openvidu/RoomChat.vue'
+import MenuComp from '@/components/Room/MenuComp.vue'
+import BillComp from '@/components/Mystore/BillComp.vue'
+//APIs
+import {sellerOrderList} from '@/api/order.js'
+import {menuList ,getItem,delelteItem,modifyItem,addItem} from '@/api/item.js'
 
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443"
@@ -105,7 +94,7 @@ beforeRouteLeave (to, from, next) {
   }
 },
 components:{
-    ChatComp,UserVideo,CustomerComp 
+    ChatComp,UserVideo,CustomerComp,MenuComp,BillComp
 },
 
 setup(){
@@ -129,11 +118,9 @@ setup(){
         userName:route.params.userName,
         userNo:route.params.userNo,
     })
-   
 
-    
     //구매자only 코드
-    const isConnected =ref(true)
+    const isConnected =ref(false)
     //판매자only 코드 :손님정보 저장.
     const customers = ref([])//  {customerNo,customerName,connectionId,isConnected}
     
@@ -154,7 +141,7 @@ const joinSession = function() {
         const subscriber = this.session.subscribe(stream);
 
         //기본 연결시 video off 음성off 로 설정.
-        subscriber.properties.subscribeToVideo =  true;
+        subscriber.properties.subscribeToVideo =  false;
         subscriber.properties.subscribeToAudio =  true;
         this.subscribers.push(subscriber);
         
@@ -168,7 +155,6 @@ const joinSession = function() {
         })
         console.log(JSON.stringify(this.customers[-1]))
 
-
     });
 
     this.session.on('streamDestroyed', ({ stream }) => {
@@ -178,7 +164,6 @@ const joinSession = function() {
         }
         //입장손님 data도 같이 날려주자.
         this.customers.splice(index,1);
-        
     });
 
     this.session.on('exception', ({ exception }) => {
@@ -197,9 +182,6 @@ const joinSession = function() {
             
         }
     });
-   
-
-
 
     // --- Connect to the session with a valid user token ---
 
@@ -331,22 +313,58 @@ function connectCustomer(customer){
       )
  }
 
-//bills
+/* bills */
+
+//  주문 flow : db의존으로.
+//         1. 고객이 주문을 넣으면  axios 요청과 / signal 을 모두 보낸다.
+//         2. 판매자는 signal 을 통해 주문서 도착 여부를 확인할 수 있다.
+//         3. axios 요청에의해 주문은 db에 들어가 있으며,
+//         4. 판매자는 주문서 탭을 작동 시 axios 요청으로 주문서를 갱신한다.
+//          
 const drawer_bills = ref(false)
-const bills = ref()
-//users
-let users = ref()
-const connectUser=function(idx){
-    for(let i =0; i< this.users.length;i++){
-        this.users[i].status="disconnected";
-    }
-    this.users[idx].status="connected";
+const bills = ref([])
+
+const loadBills = function(storeId){
+    sellerOrderList(storeId,
+    (res)=>{
+        //dummy
+        res.data=[{orderNo:1,customerId:"재승",orderItems:[{itemName:"사과",count:3,price:2000 },{itemName:"배",count:2,price:3000 },{itemName:"수박",count:1,price:10000 }],orderDate:"20220803",status:0 },
+        {orderNo:1,customerId:"재승",orderItems:[{itemName:"사과",count:3,price:2000 },{itemName:"배",count:2,price:3000 },{itemName:"수박",count:1,price:10000 }],orderDate:"20220803",status:1 }]
+
+        this.bills=res.data
+    },
+    ()=>{})
 }
-//menues
+const clickBills = function(){
+    this.loadBills(route.params.storeNo)
+    console.log(JSON.stringify(this.bills))
+    this.drawer_bills=true;
+    
+}
+
+
+
+/* chatting */
+
+
+
+/* 메뉴 */
 const drawer_menues = ref(false)
-// inner drawer(덤)
+
+const clickMenues = function(){
+    this.drawer_menues=true;
+    menuList(route.params.storeNo,//입장할때 받아온 storeNo
+    (res)=>{
+        this.items=res.data
+        console.log(JSON.parse(this.items))
+    },
+    ()=>{})
+    } 
+
+
+/* 덤 */
 const innerDrawer = ref(false)
-const items = ref(['사과', '포도', '수박', '배'])
+const items = ref([])
 
    return{
     //components, 
@@ -357,14 +375,14 @@ const items = ref(['사과', '포도', '수박', '배'])
     isConnected,
     customers,
     //bills
-    drawer_bills,bills,
-    //users
-    users,connectUser,
+    drawer_bills,bills,loadBills,clickBills,
+    //chatting
+    
     //menues
-    drawer_menues,innerDrawer,items
+    drawer_menues,innerDrawer,items,clickMenues,
     }
 
-}// setup 종료.
+ }// setup 종료.
 }
 </script>
 
