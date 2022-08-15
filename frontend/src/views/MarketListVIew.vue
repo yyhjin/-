@@ -16,7 +16,7 @@
                 </div>
             </el-card>
         </el-space>
-        <div style="margin-top: 50px">
+        <div style="margin-top: 40px">
             <search-list></search-list>
         </div>
     </div>

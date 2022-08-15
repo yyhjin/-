@@ -52,9 +52,9 @@ export default {
 <style>
 .div_list {
     margin: 10px 0px;
-    border: 1px solid black;
-    border-radius: 15%;
-    background-color: rgba(255, 111, 97, 0.5);
+    border: 1px solid #ff6f61;
+    border-radius: 10%;
+    background-color: rgba(255, 111, 97, 0.4);
 }
 
 .listDiv {
