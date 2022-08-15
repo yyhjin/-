@@ -6,6 +6,9 @@ ENTRYPOINT ["java","-jar", "/app.jar","--server.servlet.context-path=/be"]
 
 EXPOSE 8080
 
+LABEL maintainer="hseol96@naver.com"
+
+
 
 
 

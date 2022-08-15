@@ -139,5 +139,16 @@ public class StoreService {
         return storeNo;
     }
 
+    @Transactional
+    public Integer updateStoreIdx(Integer storeNo) {
+        Store store = storeRepository.findByStoreNo(storeNo);
+        if (!store.isStoreIdx()) {
+            store.updateStoreIdx(true);
+        } else {
+            store.updateStoreIdx(false);
+        }
+        return storeNo;
+    }
+
 
 }

@@ -1,0 +1,237 @@
+Index: backend/src/main/resources/application.properties
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>#it will be set build date by gradle. if this value is @build.date@, front-end is development mode\n\nserver.port=8080\n\nserver.servlet.contextPath=/\n# Charset of HTTP requests and responses. Added to the \"Content-Type\" header if not set explicitly.\nserver.servlet.encoding.charset=UTF-8\n# Enable http encoding support.\nserver.servlet.encoding.enabled=true\n# Force the encoding to the configured charset on HTTP requests and responses.\nserver.servlet.encoding.force=true\n\n# Swagger\nspringfox.documentation.swagger.use-model-v3=false\nspring.mvc.pathmatch.matching-strategy = ANT_PATH_MATCHER\n\n\n#database\n#API ?? ? sql?? ??\nspring.jpa.show-sql=true\n#MySQL ?? ??\n#spring.datasource.url=jdbc:mysql://localhost:3306/jangbo?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true\nspring.datasource.url=jdbc:mysql://i7a602.p.ssafy.io:3306/jangbo?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true\nspring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver\nspring.datasource.hikari.username=root\n#spring.datasource.hikari.username=jang\nspring.datasource.hikari.password=jangbo602\n#MySQL ?? ??\nspring.jpa.database=mysql\nspring.jpa.hibernate.ddl-auto=update\nspring.jpa.hibernate.use-new-id-generator-mappings= true\nspring.jpa.properties.hibernate.show_sql=true\nspring.jpa.hibernate.naming.strategy=org.hibernate.cfg.ImprovedNamingStrategy\n\n\n#logging\n#logging.level.root=INFO\n#logging.level.com.samsung.security=DEBUG\n#logging.level.org.springframework.web=DEBUG\n#logging.level.org.apache.tiles=INFO\n#logging.level.org.springframework.boot=DEBUG\n#logging.level.org.springframework.security=DEBUG\n\nspring.devtools.livereload.enabled=true\n#logging.level.org.hibernate.SQL=debug\n\n\n#Redis\nspring.cache.type=redis\nspring.redis.host=i7a602.p.ssafy.io\n#spring.redis.host=localhost\nspring.redis.port=6379\n\n# JWT Secret Key\nspring.jwt.secret=parkjongsunparkjongsunparkjongsunparkjongsunparkjongsunparkjongsunparkjongsunparkjongsun\n\n#S3 Bucket\n# AWS Account Credentials (AWS ?? ?)\ncloud.aws.credentials.accessKey=AKIA4AH6N5ICTV77QQW2\ncloud.aws.credentials.secretKey=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\n\n\n# AWS S3 bucket Info (S3 ????)\ncloud.aws.s3.bucket=jangbo-image\ncloud.aws.region.static=ap-northeast-2\ncloud.aws.stack.auto=false\n\n##AWS S3 Bucket URL ????..?\n#cloud.aws.s3.bucket.url=https://jangbo-image.s3.ap-northeast-2.amazonaws.com/key-name\n\n\n# file upload max size (?? ??? ?? ??)\nspring.servlet.multipart.max-file-size=20MB\nspring.servlet.multipart.max-request-size=20MB\n\n\n# gradle ? ? ???? ?\njar {\nenabled = false\n}\n\n\n\n# openvidu\nserver.ssl.enabled=true\nserver.ssl.key-store=classpath:openvidu-selfsigned.jks\nserver.ssl.key-store-password=openvidu\nserver.ssl.key-store-type=JKS\nserver.ssl.key-alias=openvidu-selfsigned\n\nopenvidu.url=https://localhost:4443/\nopenvidu.secret=MY_SECRET\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>ISO-8859-1
+===================================================================
+diff --git a/backend/src/main/resources/application.properties b/backend/src/main/resources/application.properties
+--- a/backend/src/main/resources/application.properties	(revision 8fb11774ae712c733280be904ea1ad26643eab42)
++++ b/backend/src/main/resources/application.properties	(date 1660293116528)
+@@ -19,11 +19,11 @@
+ #API ?? ? sql?? ??
+ spring.jpa.show-sql=true
+ #MySQL ?? ??
+-#spring.datasource.url=jdbc:mysql://localhost:3306/jangbo?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+-spring.datasource.url=jdbc:mysql://i7a602.p.ssafy.io:3306/jangbo?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
++spring.datasource.url=jdbc:mysql://localhost:3306/jangbo?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
++#spring.datasource.url=jdbc:mysql://i7a602.p.ssafy.io:3306/jangbo?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+ spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+-spring.datasource.hikari.username=root
+-#spring.datasource.hikari.username=jang
++#spring.datasource.hikari.username=root
++spring.datasource.hikari.username=jang
+ spring.datasource.hikari.password=jangbo602
+ #MySQL ?? ??
+ spring.jpa.database=mysql
+@@ -47,8 +47,8 @@
+ 
+ #Redis
+ spring.cache.type=redis
+-spring.redis.host=i7a602.p.ssafy.io
+-#spring.redis.host=localhost
++#spring.redis.host=i7a602.p.ssafy.io
++spring.redis.host=localhost
+ spring.redis.port=6379
+ 
+ # JWT Secret Key
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1660279286148)
++++ b/.idea/vcs.xml	(date 1660279286148)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1660280592583)
++++ b/.idea/misc.xml	(date 1660280592583)
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="FrameworkDetectionExcludesConfiguration">
++    <file type="web" url="file://$PROJECT_DIR$/backend" />
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_18" project-jdk-name="11" project-jdk-type="JavaSDK" />
++  <component name="ProjectType">
++    <option name="id" value="jpab" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+new file mode 100644
+--- /dev/null	(date 1660296525117)
++++ b/.idea/gradle.xml	(date 1660296525117)
+@@ -0,0 +1,21 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
++  <component name="GradleSettings">
++    <option name="linkedExternalProjectsSettings">
++      <GradleProjectSettings>
++        <option name="delegatedBuild" value="true" />
++        <option name="testRunner" value="GRADLE" />
++        <option name="distributionType" value="DEFAULT_WRAPPED" />
++        <option name="externalProjectPath" value="$PROJECT_DIR$/backend" />
++        <option name="gradleHome" value="$PROJECT_DIR$/../../../../gradle-6.9.1" />
++        <option name="gradleJvm" value="11" />
++        <option name="modules">
++          <set>
++            <option value="$PROJECT_DIR$/backend" />
++          </set>
++        </option>
++      </GradleProjectSettings>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/inspectionProfiles/Project_Default.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/inspectionProfiles/Project_Default.xml b/.idea/inspectionProfiles/Project_Default.xml
+new file mode 100644
+--- /dev/null	(date 1660279285970)
++++ b/.idea/inspectionProfiles/Project_Default.xml	(date 1660279285970)
+@@ -0,0 +1,6 @@
++<component name="InspectionProjectProfileManager">
++  <profile version="1.0">
++    <option name="myName" value="Project Default" />
++    <inspection_tool class="Eslint" enabled="true" level="WARNING" enabled_by_default="true" />
++  </profile>
++</component>
+\ No newline at end of file
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1660279286128)
++++ b/.idea/modules.xml	(date 1660279286128)
+@@ -0,0 +1,8 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/S07P12A602.iml" filepath="$PROJECT_DIR$/.idea/S07P12A602.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1660310490383)
++++ b/.idea/compiler.xml	(date 1660310490383)
+@@ -0,0 +1,14 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <annotationProcessing>
++      <profile name="Gradle Imported" enabled="true">
++        <outputRelativeToContentRoot value="true" />
++        <processorPath useClasspath="false">
++          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.24/13a394eed5c4f9efb2a6d956e2086f1d81e857d9/lombok-1.18.24.jar" />
++        </processorPath>
++        <module name="backend.main" />
++      </profile>
++    </annotationProcessing>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/jpa-buddy.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jpa-buddy.xml b/.idea/jpa-buddy.xml
+new file mode 100644
+--- /dev/null	(date 1660279286184)
++++ b/.idea/jpa-buddy.xml	(date 1660279286184)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="JpaBuddyIdeaProjectConfig">
++    <option name="defaultUnitInitialized" value="true" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/S07P12A602.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/S07P12A602.iml b/.idea/S07P12A602.iml
+new file mode 100644
+--- /dev/null	(date 1660279286110)
++++ b/.idea/S07P12A602.iml	(date 1660279286110)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+new file mode 100644
+--- /dev/null	(date 1660279286193)
++++ b/.idea/jarRepositories.xml	(date 1660279286193)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="MavenRepo" />
++      <option name="name" value="MavenRepo" />
++      <option name="url" value="https://repo.maven.apache.org/maven2/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
