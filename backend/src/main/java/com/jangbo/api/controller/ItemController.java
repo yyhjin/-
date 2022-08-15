@@ -3,18 +3,14 @@ package com.jangbo.api.controller;
 import com.jangbo.api.request.ItemEditPatchReq;
 import com.jangbo.api.request.ItemRecentPatchReq;
 import com.jangbo.api.request.ItemRegisterPostReq;
-import com.jangbo.api.request.StoreEditPatchReq;
-import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.ItemService;
 import com.jangbo.db.entity.Item;
-import com.jangbo.db.entity.Store;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

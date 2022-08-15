@@ -10,8 +10,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="7576cf72-5a55-4328-ab56-2e1a36062a40" name="변경" comment="" />
 >>>>>>> c066cb5c9097c6c7706860621416708752ae2875
+=======
+    <list default="true" id="7576cf72-5a55-4328-ab56-2e1a36062a40" name="변경" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/jangbo/api/controller/CallOrderController.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/jangbo/api/controller/CallOrderController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/jangbo/api/service/CallOrderService.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/jangbo/api/service/CallOrderService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/jangbo/db/dto/CallOrderDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/jangbo/db/dto/CallOrderDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/main/java/com/jangbo/db/repository/CallOrderRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/main/java/com/jangbo/db/repository/CallOrderRepository.java" afterDir="false" />
+    </list>
+>>>>>>> b41113bc78343f2f69cf3129b5345e7d97ea9ebc
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -69,6 +79,7 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
   </component>
   <component name="JpbToolWindowState">
     <option name="myId2FirstActivated">
@@ -98,6 +109,7 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
+<<<<<<< HEAD
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
@@ -115,8 +127,23 @@
     "settings.editor.selected.configurable": "reference.settingsdialog.project.gradle",
     "spring.configuration.checksum": "3241ca6184e7e06d7e2313367e60913a"
 >>>>>>> c066cb5c9097c6c7706860621416708752ae2875
+=======
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;프로젝트&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settingsdialog.project.gradle&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;3241ca6184e7e06d7e2313367e60913a&quot;
+>>>>>>> b41113bc78343f2f69cf3129b5345e7d97ea9ebc
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
 <<<<<<< HEAD

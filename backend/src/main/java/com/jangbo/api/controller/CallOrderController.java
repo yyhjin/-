@@ -1,6 +1,5 @@
 package com.jangbo.api.controller;
 
-import com.jangbo.api.response.StoreInfoRes;
 import com.jangbo.api.service.CallOrderService;
 import com.jangbo.api.service.StoreService;
 import com.jangbo.db.dto.CallOrderDto;
@@ -12,9 +11,9 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Api(value = "호출 api", tags={"호출"})
@@ -30,7 +29,7 @@ public class CallOrderController {
     @ApiOperation(value = "상점번호로 호출 조회" , notes="상점번호로 호출 내역 정보를 조회한다.",httpMethod = "GET")
     @GetMapping
     public ResponseEntity<CallOrderDto> findCallByStoreNo(Integer storeno) {
-        List<CallOrderDto> calls = callOrderService.findAllByStore_StoreNoOrderByCallOrderNoAsc(storeno);
+        List<CallOrderDto> calls = callOrderService.findAllByStoreNoOrderByOrderNoAsc(storeno);
         return new ResponseEntity(calls, HttpStatus.OK);
     }
 
@@ -55,27 +54,31 @@ public class CallOrderController {
     }
 
 
-
     @ApiOperation(value = "상점번호, 소비자아이디로 호출 삭제" , notes="소비자아이디로 해당 상점의 호출 정보를 삭제한다.",httpMethod = "DELETE")
     @DeleteMapping
+    @Transactional
     public ResponseEntity<Integer> deleteCall(Integer storeNo, String customerId) {
-        callOrderService.delete(storeNo, customerId);
 
-        //업데이트
+        // 지워질 호출 데이터
+        CallOrder target = callOrderService.findByStoreNoAndCustomerId(storeNo, customerId);
+        int index = target.getOrderNo();
+        int count = callOrderService.getCount(storeNo);
+
+        // 삭제
+        callOrderService.delete(target);
+
+        // 주문순서 1번이 지워질 때 - 전체 orderno 업데이트
+        if(index == 1) {
+            callOrderService.updateAll(storeNo);
+        }
+        // 주문순서 중간 번호가 지워질 때 - 뒤 호출의 orderno 업데이트
+        else if(1 < index  && index < count) {
+            callOrderService.updateByIndex(storeNo, index);
+        }
+
+
         return new ResponseEntity(storeNo, HttpStatus.NO_CONTENT);
     }
 
 
-//    @DeleteMapping("/{storeNo}")
-//    @ApiOperation(value = "상점 정보 삭제 api", notes = "상점번호로 정보삭제", httpMethod = "DELETE")
-//    public ResponseEntity<Integer> delete(@PathVariable("storeNo") Integer storeNo) {
-//        storeService.delete(storeNo);
-//        return new ResponseEntity<Integer>(storeNo, HttpStatus.NO_CONTENT);
-//    }
-
-//    @PostMapping("/create")
-//    public ResponseEntity<List<Market>> createMarket(String marketname, String marketaddr, Float lat, Float lng, String sidogugun) {
-//        Market market = marketService.insertMarket(marketname, marketaddr, lat, lng, sidogugun);
-//        return new ResponseEntity(market, HttpStatus.OK);
-//    }
 }

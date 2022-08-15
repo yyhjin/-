@@ -1,35 +1,19 @@
 package com.jangbo.api.service;
 
 import com.jangbo.db.entity.Customer;
-import com.jangbo.db.repository.CustomerRepositoryTemp;
+import com.jangbo.db.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class CustomerService {
-    private final CustomerRepositoryTemp customerRepository;
+    private final CustomerRepository customerRepository;
 
-    @Transactional
-    public Integer join(Customer customer) {
-        validateDuplicateCustomer(customer);
-        customerRepository.save(customer);
-        return customer.getCustomerNo();
-    }
-
-    private void validateDuplicateCustomer(Customer seller) {
-        //EXCEPTION
-        List<Customer> findCustomers = customerRepository.findByCustomerId(seller.getCustomerId());
-        if (!findCustomers.isEmpty()) {
-            throw new IllegalStateException("이미 존재하는 회원입니다.");
-        }
-    }
-
-    public List<Customer> findByCustomerId(String customerId) {
+    public Customer findByCustomerId(String customerId) {
         return customerRepository.findByCustomerId(customerId);
     }
 
