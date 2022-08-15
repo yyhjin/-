@@ -72,7 +72,7 @@ function OrderInstance() {
 
 function CallInstance() {
     const instance = axios.create({
-        baseURL: "http://localhost:8080/be/",
+        baseURL: "https://i7a602.p.ssafy.io:8080/be/",
         headers: {
             "content-type": "application/json",
         },
