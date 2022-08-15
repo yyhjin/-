@@ -13,7 +13,7 @@
                             <h3 style="margin-left: 5px">{{ zzimstore.storeName }}</h3>
                         </div>
                         <div class="zzimstore_btn" style="float: right; margin-top: 15px">
-                            <el-button type="danger" round @click="cl_enter(item)" style="margin-right: 10px" v-if="zzimstore.storeName == true">입장</el-button>
+                            <el-button type="danger" round @click="cl_enter(zzimstore)" style="margin-right: 10px" v-if="zzimstore.storeIdx == true">입장</el-button>
                             <el-button type="info" round @click="cl_no()" style="margin-right: 10px" v-else>입장</el-button>
                         </div>
                     </div>
@@ -24,11 +24,13 @@
 </template>
 <script>
 import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
 
 export default {
     props: ["zzimstore"],
 
     setup() {
+        const router = useRouter();
         const open = (message) => {
             ElMessage({
                 showClose: true,
@@ -36,11 +38,20 @@ export default {
                 type: "warning",
             });
         };
-        return { open };
+        return { open, router };
     },
     methods: {
         cl_no() {
             this.open("상점 CLOSE");
+        },
+        cl_enter(item) {
+            console.log(item);
+            const params = { storeNo: item.storeNo, storeName: item.storeName, storeJJim: true };
+            console.log(params);
+            this.router.push({
+                name: "customer_room",
+                params: params,
+            });
         },
     },
 };

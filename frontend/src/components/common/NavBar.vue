@@ -5,23 +5,35 @@
             <el-button type="danger" size="large" @click="$router.push({ name: 'mystore', params: { id: $store.state.userInfo.userNo } })">가게 닫기</el-button>
         </span>
     </nav>
-    <nav class="nav_default" v-else>
-        <router-link to="/">Home</router-link> | <router-link to="/selectjoin">회원가입</router-link> | <router-link to="/login">로그인</router-link> |
-        <router-link to="/search">시장검색</router-link> | <router-link :to="{ name: 'mypage', params: { id: $store.state.userInfo.userNo } }">마이페이지</router-link> |
-        <router-link :to="{ name: 'mystore', params: { id: $store.state.userInfo.userNo } }">내 가게</router-link> |
 
-        <span v-if="$store.state.userInfo.userNo != ''" @click="logout">로그아웃</span>
+    <nav>
+        <img src="@/assets/jang.png" alt="logo" style="width: 100px" />
+        <div class="div_nav" style="float: right; margin-top: 30px">
+            <router-link style="margin-right: 20px" to="/login" v-if="this.userNo == '9999'">로그인</router-link>
+            <router-link style="margin-right: 20px" to="/selectjoin" v-if="this.userNo == '9999'">회원가입</router-link>
+            <router-link style="margin-right: 10px" to="/search" v-if="this.userType == '구매자' && this.userNo != '9999'">시장검색</router-link>
+            <router-link style="margin-right: 10px" :to="{ name: 'mypage', params: { id: $store.state.userInfo.userNo } }" v-if="this.userType == '구매자' && this.userNo != '9999'"
+                >마이페이지</router-link
+            >
+            <router-link style="margin-right: 20px" :to="{ name: 'mystore', params: { id: $store.state.userInfo.userNo } }" v-if="this.userType == '판매자' && this.userNo != '9999'"
+                >내 가게</router-link
+            >
+            <span style="margin-right: 10px" v-if="this.userNo != '9999'" @click="logout">로그아웃</span>
+        </div>
     </nav>
 </template>
 
 <script>
 import { useStore } from "vuex";
+import { computed } from "vue";
 import { ElMessage } from "element-plus";
 
 export default {
     name: "SearchAddress",
     setup() {
         const store = useStore();
+        const userType = computed(() => store.state.userInfo.userType);
+        const userNo = computed(() => store.state.userInfo.userNo);
 
         const logOut = () => {
             store.dispatch(`userInfo/logout`);
@@ -35,7 +47,8 @@ export default {
                 type: "warning",
             });
         };
-        return { logOut, logOutMarket, out };
+
+        return { userType, userNo, logOut, logOutMarket, out };
     },
     methods: {
         logout() {
@@ -56,16 +69,6 @@ export default {
 .logo {
     max-width: 100%;
     max-height: 100%;
-}
-
-.div_img {
-    width: 100px;
-    float: left;
-}
-
-.nav_default {
-    padding: 30px;
-    text-align: center;
 }
 
 nav a {

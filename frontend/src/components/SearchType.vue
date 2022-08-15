@@ -8,7 +8,7 @@
             <div style="float: right">
                 <el-button type="success" round size="small" @click="cl_detail(item.no)">정보</el-button>
                 <el-button type="danger" round size="small" @click="cl_enter(item)" style="margin-right: 10px" v-if="item.idx == true">입장</el-button>
-                <el-button type="info" round size="small" @click="cl_no" style="margin-right: 10px" v-else>입장</el-button>
+                <el-button type="info" round size="small" @click="cl_no()" style="margin-right: 10px" v-else>입장</el-button>
             </div>
         </div>
     </div>
@@ -42,6 +42,7 @@ import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
 import { StoreDetail, StoreRoomDetail } from "@/api/store.js";
 import { ElMessage } from "element-plus";
+import { useRouter } from "vue-router";
 
 export default {
     name: "SearchType",
@@ -54,6 +55,7 @@ export default {
 
     setup() {
         const store = useStore();
+        const router = useRouter();
         const one_market = reactive({
             storeName: "",
             storeCategory: "",
@@ -75,7 +77,7 @@ export default {
             });
         };
         const storeList = computed(() => store.state.storeInMarket.stores);
-        return { img, one_market, storeList, dialogVisible, handleClose, open };
+        return { img, router, one_market, storeList, dialogVisible, handleClose, open };
     },
 
     methods: {
@@ -83,8 +85,13 @@ export default {
             this.open("상점 CLOSE");
         },
         cl_enter(item) {
-            this.item = item;
-            console.log(this.item);
+            //this.item = item;
+            const params = { storeNo: item.no, storeName: item.name };
+            console.log(params);
+            this.router.push({
+                name: "customer_room",
+                params: params,
+            });
         },
         cl_detail(no) {
             this.dialogVisible = true;

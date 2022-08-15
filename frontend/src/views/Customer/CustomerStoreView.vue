@@ -25,7 +25,7 @@
                 <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" />
             </div>
             <div style="text-align: center; margin-top: 10px">
-                <h3 style="display: inline-block" v-if="this.hochul == true">호출 대기 중 입니다.. 대기 : {{ this.number }}번</h3>
+                <h3 style="display: inline-block" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h3>
                 <h3 style="display: inline-block" v-else>호출을 눌러 문의하세요</h3>
                 <el-button type="danger" plain @click="cl_hochul()" v-if="this.hochul == false" style="float: right; margin-top: 15px; margin-right: 10px">호출하기 </el-button>
                 <el-button type="success" plain @click="cl_cancleho()" v-else style="float: right; margin-top: 15px; margin-right: 10px">호출취소 </el-button>
@@ -96,6 +96,7 @@ import { Check, Star, StarFilled } from "@element-plus/icons-vue";
 import { makeCall, deleteCall } from "@/api/call";
 import { setJJim } from "@/api/customer";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import axios from "axios";
 //import {getItem} from "@/api/market";
 import { getOrder } from "@/api/market";
@@ -127,8 +128,9 @@ export default {
         this.joinSession();
     },
     created() {
-        this.myUserName = this.$route.params.userName;
+        //this.myUserName = this.$route.params.userName;
         //this.myUserNo = this.$route.params.userNo;
+        this.jjim = this.$route.params.storeJJim;
         this.mySessionId = this.$route.params.storeNo;
         this.storeName = this.$route.params.storeName;
         //this.sellerNo = this.$route.path.no (판매자 번호 받기)
@@ -163,11 +165,9 @@ export default {
     },
     setup() {
         const store = useStore();
-        // const customerNo = computed(() => store.state.userInfo.userNo);
-        //const sellerNo = ref();
+        const router = useRouter();
+        const customerNo = computed(() => store.state.userInfo.userNo);
         const storeName = ref();
-        const customerNo = ref("1");
-        const sellerNo = ref("1");
         const number = ref();
         const myUserNo = computed(() => store.state.userInfo.userNo);
         const userId = computed(() => store.state.userInfo.userId);
@@ -232,7 +232,7 @@ export default {
             ElMessage.error(message);
         };
 
-        return { Check, Star, StarFilled, jjim, myUserNo, number, userId, params, customerNo, storeName, sellerNo, menus, selected, orderItems, hochul, content, deleteRow, open };
+        return { router, Check, Star, StarFilled, jjim, myUserNo, number, userId, params, customerNo, storeName, menus, selected, orderItems, hochul, content, deleteRow, open };
     },
     computed: {
         money() {
@@ -263,18 +263,17 @@ export default {
                 }
             );
         },
+        //뒤로가기 만들기
         btn_out() {
-            //뒤로가기 만들기
             this.$router.push({ name: "home" });
             this.leaveSession();
         },
+        //주문하기
         btn_order() {
             getOrder(
-                //this.params,
-                //JSON.stringify(this.params),
-                //{storeNo:this.sellerNo, customerNo:this.customerNo},
                 this.customerNo,
-                this.sellerNo,
+                //sessionId가 상점번호
+                this.mySessionId,
                 this.params,
                 (response) => {
                     console.log(response);
@@ -285,8 +284,10 @@ export default {
             );
         },
         cl_item(menu) {
+            //메뉴 선택
             this.selected = menu;
         },
+        //호출하기
         cl_hochul() {
             console.log("호출");
             console.log(this.userId + " " + this.mySessionId);
@@ -303,6 +304,7 @@ export default {
                 }
             );
         },
+        //호출 취소
         cl_cancleho() {
             console.log("호출취소");
             console.log(this.userId + " " + this.mySessionId);
@@ -318,14 +320,17 @@ export default {
                 }
             );
         },
+        //장바구니보기
         btn_jang() {
             this.content = true;
             console.log("jang");
         },
+        //채팅보기
         btn_chat() {
             this.content = false;
             console.log("chat");
         },
+        //장바구니에 추가하기
         btn_add() {
             console.log(this.selected.itemName);
             if (this.selected.itemName == "") {
