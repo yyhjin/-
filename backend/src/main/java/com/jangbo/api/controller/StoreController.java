@@ -21,7 +21,7 @@ import java.util.List;
 
 @Api(value = "상점api", tags = {"상점"})
 @RestController
-@RequestMapping("/store")
+@RequestMapping("/be/store")
 public class StoreController {
 
     @Autowired
@@ -41,7 +41,7 @@ public class StoreController {
     }
 
     /*상점 목록 조회*/
-    @GetMapping("market/{marketNo}")
+    @GetMapping("/market/{marketNo}")
     @ApiOperation(value = "한 시장안에 상점 목록 api", notes = "전체 조회(대기화면에 뿌릴거임)", httpMethod = "GET")
     public ResponseEntity<List<Store>> findStores(@PathVariable("marketNo") Integer marketNo) {
         List<Store> storeList = storeService.findStoresByMarket(marketNo);
@@ -54,6 +54,14 @@ public class StoreController {
     public ResponseEntity<StoreInfoRes> findStoreById(@PathVariable("storeNo") Integer storeNo) {
         StoreInfoRes storeInfoRes = storeService.findStoreById(storeNo);
         return new ResponseEntity<StoreInfoRes>(storeInfoRes, HttpStatus.OK);
+    }
+
+    /* 상점 정보 조회*/
+    @GetMapping("/seller/{sellerNo}")
+    @ApiOperation(value = "상점 정보 조회 api", notes="판매자번호로 정보조회",httpMethod = "GET")
+    public ResponseEntity<Store> findStoreBySellerId(@PathVariable("sellerNo") Integer sellerNo) {
+        Store store = storeService.findStoreBySeller(sellerNo);
+        return new ResponseEntity<Store>(store, HttpStatus.OK);
     }
 
     /*상점 등록 및 프로필 사진*/
@@ -75,7 +83,7 @@ public class StoreController {
     }
 
     /*사진 불러오기*/
-    @GetMapping("image/{storeNo}")
+    @GetMapping("/image/{storeNo}")
     @ApiOperation(value = "프로필 사진 불러오기 api", notes = "상점사진 불러오기", httpMethod = "GET")
     public ResponseEntity<String> findImgUrl(@PathVariable("storeNo") Integer storeNo) throws IOException {
         String imgUrl = fileService.downloadImg(storeNo);
@@ -126,7 +134,7 @@ public class StoreController {
     }
 
     /* 방 정보 수정 */
-    @PatchMapping("room/{storeNo}")
+    @PatchMapping("/room/{storeNo}")
     @ApiOperation(value = "방 정보 수정 api", notes = "방 정보 수정, 바뀐 부분만 업데이트 해준다.", httpMethod = "PATCH")
     public ResponseEntity<Integer> updateRoom(@PathVariable("storeNo") Integer storeNo, @RequestBody RoomEditPatchReq roomEditPatchReq) {
         Integer updatedStoreNo = storeService.updateRoom(storeNo, roomEditPatchReq);

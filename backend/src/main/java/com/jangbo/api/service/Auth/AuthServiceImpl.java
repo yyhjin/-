@@ -23,6 +23,9 @@ public class AuthServiceImpl implements AuthService {
 
     private final SaltUtil saltUtil;
 
+    private final RedisUtil redisUtil;
+    private final JwtUtil jwtUtil;
+
     //판매자 - 회원가입
     @Override
     public void signUpSeller(SellerRegisterReq sellerRegisterReq){
@@ -112,6 +115,11 @@ public class AuthServiceImpl implements AuthService {
         customer.setSalt(new Salt(salt));
         customer.setCustomerPwd(saltUtil.encodePassword(salt, customerPwdUpdate));
         customerRepository.save(customer);
+    }
+
+    @Override
+    public void logout(String accessToken, String refreshToken) {
+        redisUtil.setBlackList(accessToken, "accessToken", jwtUtil.getExpiration(accessToken));
     }
 
 }

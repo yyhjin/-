@@ -3,10 +3,10 @@ package com.jangbo.db.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
+import org.yaml.snakeyaml.error.Mark;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-
 
 
 @Entity
@@ -54,7 +54,7 @@ public class Store {
 
 
     @Builder
-    public Store(Integer storeNo, String storeName, String storeCategory, String storePhone, String storeAddr, String storeImg,Seller seller, Market market, String storeSubject, String storeIntro) {
+    public Store(Integer storeNo, String storeName, String storeCategory, String storePhone, String storeAddr, String storeImg, Seller seller, Market market, String storeSubject, String storeIntro) {
         this.storeNo = storeNo;
         this.storeName = storeName;
         this.storeCategory = storeCategory;
@@ -68,11 +68,12 @@ public class Store {
 
     }
 
-    public void updateStore(String storeName, String storeCategory, String storePhone, String storeAddr) {
+    public void updateStore(String storeName, String storeCategory, String storePhone, String storeAddr, Market market) {
         this.storeName = storeName;
         this.storeCategory = storeCategory;
         this.storePhone = storePhone;
         this.storeAddr = storeAddr;
+        this.market = market;
 
     }
 
@@ -81,7 +82,8 @@ public class Store {
         this.storeIntro = storeIntro;
 
     }
-    public void updateImg(String fileName){
+
+    public void updateImg(String fileName) {
         this.storeImg = fileName;
     }
 

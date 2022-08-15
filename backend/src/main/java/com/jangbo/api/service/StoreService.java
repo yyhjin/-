@@ -27,9 +27,10 @@ public class StoreService {
     private final FileService fileService;
 
 
-    /**
-     * 상점- 전체 목록 조회
-     */
+
+
+
+    /** 상점- 전체 목록 조회  */
     @Transactional(readOnly = true)
     public List<StoreInfoRes> findAll() {
 
@@ -61,6 +62,13 @@ public class StoreService {
         return new StoreInfoRes(store);
     }
 
+    @Transactional(readOnly = true)
+    public Store findStoreBySeller(Integer sellerNo) {
+        return storeRepository.findBySeller(sellerRepository.findOne(sellerNo));
+
+    }
+
+
 
     /**
      * 상점 - 상점 등록
@@ -88,11 +96,10 @@ public class StoreService {
      */
     @Transactional
     public Integer updateStore(Integer storeNo, StoreEditPatchReq storeEditPatchReq) {
-
+        Market market = marketRepository.getOne(storeEditPatchReq.getMarketNo());
         Store store = storeRepository.findById(storeNo)
                 .orElseThrow(() -> new IllegalAccessError("[storeNo=" + storeNo + "] 해당 상점은 존재하지 않습니다."));
-
-        store.updateStore(storeEditPatchReq.getStoreName(), storeEditPatchReq.getStoreCategory(), storeEditPatchReq.getStorePhone(), storeEditPatchReq.getStoreAddr());
+        store.updateStore(storeEditPatchReq.getStoreName(), storeEditPatchReq.getStoreCategory(), storeEditPatchReq.getStorePhone(), storeEditPatchReq.getStoreAddr(), market);
 
         return storeNo;
     }

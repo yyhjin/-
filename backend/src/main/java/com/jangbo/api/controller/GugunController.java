@@ -16,7 +16,7 @@ import java.util.List;
 
 @Api(value = "구,군 api", tags={"구,군"})
 @RestController
-@RequestMapping("gugun")
+@RequestMapping("/be/gugun")
 public class GugunController {
 
     @Autowired
