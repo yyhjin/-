@@ -90,7 +90,7 @@ export default {
             // 오픈버튼 임시로 만들어 둿어요.
             this.$router.push({
         name: 'seller_room',
-        params: { id:1 }
+        params: { storeNo:29 }
       })
         },
         cl_add() {

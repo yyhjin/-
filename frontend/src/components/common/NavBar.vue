@@ -1,5 +1,12 @@
 <template>
-    <nav class="nav_room" v-if="$route.path.substring(0, 5) == '/room'">room 안에 진입했을때 변경된 navbar</nav>
+    <nav class="nav_room" v-if="$route.path.substring(0, 5) == '/room'"
+    style="display:flex; justify-content:space-between">
+    <span>room 안에 진입했을때 변경된 navbar</span> 
+    <span>
+        <el-button type="danger" size="large" @click="$router.go(-2)">가게 닫기</el-button>
+    </span>
+   
+    </nav>
     <nav class="nav_default" v-else>
         <router-link to="/">Home</router-link> | <router-link to="/selectjoin">회원가입</router-link> | <router-link to="/login">로그인</router-link> |
         <router-link to="/search">시장검색</router-link> | <router-link :to="{ name: 'mypage', params: { id: 1 } }">마이페이지 </router-link> |
@@ -45,7 +52,7 @@ export default {
 
 <style scoped>
 .nav_room {
-    height: 30px;
+    height: 40px;
 }
 .logo {
     max-width: 100%;

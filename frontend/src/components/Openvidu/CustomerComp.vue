@@ -1,23 +1,29 @@
 <template>
-    <div v-if="streamManager" class="video">
-        <ov-video :stream-manager="streamManager" isSeller="true" />
-        <div>
-            <!-- <p>{{ clientData }}</p> -->
+        <div v-if="streamManager"
+         :class="`customer ${customerData.isConnected? 'on':'off'} `">
+            <ov-video :stream-manager="streamManager" isSeller="false" />
+            <div>
+                {{customerData.customerName}}
+                <div v-if="customerData.isConnected">음성 연결됨.</div>
+            </div>
         </div>
-    </div>
 </template>
 
 <script>
 import OvVideo from "./OvVideo";
-
 export default {
-    name: "UserVideo",
+    name: "CustomerComp",
     components: {
         OvVideo,
     },
-    props: {
+    data(){
+        return{
+            isSeller:false
+        }
+    },
+     props: {
         streamManager: Object,
-        isSeller:Boolean
+        customerData: Object
     },
     computed: {
         clientData() {
@@ -32,6 +38,10 @@ export default {
             return JSON.parse(connection.data);
         },
     },
+
 };
 </script>
-<style></style>
+
+<style>
+
+</style>
