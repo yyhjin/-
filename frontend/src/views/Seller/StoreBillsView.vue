@@ -78,11 +78,37 @@ export default {
                 }
             )
         },
+            //  bill:{
+            //         "customerId": "string",
+            //         "customerNo": 0,
+            //         "marketName": "string",
+            //         "marketNo": 0,
+            //         "orderDate": "2022-08-15T09:30:47.114Z",
+            //         "orderItems": [
+            //         {
+            //             "count": 0,
+            //             "itemName": "string",
+            //             "orderItemNo": 0,
+            //             "orderNo": 0,
+            //             "price": 0
+            //         }
+            //         ],
+            //         "orderNo": 0,
+            //         "status": "string",
+            //         "storeName": "string",
+            //         "storeNo": 0
+            //     } 
+
+
+        
         loadBills(storeNo){
             sellerOrderList(storeNo,
             (res)=>{
-                //dummy
-                res.data=[{order_no:1,customer_id:1,order_items:[{item_name:"사과",count:3,price:2000 },{item_name:"배",count:2,price:3000 },{item_name:"수박",count:1,price:10000 }],orderdate:"20220803",status:0 },{order_no:2,customer_id:1,order_items:[{item_name:"사과",count:3,price:2000 },{item_name:"배",count:2,price:3000 },{item_name:"수박",count:1,price:10000 }],orderdate:"20220803",status:1 },{order_no:2,customer_id:1,order_items:[{item_name:"사과",count:3,price:2000 },{item_name:"배",count:2,price:3000 },{item_name:"수박",count:1,price:10000 }],orderdate:"20220803",status:2 }]
+               console.log(`주문내역loaded data:${JSON.stringify(res.data)}`)
+                
+                //dummydummydummydummydummydummydummydummydummydummydummydummydummy
+                res.data=[{orderNo:1,customerId:"재승",orderItems:[{itemName:"사과",count:3,price:2000 },{itemName:"배",count:2,price:3000 },{itemName:"수박",count:1,price:10000 }],orderDate:"20220803",status:0 },
+                {orderNo:1,customerId:"재승",orderItems:[{itemName:"사과",count:3,price:2000 },{itemName:"배",count:2,price:3000 },{itemName:"수박",count:1,price:10000 }],orderDate:"20220803",status:1 }]
                 
                 console.log(`주문내역loaded data:${JSON.stringify(res.data)}`)
                 this.bills=res.data

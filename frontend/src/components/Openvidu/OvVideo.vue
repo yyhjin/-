@@ -1,5 +1,5 @@
 <template>
-	<video v-if="isSeller=='true'" class="seller-stream" autoplay/>
+	<video v-if="isSeller=='0'" class="seller-stream" autoplay/>
 	<video v-else class="customer-stream" autoplay/>
 </template>
 
@@ -8,7 +8,7 @@ export default {
 	name: 'OvVideo',
 	props: {
 		streamManager: Object,
-		isSeller: Boolean
+		isSeller: String
 	},
 
 	mounted () {

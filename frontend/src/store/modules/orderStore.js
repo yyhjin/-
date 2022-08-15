@@ -13,7 +13,7 @@ const orderStore = {
                 marketNo: "9999",
                 storeNo: "777",
                 storeName: "우리동네 분식집",
-                status: "완료",
+                status: "1", 
                 orderNo: "356",
                 orderDate: "2022-08-10",
                 orderItems: [

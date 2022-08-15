@@ -3,15 +3,20 @@
     style="display:flex; justify-content:space-between">
     <span>room 안에 진입했을때 변경된 navbar</span> 
     <span>
-        <el-button type="danger" size="large" @click="$router.go(-2)">가게 닫기</el-button>
+        <el-button type="danger" size="large" @click="$router.push(
+            { name: 'mystore', params: { id: $store.state.userInfo.userNo } });">가게 닫기</el-button>
     </span>
    
     </nav>
     <nav class="nav_default" v-else>
-        <router-link to="/">Home</router-link> | <router-link to="/selectjoin">회원가입</router-link> | <router-link to="/login">로그인</router-link> |
-        <router-link to="/search">시장검색</router-link> | <router-link :to="{ name: 'mypage', params: { id: 1 } }">마이페이지 </router-link> |
-        <router-link :to="{ name: 'mystore', params: { id: 1 } }">내 가게</router-link> |
-        <span @click="logout">로그아웃</span>
+        <router-link to="/">Home</router-link> | 
+        <router-link to="/selectjoin">회원가입</router-link> | 
+        <router-link v-if="$store.state.userInfo.userNo==''" to="/login">로그인</router-link> |
+        <router-link to="/search">시장검색</router-link> | 
+        <router-link v-if="$store.state.userInfo.userNo" :to="{ name: 'mypage', params: { id: $store.state.userInfo.userNo} }">마이페이지</router-link> |
+        <router-link v-if="$store.state.userInfo.userType=='판매자'" :to="{ name: 'mystore', params: { id: $store.state.userInfo.userNo} }">내 가게</router-link> |
+      
+        <span v-if="$store.state.userInfo.userNo!=''" @click="logout" >로그아웃</span> 
     </nav>
 </template>
 

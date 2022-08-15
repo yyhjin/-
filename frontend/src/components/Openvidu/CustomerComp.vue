@@ -1,7 +1,7 @@
 <template>
         <div v-if="streamManager"
          :class="`customer ${customerData.isConnected? 'on':'off'} `">
-            <ov-video :stream-manager="streamManager" isSeller="false" />
+            <ov-video :stream-manager="streamManager" isSeller="1" />
             <div>
                 {{customerData.customerName}}
                 <div v-if="customerData.isConnected">음성 연결됨.</div>
