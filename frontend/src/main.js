@@ -5,11 +5,11 @@ import store from "./store";
 import ElementPlus from "element-plus";
 import "element-plus/dist/index.css";
 import VueCookies from "vue3-cookies";
-import * as ElementPlusIconsVue  from '@element-plus/icons-vue'
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 createApp(App).use(store).use(router).use(ElementPlus).use(VueCookies).mount("#app");
 
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
-  App.component(key, component)
+    App.component(key, component);
 }
 
 window.Kakao.init("7f4fe16346b6216e38bc88071db9e21b");

@@ -46,6 +46,7 @@ export default {
 
         const setUserType = (type) => store.commit("userInfo/SET_USERTYPE", type);
         const setUserNo = (no) => store.commit("userInfo/SET_USERNO", no);
+        const setUserId = (no) => store.commit("userInfo/SET_USERID", no);
         const open = () => {
             ElMessage({
                 message: "로그인 성공",
@@ -59,7 +60,7 @@ export default {
             });
         };
 
-        return { id, password, open, open2, userno, userType, setUserNo, setUserType, cookies };
+        return { id, password, open, open2, userno, userType, setUserNo, setUserId, setUserType, cookies };
     },
 
     watch: {
@@ -93,9 +94,10 @@ export default {
                             console.log(response);
                             if (response.data.response == "success") {
                                 this.setUserNo(response.data.data);
+                                this.setUserId(this.id);
                                 this.open();
                                 //this.$cookies.set("hi", "hihi", 2, "/");
-                               // this.$cookies.get("accessToken");
+                                // this.$cookies.get("accessToken");
                                 //console.log(this.$cookies.get("refreshToken"));
                                 //jwt 받아오기
                             } else {

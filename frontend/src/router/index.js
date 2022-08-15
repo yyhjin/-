@@ -15,9 +15,11 @@ import StoreProfileView from "../views/Seller/StoreProfileView.vue";
 import StoreMenuView from "../views/Seller/StoreMenuView.vue";
 import StoreBillsView from "../views/Seller/StoreBillsView.vue";
 import StoreRegisterView from "../views/Seller/StoreRegisterView.vue";
-import SellerRoomView from "../views/Seller/SellerRoomView.vue";
+// import SellerRoomView from "../views/Seller/SellerRoomView.vue"; lazy-loading 대체
 import SellerProfileView from "../views/Seller/SellerProfileView";
-import OpenVidu  from "../views/OpenVidu";
+// import OpenVidu  from "../views/OpenVidu";
+import TestTwo from "../views/Seller/TestTwo.vue"
+
 
 import store from "@/store/index";
 import { ElMessage } from "element-plus";
@@ -44,7 +46,7 @@ const routes = [
     {
         path: "/",
         name: "home",
-        component: OpenVidu,
+        component: TestTwo,
     },
     {
         path: "/selectjoin",
@@ -143,9 +145,17 @@ const routes = [
         beforeEnter: beforeAuth(true),
     },
     {
-        path: "/room/:id",
+        path: "/room/:storeNo",
         name: "seller_room",
-        component: SellerRoomView,
+        component: () => import(/* webpackChunkName: "about" */ "../views/Seller/SellerRoomView.vue"),
+
+        beforeEnter: beforeAuth(true),
+    },
+    {
+        path: "/customer/room/:storeNo",
+        name: "customer_room",
+        component: () => import(/* webpackChunkName: "about" */ "../views/Customer/CustomerStoreView.vue"),
+
         beforeEnter: beforeAuth(true),
     },
 ];

@@ -5,6 +5,9 @@ const api = SellerInstance();
 async function getId(id, success, fail) {
     await api.get(`/idcheck/${id}`).then(success).catch(fail);
 }
+async function getbusiId(id, success, fail) {
+    await api.get(`/business_number/${id}`).then(success).catch(fail);
+}
 
 async function joinSeller(params, success, fail) {
     await api.post(`/signup`, params).then(success).catch(fail);
@@ -24,4 +27,4 @@ async function getSeller(no, success, fail) {
     await api.get(`/${no}`).then(success).catch(fail);
 }
 
-export { getId, joinSeller, loginSeller, updateSeller, getSeller };
+export { getId, getbusiId, joinSeller, loginSeller, updateSeller, getSeller };

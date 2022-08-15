@@ -25,4 +25,3 @@ COPY --from=build-stage frontend/dist /usr/share/nginx/html/
 EXPOSE 7602
 CMD [ "nginx","-g", "daemon off;" ]
 
-
