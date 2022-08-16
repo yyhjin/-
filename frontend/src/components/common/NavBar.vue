@@ -43,7 +43,10 @@
 
       <div v-if="this.userNo != ''" style="display: inline-block">
         <el-dropdown>
-          <el-button class="dropbtn"> MENU </el-button>
+          <el-button class="dropbtn" :icon="Menu">
+            <!-- <el-icon color="#e07c49"><Menu /></el-icon> -->
+          </el-button>
+
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
@@ -151,7 +154,7 @@ nav a {
 }
 
 nav a.router-link-exact-active {
-  color: #42413e;
+  color: #e2b9a5;
 }
 
 .example-showcase .el-dropdown-link {
@@ -173,12 +176,12 @@ nav a.router-link-exact-active {
   font-size: 16px;
   border: none;
   cursor: pointer;
-  margin-top: -15px;
+  margin-top: -10px;
   margin-right: 10px;
 }
 
 .dropbtn:hover {
-  background-color: #42413e;
+  background-color: #df9874;
   color: white;
 }
 </style>
