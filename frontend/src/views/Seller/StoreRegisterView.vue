@@ -128,6 +128,7 @@ export default {
                 //then
                 (response) => {
                     response
+                    //TODO:redirect
                     console.log("등록성공");
                     console.log(formdata.entries())
                 },
