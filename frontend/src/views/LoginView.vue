@@ -35,6 +35,13 @@ import { ElMessage } from "element-plus";
 import { useCookies } from "vue3-cookies";
 
 export default {
+    //로그인하고 진입 시 홈으로 리디렉션.
+    mounted(){
+        if(this.$store.getters['userInfo/isAuthenticated']!=''){
+            this.$router.push('/')
+        }
+    },
+
     setup() {
         // var router = this.$router;
         const store = useStore();
@@ -63,16 +70,16 @@ export default {
         return { id, password, open, open2, userno, userType, setUserNo, setUserId, setUserType, cookies };
     },
 
-    watch: {
-        userno() {
-            console.log(this.userno);
-            if (this.userType == "구매자") {
-                this.$router.push({ name: "search" });
-            } else {
-                this.$router.push({ name: "mystore", params: { id: this.userno } });
-            }
-        },
-    },
+    // watch: {
+    //     userno() {
+    //         console.log(this.userno);
+    //         if (this.userType == "구매자") {
+    //             this.$router.push({ name: "search" });
+    //         } else {
+    //             this.$router.push({ name: "mystore", params: { id: this.userno } }); //여기서 버그나요.
+    //         }
+    //     },
+    // },
 
     methods: {
         ck_login() {
@@ -81,10 +88,10 @@ export default {
             } else if (this.password == undefined) {
                 alert("비밀번호 입력 필요");
             } else {
-                const params = {
-                    username: this.id,
-                    password: this.password,
-                };
+                // const params = {
+                //     username: this.id,
+                //     password: this.password,
+                // };
 
                 if (this.userType == "구매자") {
                     this.setUserType(this.userType);
@@ -96,6 +103,7 @@ export default {
                                 this.setUserNo(response.data.data);
                                 this.setUserId(this.id);
                                 this.open();
+                                this.$router.push({ name: "search" });
                                 //this.$cookies.set("hi", "hihi", 2, "/");
                                 // this.$cookies.get("accessToken");
                                 //console.log(this.$cookies.get("refreshToken"));
@@ -111,17 +119,21 @@ export default {
                 } else {
                     this.setUserType(this.userType);
                     loginSeller(
-                        params,
+                        { username: this.id, password: this.password },
                         (response) => {
+                           
                             console.log(response);
                             if (response.data.response == "success") {
                                 this.setUserNo(response.data.data);
+                                this.setUserId(this.id);
                                 this.open();
+                                this.$router.push({ name: "mystore", params: {id: response.data.data} })
                                 //localStorage.setItem("test", "test");
                                 //this.$cookies.get("accessToken");
                                 //jwt 받아오기
                             } else {
                                 this.open2(response.data.data);
+                                
                             }
                         },
                         (error) => {

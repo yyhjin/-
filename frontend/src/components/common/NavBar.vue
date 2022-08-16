@@ -8,15 +8,16 @@
     </span>
    
     </nav>
+    <!-- $store.getters['userInfo/isAuthenticated'] == userNo -->
     <nav class="nav_default" v-else>
         <router-link to="/">Home</router-link> | 
         <router-link to="/selectjoin">회원가입</router-link> | 
-        <router-link v-if="$store.state.userInfo.userNo==''" to="/login">로그인</router-link> |
+        <router-link v-if="$store.getters['userInfo/isAuthenticated']==''" to="/login">로그인</router-link> |
         <router-link to="/search">시장검색</router-link> | 
-        <router-link v-if="$store.state.userInfo.userNo" :to="{ name: 'mypage', params: { id: $store.state.userInfo.userNo} }">마이페이지</router-link> |
-        <router-link v-if="$store.state.userInfo.userType=='판매자'" :to="{ name: 'mystore', params: { id: $store.state.userInfo.userNo} }">내 가게</router-link> |
+        <router-link v-if="$store.getters['userInfo/isAuthenticated']!=''" :to="{ name: 'mypage', params: { id: $store.getters['userInfo/isAuthenticated']} }">마이페이지</router-link> |
+        <router-link v-if="$store.state.userInfo.userType=='판매자'&&$store.getters['userInfo/isAuthenticated']!=''" :to="{ name: 'mystore', params: { id: $store.getters['userInfo/isAuthenticated']} }">내 가게</router-link> |
       
-        <span v-if="$store.state.userInfo.userNo!=''" @click="logout" >로그아웃</span> 
+        <span v-if="$store.getters['userInfo/isAuthenticated']!=''" @click="logout" >로그아웃</span> 
     </nav>
 </template>
 

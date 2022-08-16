@@ -1,9 +1,9 @@
 const userInfo = {
-    namespaced: true,
+    namespaced: true, //중첩네임스페이스 사용.
     state: {
-        userType: "0",
-        userNo: "0",
-        tokken: "3",
+        userType: "",
+        userNo: "",
+        tokken: "",
         userId: "",
     },
     getters: {
