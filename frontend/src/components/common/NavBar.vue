@@ -12,7 +12,7 @@
         @click="
           $router.push({
             name: 'mystore',
-            params: { id: $store.state.userInfo.userNo },
+            params: { id: $store.getters['userInfo/isAuthenticated'] },
           })
         "
         >가게 닫기</el-button
@@ -31,13 +31,13 @@
       <router-link
         style="margin-right: 20px"
         to="/login"
-        v-if="this.userNo == '9999'"
+        v-if="this.userNo == ''"
         >로그인</router-link
       >
       <router-link
         style="margin-right: 20px"
         to="/selectjoin"
-        v-if="this.userNo == '9999'"
+        v-if="this.userNo == ''"
         >회원가입</router-link
       >
       <!-- <router-link
@@ -65,40 +65,40 @@
         >로그아웃</span
       > -->
 
-      <div v-if="this.userNo != '9999'" style="display: inline-block">
+      <div v-if="this.userNo != ''" style="display: inline-block">
         <el-dropdown>
           <el-button class="dropbtn"> MENU </el-button>
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
-                v-if="this.userType == '구매자' && this.userNo != '9999'"
+                v-if="this.userType == '구매자' && this.userNo != ''"
                 ><router-link to="/search" class="router-link"
                   >시장검색</router-link
                 ></el-dropdown-item
               >
               <el-dropdown-item
-                v-if="this.userType == '판매자' && this.userNo != '9999'"
+                v-if="this.userType == '판매자' && this.userNo != ''"
                 ><router-link
                   class="router-link"
                   :to="{
                     name: 'mystore',
-                    params: { id: $store.state.userInfo.userNo },
+                    params: { id: $store.getters['userInfo/isAuthenticated'] },
                   }"
                   >내 가게</router-link
                 ></el-dropdown-item
               >
               <el-dropdown-item
-                v-if="this.userType == '구매자' && this.userNo != '9999'"
+                v-if="this.userType == '구매자' && this.userNo != ''"
                 ><router-link
                   class="router-link"
                   :to="{
                     name: 'mypage',
-                    params: { id: $store.state.userInfo.userNo },
+                    params: { id: $store.getters['userInfo/isAuthenticated'] },
                   }"
                   >마이페이지</router-link
                 ></el-dropdown-item
               >
-              <el-dropdown-item divided v-if="this.userNo != '9999'"
+              <el-dropdown-item divided v-if="this.userNo != ''"
                 ><span
                   style="margin-right: 10px; font-weight: bold"
                   @click="logout"

@@ -45,7 +45,7 @@ const goRoom =function(){
         name: 'customer_room',
         params: params
       })
-git   }
+   }
 }
 
 </script>
