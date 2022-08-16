@@ -134,7 +134,7 @@ import { OpenVidu } from "openvidu-browser";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":7602";
 const OPENVIDU_SERVER_SECRET = "jangbo602";
 
 window.onbeforeunload = () => {
