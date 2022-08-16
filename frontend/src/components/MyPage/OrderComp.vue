@@ -1,24 +1,24 @@
 <template>
     <div>
-        <el-card @click="dialogVisible = true">
+        <el-card @click="dialogVisible = true" class="card1">
             <el-row>
                 <el-col :span="6">
                     <div class="order_pic">
-                        <el-avatar shape="square" :size="50" />
+                        <el-avatar style="margin-top: 10px" shape="square" :size="50" />
                     </div>
                 </el-col>
                 <el-col :span="18">
-                    <div class="order_discription">
-                        <div>가게 : {{ order.storeName }}</div>
+                    <div class="order_discription" style="text-align: right">
+                        <div>
+                            <h4 style="margin: 0px">{{ order.storeName }}</h4>
+                        </div>
                         <div class="order_discription_item">
                             <!-- <span>구매 내역 :{{ order.orderItems[0].itemName }} </span> -->
-                            <span>번호 : {{ order.orderNo }}</span
+                            <span>주문 번호 : {{ order.orderNo }}</span
                             ><br />
                             <span>상태 : {{ order.status }}</span>
-
                         </div>
                     </div>
-
                 </el-col>
             </el-row>
         </el-card>
@@ -34,7 +34,7 @@
                 <h3>상태:{{ order.status }}</h3>
                 <h3>날짜:{{ order.orderDate }}</h3>
             </div> -->
-            
+
             <!-- 컴포넌트로 대체할게요. -->
             <BillComp :bill="data" />
 
@@ -47,24 +47,23 @@
     </div>
 </template>
 <script>
-import BillComp from '@/components/Mystore/BillComp.vue'
+import BillComp from "@/components/Mystore/BillComp.vue";
 import { ref } from "vue";
 export default {
-    components:{
-        BillComp
+    components: {
+        BillComp,
     },
     name: "OrderComp",
     props: ["order"],
-    data(){
-        return{
-            data:this.order
-        }
-    }, 
-    
+    data() {
+        return {
+            data: this.order,
+        };
+    },
+
     setup() {
         const dialogVisible = ref(false);
         const handleClose = (done) => {
-
             done();
         };
 
@@ -72,3 +71,10 @@ export default {
     },
 };
 </script>
+<style scoped>
+.card1 {
+    margin-bottom: 10px;
+    border: 2px solid rgb(60, 189, 146);
+    border-radius: 10px;
+}
+</style>

@@ -39,4 +39,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.el-button {
+    color: white !important;
+}
+</style>

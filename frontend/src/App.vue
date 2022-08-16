@@ -17,5 +17,4 @@ export default {
 <style>
 #app {
 }
-
 </style>

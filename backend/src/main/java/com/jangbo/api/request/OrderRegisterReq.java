@@ -3,11 +3,10 @@ package com.jangbo.api.request;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Getter
 @NoArgsConstructor
 public class OrderRegisterReq {
-
-    private Integer itemNo;
-    private Integer count;
-
+    private List<OrderItemsDto> products;
 }

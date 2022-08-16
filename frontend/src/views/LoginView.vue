@@ -1,29 +1,47 @@
 <template>
-    <div class="firstDiv">
-        <el-space wrap>
-            <el-card class="card">
-                <h1>Login</h1>
-                <div class="selectType" style="margin: 30px 0px">
-                    <el-radio-group class="adjustC" v-model="userType" size="large">
-                        <el-radio-button label="구매자" />
-                        <el-radio-button label="판매자" />
-                    </el-radio-group>
-                </div>
-                <div class="loginMenu">
-                    <div class="inputLogin">
-                        <h3>아이디</h3>
-                        <el-input placeholder="아이디" v-model="id" class="input_id" style="margin-bottom: 10px" />
-                        <h3>비밀번호</h3>
-                        <el-input placeholder="패스워드" v-model="password" class="input_pass" type="password" />
-                    </div>
+  <!-- <router-link to="/">home</router-link> -->
+  <div class="firstDiv">
+    <el-space wrap>
+      <el-card class="card">
+        <h1>Login</h1>
+        <div class="selectType" style="margin: 30px 0px">
+          <el-radio-group class="adjustC" v-model="userType" size="large">
+            <el-radio-button label="구매자" />
+            <el-radio-button label="판매자" />
+          </el-radio-group>
+        </div>
+        <div class="loginMenu">
+          <div class="inputLogin">
+            <h3>아이디</h3>
+            <el-input
+              placeholder="아이디"
+              v-model="id"
+              class="input_id"
+              style="margin-bottom: 10px"
+            />
+            <h3>비밀번호</h3>
+            <el-input
+              placeholder="패스워드"
+              v-model="password"
+              class="input_pass"
+              type="password"
+            />
+          </div>
 
-                    <div>
-                        <el-button @click="ck_login()" color="#FF6F61" style="width: 100px" round class="buttonLogin">로그인</el-button>
-                    </div>
-                </div>
-            </el-card>
-        </el-space>
-    </div>
+          <div>
+            <el-button
+              @click="ck_login()"
+              color="#FF6F61"
+              style="width: 100px"
+              round
+              class="buttonLogin"
+              >로그인</el-button
+            >
+          </div>
+        </div>
+      </el-card>
+    </el-space>
+  </div>
 </template>
 
 <script>
@@ -51,24 +69,35 @@ export default {
         const userType = ref("구매자");
         const userno = computed(() => store.state.userInfo.userNo);
 
-        const setUserType = (type) => store.commit("userInfo/SET_USERTYPE", type);
-        const setUserNo = (no) => store.commit("userInfo/SET_USERNO", no);
-        const setUserId = (no) => store.commit("userInfo/SET_USERID", no);
-        const open = () => {
-            ElMessage({
-                message: "로그인 성공",
-                type: "success",
-            });
-        };
-        const open2 = (message) => {
-            ElMessage({
-                message: message,
-                type: "error",
-            });
-        };
+    const setUserType = (type) => store.commit("userInfo/SET_USERTYPE", type);
+    const setUserNo = (no) => store.commit("userInfo/SET_USERNO", no);
+    const setUserId = (no) => store.commit("userInfo/SET_USERID", no);
+    const open = () => {
+      ElMessage({
+        message: "로그인 성공",
+        type: "success",
+      });
+    };
+    const open2 = (message) => {
+      ElMessage({
+        message: message,
+        type: "error",
+      });
+    };
 
-        return { id, password, open, open2, userno, userType, setUserNo, setUserId, setUserType, cookies };
-    },
+    return {
+      id,
+      password,
+      open,
+      open2,
+      userno,
+      userType,
+      setUserNo,
+      setUserId,
+      setUserType,
+      cookies,
+    };
+  },
 
     // watch: {
     //     userno() {
@@ -81,17 +110,17 @@ export default {
     //     },
     // },
 
-    methods: {
-        ck_login() {
-            if (this.id == undefined) {
-                alert("아이디입력 필요");
-            } else if (this.password == undefined) {
-                alert("비밀번호 입력 필요");
-            } else {
-                // const params = {
-                //     username: this.id,
-                //     password: this.password,
-                // };
+  methods: {
+    ck_login() {
+      if (this.id == undefined) {
+        alert("아이디입력 필요");
+      } else if (this.password == undefined) {
+        alert("비밀번호 입력 필요");
+      } else {
+        // const params = {
+      //     username: this.id,
+      //     password: this.password,
+        // };
 
                 if (this.userType == "구매자") {
                     this.setUserType(this.userType);
@@ -149,43 +178,45 @@ export default {
 
 <style scoped>
 .el-alert {
-    margin: 20px 0 0;
+  margin: 20px 0 0;
 }
 .el-alert:first-child {
-    margin: 0;
+  margin: 0;
 }
 .adjustC {
-    --el-color-primary: #ff6f61;
+  --el-color-primary: #ff6f61;
 }
 
 .firstDiv {
-    text-align: center;
+  text-align: center;
 }
 
 .card {
-    width: 300px !important;
-    margin-top: 40px;
-    text-align: center;
+  width: 300px !important;
+  margin-top: 40px;
+  text-align: center;
+  border: 2px solid #ff6f61;
+  border-radius: 20px;
 }
 
 .loginMenu {
-    display: inline-block;
+  display: inline-block;
 }
 
 .loginMenu h3 {
-    text-align: left;
+  text-align: left;
 }
 
 .inputLogin {
-    width: 200px !important;
-    display: block;
+  width: 200px !important;
+  display: block;
 }
 
 .el-button {
-    color: white !important;
+  color: white !important;
 }
 .buttonLogin {
-    margin-top: 50px;
-    margin-bottom: 20px;
+  margin-top: 50px;
+  margin-bottom: 20px;
 }
 </style>

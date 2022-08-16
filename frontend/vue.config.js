@@ -4,7 +4,7 @@ module.exports = defineConfig({
 devServer: {
     proxy: {
         '/be': {
-            target: 'http://localhost:8080' // 개발서버
+            target: 'https://i7a602.p.ssafy.io:8080' // 개발서버
         }
     }
 }

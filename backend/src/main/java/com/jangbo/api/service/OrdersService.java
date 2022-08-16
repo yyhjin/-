@@ -1,9 +1,7 @@
 package com.jangbo.api.service;
 
-import com.jangbo.db.dto.MarketDto;
 import com.jangbo.db.dto.OrdersDto;
 import com.jangbo.db.entity.Orders;
-import com.jangbo.db.entity.Store;
 import com.jangbo.db.repository.MarketRepository;
 import com.jangbo.db.repository.OrdersRepository;
 import com.jangbo.db.repository.StoreRepository;
@@ -12,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class OrdersService {

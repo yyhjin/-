@@ -3,9 +3,6 @@ package com.jangbo.api.service.Auth;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-
 @Service
 public class CookieUtil {
 

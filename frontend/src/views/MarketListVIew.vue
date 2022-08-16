@@ -16,7 +16,7 @@
                 </div>
             </el-card>
         </el-space>
-        <div style="margin-top: 50px">
+        <div style="margin-top: 40px">
             <search-list></search-list>
         </div>
     </div>
@@ -52,6 +52,6 @@ export default {
     margin-top: 40px;
     text-align: center;
     border: 2px solid #ff6f61 !important;
-    border-radius: 10% !important;
+    border-radius: 20px !important;
 }
 </style>
