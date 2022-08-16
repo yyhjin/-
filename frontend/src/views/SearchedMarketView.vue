@@ -48,7 +48,7 @@ export default {
         };
 
         const clearlist = () => {
-            store.commit(`storeInM1arket/CLEAR_STORE_LIST`);
+            store.commit(`storeInMarket/CLEAR_STORE_LIST`);
         };
 
         return { Back, Search, stores, marketno, marketname, name_stores, clearlist };

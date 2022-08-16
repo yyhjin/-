@@ -20,7 +20,7 @@
                             ></path>
                         </svg>
                     </div>
-                    <el-button type="info" plain @click="btn_out()" style="float: right; margin-top: 20px; margin-right: 10px">나가기</el-button>
+                    <el-button type="info" plain @click="btn_out()" style="float: right; margin-top: 20px">나가기</el-button>
                 </div>
             </template>
             <div style="height: 250px">
@@ -28,13 +28,13 @@
             </div>
         </el-card>
         <el-card class="box-card" style="margin-top: 10px">
-            <template #header>
-                <div style="text-align: right">
-                    <h3 style="display: inline-block" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h3>
-                    <el-button type="info" plain @click="cl_hochul()" v-if="this.hochul == false" style="margin-top: 20px; margin-right: 10px; margin-bottom: 10px">문의하기</el-button>
-                    <el-button type="warning" plain @click="cl_cancleho()" v-else style="margin-left: 20px; margin-right: 10px">호출취소 </el-button>
-                </div>
-            </template>
+            <div style="text-align: right">
+                <h3 style="display: inline-block" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h3>
+                <el-button type="info" @click="cl_hochul()" v-if="this.hochul == false" style="margin-top: 20px; margin-bottom: 10px">문의하기</el-button>
+                <el-button type="warning" @click="cl_cancleho()" v-else style="margin-left: 20px">호출취소 </el-button>
+            </div>
+        </el-card>
+        <el-card class="box-card" style="margin-top: 10px">
             <div class="scrollbar-flex-content">
                 <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" @click="cl_item(menu)">
                     <store-menu :menu="menu" />
@@ -48,7 +48,7 @@
                     <div v-if="this.content == true">
                         <div style="margin-top: -30px">
                             <h3 style="margin-left: 10px; display: inline-block">장바구니</h3>
-                            <el-button type="info" plain @click="btn_preorder()" style="float: right; margin-right: 10px; margin-top: 15px">주문하기</el-button>
+                            <el-button type="info" @click="btn_preorder()" style="float: right; margin-top: 15px">주문하기</el-button>
                         </div>
                         <div>
                             <el-table :data="orderItems" style="width: 90%; margin: auto" max-height="250">

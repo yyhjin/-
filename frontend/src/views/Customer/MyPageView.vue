@@ -39,7 +39,7 @@
                     <div>
                         <!-- zzimcomp -->
                         <div v-if="zzimlist.length == 0" style="text-align: center">
-                            <div><h2>찜한 가게가 없어용</h2></div>
+                            <el-empty description="찜한 가게가 없습니다." style="margin-top: -35px" />
                         </div>
                         <div v-else>
                             <div v-for="(zzimstore, idx) in zzimlist" :key="idx">
