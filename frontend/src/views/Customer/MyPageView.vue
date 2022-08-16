@@ -21,7 +21,7 @@
 
                 <el-row>
                     <el-col :span="7"> 비밀번호 </el-col>
-                    <el-col :span="5"> <span style="font-size: x-small" @click="dialogVisible = true">변경 하기</span> </el-col>
+                    <el-col :span="5"> <span style="font-size: x-small" @click="dialogVisibleb = true">변경 하기</span> </el-col>
                 </el-row>
             </el-card>
         </div>
@@ -70,7 +70,7 @@
 
         <!--------------------- 구매내역/ ------------------------>
         <!--------------------- 비밀번호 확인 모달 ------------------------>
-        <el-dialog v-model="dialogVisible" title="확인" width="80%">
+        <el-dialog v-model="dialogVisibleb" title="확인" width="80%">
             <h5 style="margin-left: 5px; margin-top: -10px">비밀번호 재입력</h5>
             <el-input v-model="pass" type="password" placeholder="password" show-password />
             <template #footer>
@@ -101,7 +101,7 @@ export default {
             id: "",
             name: "",
         });
-        const dialogVisible = ref(false);
+        const dialogVisibleb = ref(false);
         const handleClose = (done) => {
             done();
         };
@@ -119,7 +119,7 @@ export default {
             });
         };
 
-        return { userNo, userinfo, orderList, getOrder, dialogVisible, handleClose, pass, open };
+        return { userNo, userinfo, orderList, getOrder, dialogVisibleb, handleClose, pass, open };
     },
 
     data() {
