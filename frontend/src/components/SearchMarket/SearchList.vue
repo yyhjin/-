@@ -1,13 +1,22 @@
 <template>
     <el-scrollbar max-height="600px">
         <div class="listDiv">
-            <h1>시장 검색결과</h1>
-            <div class="div_list" v-for="item in marketList" :key="item.name" @click="cl_market(item)">
-                <h3>{{ item.name }}</h3>
-                <h5>{{ item.address }}</h5>
-                <div v-if="false" v-bind="market">{{ item.no }}</div>
-            </div>
+            <!-- <h1>시장 검색결과</h1> -->
+            <!-- <div
+        class="div_list"
+        v-for="item in marketList"
+        :key="item.name"
+        @click="cl_market(item)"
+      > -->
+            <!-- <h3>{{ item.name }}</h3>
+        <h5>{{ item.address }}</h5>
+        <div v-if="false" v-bind="market">{{ item.no }}</div> -->
+            <el-table :data="marketList" style="width: 100%" @row-click="cl_market">
+                <el-table-column prop="name" label="이름" width="150" />
+                <el-table-column prop="address" label="주소" />
+            </el-table>
         </div>
+        <!-- </div> -->
     </el-scrollbar>
 </template>
 
