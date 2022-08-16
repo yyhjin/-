@@ -71,6 +71,8 @@ import { menuList, getItem, delelteItem, modifyItem, addItem } from "@/api/item.
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+//const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+//const OPENVIDU_SERVER_SECRET = "jangbo602";
 
 export default {
     //마운트 시 세션 START.
