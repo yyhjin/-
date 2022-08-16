@@ -1,11 +1,11 @@
 <template>
     <div class="Div1">
         <div class="searchMenu">
-            <el-select v-model="searchDo" filterable placeholder="시/도" style="margin-top: 60px">
+            <el-select v-model="searchDo" filterable placeholder="시/도" style="margin-top: 30px; width: 200px">
                 <el-option v-for="item in DoList" :key="item.value" :label="item.text" :value="item" />
             </el-select>
 
-            <el-select v-model="searchGu" filterable placeholder="구/군" style="margin: 30px 0px">
+            <el-select v-model="searchGu" filterable placeholder="구/군" style="margin: 20px 0px; width: 200px">
                 <el-option v-for="item in GuList" :key="item.value" :label="item.text" :value="item.text" />
             </el-select>
         </div>

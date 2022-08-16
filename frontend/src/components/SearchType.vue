@@ -3,12 +3,14 @@
         <div class="div_market" v-for="item in storeList" v-bind:key="item">
             <img class="mk_img" src="@/assets/defaultshop.png" alt="상점사진" @click="cl_detail" style="margin-top: 5px; margin-left: 5px" />
 
-            <h3 class="mk_name">{{ item.name }}</h3>
-            <h4 class="mk_items">{{ item.item }}</h4>
-            <div style="float: right">
-                <el-button type="success" round size="small" @click="cl_detail(item.no)">정보</el-button>
-                <el-button type="danger" round size="small" @click="cl_enter(item)" style="margin-right: 10px" v-if="item.idx == true">입장</el-button>
-                <el-button type="info" round size="small" @click="cl_no()" style="margin-right: 10px" v-else>입장</el-button>
+            <h4 class="mk_name">{{ item.name }}({{ item.item }})</h4>
+            <div style="text-align: left; margin-top: -20px; padding-left: 90px">
+                <h4>{{ item.subject }}제목</h4>
+                <h4 style="margin-top: -20px">{{ item.intro }}소개</h4>
+            </div>
+            <div class="mk_enter">
+                <el-button type="danger" round @click="cl_enter(item)" style="margin-right: 10px; margin-bottom: 10px; margin-top: -100px" v-if="item.idx == true">입장</el-button>
+                <el-button type="info" round @click="cl_no()" style="margin-right: 10px; margin-top: -100px" v-else>입장</el-button>
             </div>
         </div>
     </div>
@@ -25,7 +27,7 @@
                 <h4>판매 품목 : {{ this.one_market.storeCategory }}</h4>
                 <h4>주소 : {{ this.one_market.storeAddr }}</h4>
                 <h4>전화 번호 : {{ this.one_market.storePhone }}</h4>
-                <h3 style="color: red">오늘의 제목 : {{ this.one_market.storeSubject }}</h3>
+                <h3 style="color: red">방 제목 : {{ this.one_market.storeSubject }}</h3>
                 <h3 style="color: red">소개글 : {{ this.one_market.storeIntro }}</h3>
             </div>
         </div>
@@ -48,7 +50,6 @@ export default {
     name: "SearchType",
     data() {
         return {
-            //items: [{ name: "OO수산" }, { name: "OO청과물" }],
             item: "",
         };
     },
@@ -148,8 +149,7 @@ export default {
 }
 
 .div_market {
-    border: 1px solid #ff6f61;
-    border-radius: 20px;
+    border: 1px solid black;
     width: 300px;
     height: 90px;
     margin: 20px 0px;
@@ -162,18 +162,13 @@ export default {
 }
 
 .mk_name {
-    float: left;
-    margin-left: 10px;
+    text-align: left;
+    margin-left: 90px;
     margin-top: 10px;
 }
 
-.mk_like {
+.mk_enter {
     text-align: right;
-    margin-right: 20px;
-    margin-top: 10px;
-}
-
-.mk_items {
     margin-top: 10px;
 }
 </style>

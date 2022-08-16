@@ -38,12 +38,14 @@ export default {
 
     methods: {
         cl_market(item) {
-            this.market.no = item.no;
-            this.market.name = item.name;
-            this.setMarket(this.market.no);
-            this.setMarketName(this.market.name);
-            console.log(this.market);
-            this.$router.push({ name: "searchStore" });
+            if (item.no != 0) {
+                this.market.no = item.no;
+                this.market.name = item.name;
+                this.setMarket(this.market.no);
+                this.setMarketName(this.market.name);
+                console.log(this.market);
+                this.$router.push({ name: "searchStore" });
+            }
         },
     },
 };

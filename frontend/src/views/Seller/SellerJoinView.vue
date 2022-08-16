@@ -8,8 +8,6 @@
                         <h5>사업자 등록 번호</h5>
                         <el-input placeholder="사업자 등록 번호" v-model="seller_number" class="input_Snumber" />
                         <el-button color="#FF6F61" round class="btn_idCheck" @click="cl_busiCheck">중복 확인</el-button>
-                        <h5 style="margin-top: 40px">업종</h5>
-                        <el-input placeholder="업종" v-model="sellItem" class="input_sellItem" />
                         <h5>아이디</h5>
                         <el-input placeholder="아이디 (이메일 형식)" v-model="id" class="input_id" />
                         <el-button color="#FF6F61" round class="btn_idCheck" @click="cl_idCheck">중복 확인</el-button>
@@ -54,7 +52,7 @@ export default {
             id: "",
             password: "",
             password_double: "",
-            same: "",
+            same: "숫자,문자를 포함한 8자 이상",
             name: "",
             phone_number: "",
             address: "",
@@ -70,20 +68,19 @@ export default {
     watch: {
         password_double() {
             if (this.password != this.password_double) {
-                this.same = "다름";
+                this.same = "비밀 번호 확인 필요!!";
             } else if (this.password == this.password_double) {
-                this.same = "같음";
-            }
-        },
-        password() {
-            if (this.password != this.password_double) {
-                this.same = "다름";
-            } else if (this.password == this.password_double) {
-                this.same = "같음";
+                if (!this.pass_check()) {
+                    this.same = "사용 가능합니다.";
+                }
             }
         },
     },
     methods: {
+        pass_check() {
+            var passwordRules = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            console.log(passwordRules.test(this.password));
+        },
         cl_busiCheck() {
             console.log(this.seller_number);
             if (this.seller_number) {

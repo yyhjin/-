@@ -12,7 +12,7 @@
                                     d="M432 928a48 48 0 1 1 0-96 48 48 0 0 1 0 96zm320 0a48 48 0 1 1 0-96 48 48 0 0 1 0 96zM96 128a32 32 0 0 1 0-64h160a32 32 0 0 1 31.36 25.728L320.64 256H928a32 32 0 0 1 31.296 38.72l-96 448A32 32 0 0 1 832 768H384a32 32 0 0 1-31.36-25.728L229.76 128H96zm314.24 576h395.904l82.304-384H333.44l76.8 384z"
                                 ></path>
                             </svg>
-                            <h4>소비자로 시작하기</h4>
+                            <h4>소비자</h4>
                         </button>
                     </div>
                     <div class="div_seller">
@@ -23,7 +23,7 @@
                                     d="M704 704h64v192H256V704h64v64h384v-64zm188.544-152.192C894.528 559.616 896 567.616 896 576a96 96 0 1 1-192 0 96 96 0 1 1-192 0 96 96 0 1 1-192 0 96 96 0 1 1-192 0c0-8.384 1.408-16.384 3.392-24.192L192 128h640l60.544 423.808z"
                                 ></path>
                             </svg>
-                            <h4>판매자로 시작하기</h4>
+                            <h4>판매자</h4>
                         </button>
                     </div>
                 </div>
@@ -63,8 +63,6 @@ export default {
 <style scoped>
 .card {
     margin-top: 60px;
-    border-radius: 20px;
-    border: 2px solid #ff6f61;
 }
 
 .firstDiv {
@@ -75,8 +73,6 @@ export default {
 }
 
 .btn_group button {
-    border: 2px solid #3cbd92;
-    border-radius: 10px;
     height: 150px;
     background-color: white;
 }
@@ -93,10 +89,5 @@ export default {
     width: 130px;
     float: right;
     margin-bottom: 100px;
-}
-
-img {
-    max-width: 100%;
-    max-height: 100%;
 }
 </style>

@@ -4,10 +4,10 @@
             <el-card class="card1">
                 <div class="selectType" style="margin-top: 30px">
                     <el-radio-group class="adjustC" v-model="searchType" size="large">
-                        <el-radio-button label="주소검색" />
-                        <el-radio-button label="이름검색" />
+                        <el-radio-button label="주소 검색" />
+                        <el-radio-button label="이름 검색" />
                     </el-radio-group>
-                    <div v-if="searchType == '주소검색'">
+                    <div v-if="searchType == '주소 검색'">
                         <search-address></search-address>
                     </div>
                     <div v-else>
@@ -51,7 +51,5 @@ export default {
     width: 300px !important;
     margin-top: 40px;
     text-align: center;
-    border: 2px solid #ff6f61 !important;
-    border-radius: 20px !important;
 }
 </style>

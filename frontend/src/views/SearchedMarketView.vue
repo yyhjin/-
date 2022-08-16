@@ -1,11 +1,17 @@
 <template>
     <div class="div_div">
         <div class="div_big1">
-            <h2>{{ this.marketname }}</h2>
-            <div class="searchBar">
-                <el-button color="#FF6F61" round class="btn_back" @click="cl_btn">돌아가기</el-button>
-                <el-input class="search_type" v-model="sell_type" placeholder="Please Input" @keyup.enter="enterKey" />
+            <div>
+                <el-button circle class="btn_back" @click="cl_btn" :icon="Back" style="float: left; margin-top: 5px"></el-button>
             </div>
+            <div style="text-align: center">
+                <h2 style="display: inline; margin-left: -50px">{{ this.marketname }}</h2>
+            </div>
+
+            <el-card class="box-card searchBar">
+                <el-input class="search_type" v-model="sell_type" placeholder="상점 검색" @keyup.enter="enterKey" />
+                <el-button :icon="Search" size="large" circle @click="enterKey" />
+            </el-card>
             <!-- <div class="adjustC radio_gr">
                 <el-checkbox-group v-model="checkList">
                     <el-checkbox label="정육점" />
@@ -25,6 +31,7 @@
 import SearchType from "@/components/SearchType.vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { Back, Search } from "@element-plus/icons-vue";
 
 export default {
     components: { SearchType },
@@ -45,7 +52,7 @@ export default {
             store.dispatch(`storeInMarket/getStore`, marketno);
         };
 
-        return { stores, marketno, marketname };
+        return { Back, Search, stores, marketno, marketname };
     },
 
     created() {
@@ -71,23 +78,22 @@ export default {
 
 .div_big1 {
     display: inline-block;
-    width: 300px;
+    margin-top: 10px;
 }
 
 .searchBar {
-    margin-top: 20px;
+    margin-top: 30px;
     margin-bottom: 20px;
     width: 300px;
 }
 
 .btn_back {
-    width: 80px;
-    height: 40px !important;
     margin-right: 20px;
 }
 .search_type {
-    height: 30px !important;
+    height: 40px !important;
     width: 190px !important;
+    margin-right: 30px;
 }
 .adjustC {
     --el-color-primary: #ff6f61;

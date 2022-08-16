@@ -66,16 +66,16 @@ export default {
     watch: {
         password_double() {
             if (this.password != this.password_double) {
-                this.same = "다름";
+                this.same = "비밀 번호 확인 필요!!";
             } else if (this.password == this.password_double) {
-                this.same = "같음";
+                this.same = "사용 가능합니다.";
             }
         },
         password() {
             if (this.password != this.password_double) {
-                this.same = "다름";
+                this.same = "비밀 번호 확인 필요!!";
             } else if (this.password == this.password_double) {
-                this.same = "같음";
+                this.same = "사용 가능합니다.";
             }
         },
     },
@@ -89,13 +89,14 @@ export default {
                 this.userinfo.name = response.data.customerName;
                 this.userinfo.nick = response.data.customerNickname;
                 this.userinfo.phone_number = response.data.customerPhone;
-                                
+
                 var addr = response.data.customerAddr;
                 var array = addr.split("(");
                 this.userinfo.address = array[0];
                 //this.userinfo.detailAddress = array[1];
-                if(array[1] != undefined){
-                this.userinfo.extraAddress = "("+array[1];}
+                if (array[1] != undefined) {
+                    this.userinfo.extraAddress = "(" + array[1];
+                }
             },
             (error) => {
                 console.log(error);

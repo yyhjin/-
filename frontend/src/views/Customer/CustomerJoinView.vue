@@ -50,7 +50,7 @@ export default {
             nick: "",
             password: "",
             password_double: "",
-            same: "",
+            same: "숫자,문자를 포함한 8자 이상",
             name: "",
             phone_number: "",
             address: "",
@@ -65,14 +65,20 @@ export default {
     watch: {
         password_double() {
             if (this.password != this.password_double) {
-                this.same = "다름";
+                this.same = "비밀 번호 확인 필요!!";
             } else if (this.password == this.password_double) {
-                this.same = "같음";
+                if (!this.pass_check()) {
+                    this.same = "사용 가능합니다.";
+                }
             }
         },
     },
 
     methods: {
+        pass_check() {
+            var passwordRules = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+            console.log(passwordRules.test(this.password));
+        },
         cl_idCheck() {
             if (this.id) {
                 getId(
@@ -97,7 +103,7 @@ export default {
         },
         cl_register() {
             if (this.id != "" && this.name != "" && this.password != "" && this.nick != "" && this.phone_number != "") {
-                if (this.same == "같음") {
+                if (this.same == "사용 가능합니다.") {
                     const params = {
                         customerId: this.id,
                         customerName: this.name,
@@ -121,7 +127,7 @@ export default {
                         }
                     );
                 } else {
-                    alert("비밀번호가 다름니다");
+                    alert("비밀번호 오류입니다.");
                 }
             } else {
                 alert("칸을 모두 채워주세요");
