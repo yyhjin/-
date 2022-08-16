@@ -28,8 +28,8 @@ async function getItem(no, success, fail) {
 }
 
 //라이브상점내 주문 (구매자)
-async function getOrder(customer_no,store_no, params, success, fail) {
-    await api.post(`be/order/${customer_no}/${store_no}`, { products : params } ).then(success).catch(fail);
+async function getOrder(customer_no, store_no, params, success, fail) {
+    await api.post(`/order/${customer_no}/${store_no}`, { products: params }).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, marketList, marketByName, logout , getItem, getOrder };
+export { sidoList, gugunList, marketList, marketByName, logout, getItem, getOrder };

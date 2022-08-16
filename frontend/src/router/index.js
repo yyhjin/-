@@ -18,8 +18,7 @@ import StoreRegisterView from "../views/Seller/StoreRegisterView.vue";
 // import SellerRoomView from "../views/Seller/SellerRoomView.vue"; lazy-loading 대체
 import SellerProfileView from "../views/Seller/SellerProfileView";
 // import OpenVidu  from "../views/OpenVidu";
-import TestTwo from "../views/Seller/TestTwo.vue"
-
+import TestTwo from "../views/Seller/TestTwo.vue";
 
 import store from "@/store/index";
 import { ElMessage } from "element-plus";
@@ -27,9 +26,9 @@ import { ElMessage } from "element-plus";
 const open = () => {
     ElMessage({
         message: "로그인후 사용하세요",
-        type : "warning",
-    })
-}
+        type: "warning",
+    });
+};
 
 const beforeAuth = (isAuth) => (from, to, next) => {
     const isAuthenticated = store.getters["userInfo/isAuthenticated"];

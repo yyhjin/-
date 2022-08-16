@@ -25,7 +25,7 @@
                 <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" />
             </div>
             <div style="text-align: center; margin-top: 10px">
-                <h3 style="display: inline-block" v-if="this.hochul == true">호출 대기 중 입니다.. 대기 : {{ this.number }}번</h3>
+                <h3 style="display: inline-block" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h3>
                 <h3 style="display: inline-block" v-else>호출을 눌러 문의하세요</h3>
                 <el-button type="danger" plain @click="cl_hochul()" v-if="this.hochul == false" style="float: right; margin-top: 15px; margin-right: 10px">호출하기 </el-button>
                 <el-button type="success" plain @click="cl_cancleho()" v-else style="float: right; margin-top: 15px; margin-right: 10px">호출취소 </el-button>
@@ -69,7 +69,7 @@
                                     </el-input>
                                 </div>
                                 <div style="text-align: right">
-                                    <el-button type="danger" :icon="Check" circle @click="btn_add()" style="margin: 10px 20px" />
+                                    <el-button type="danger" :icon="Check" circle @click="cl_add()" style="margin: 10px 20px" />
                                 </div>
                             </div>
                         </div>
@@ -93,9 +93,10 @@ import StoreMenu from "@/components/Room/StoreMenu.vue";
 import UserVideo from "@/components/Openvidu/UserVideo";
 import RoomChat from "@/components/Openvidu/RoomChat.vue";
 import { Check, Star, StarFilled } from "@element-plus/icons-vue";
-import { makeCall, deleteCall } from "@/api/call";
+import { makeCall, deleteCall, getCall } from "@/api/call";
 import { setJJim } from "@/api/customer";
 import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 import axios from "axios";
 //import {getItem} from "@/api/market";
 import { getOrder } from "@/api/market";
@@ -105,8 +106,8 @@ import { OpenVidu } from "openvidu-browser";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://" + location.hostname + ":4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+const OPENVIDU_SERVER_SECRET = "jangbo602";
 
 window.onbeforeunload = () => {
     // Gracefully leave session
@@ -127,8 +128,9 @@ export default {
         this.joinSession();
     },
     created() {
-        this.myUserName = this.$route.params.userName;
+        //this.myUserName = this.$route.params.userName;
         //this.myUserNo = this.$route.params.userNo;
+        this.jjim = this.$route.params.storeJJim;
         this.mySessionId = this.$route.params.storeNo;
         this.storeName = this.$route.params.storeName;
         //this.sellerNo = this.$route.path.no (판매자 번호 받기)
@@ -151,23 +153,20 @@ export default {
         return {
             OV: undefined,
             session: undefined,
-            mainStreamManager: undefined,
             publisher: undefined,
             subscribers: [],
 
             //myUserNo: "",
             //오픈비두 필수입력
-            mySessionId: 1,
+            mySessionId: "1",
             myUserName: "",
         };
     },
     setup() {
         const store = useStore();
-        // const customerNo = computed(() => store.state.userInfo.userNo);
-        //const sellerNo = ref();
+        const router = useRouter();
+        const customerNo = computed(() => store.state.userInfo.userNo);
         const storeName = ref();
-        const customerNo = ref("1");
-        const sellerNo = ref("1");
         const number = ref();
         const myUserNo = computed(() => store.state.userInfo.userNo);
         const userId = computed(() => store.state.userInfo.userId);
@@ -232,7 +231,14 @@ export default {
             ElMessage.error(message);
         };
 
-        return { Check, Star, StarFilled, jjim, myUserNo, number, userId, params, customerNo, storeName, sellerNo, menus, selected, orderItems, hochul, content, deleteRow, open };
+        const clientdata = ref({
+            //myUserName
+            type: 1, //0,1
+            userName: userId,
+            userNo: myUserNo,
+        });
+
+        return { clientdata, router, Check, Star, StarFilled, jjim, myUserNo, number, userId, params, customerNo, storeName, menus, selected, orderItems, hochul, content, deleteRow, open };
     },
     computed: {
         money() {
@@ -263,18 +269,18 @@ export default {
                 }
             );
         },
+        //뒤로가기 만들기
         btn_out() {
-            //뒤로가기 만들기
-            this.$router.push({ name: "home" });
+            this.cl_cancleho();
             this.leaveSession();
+            this.$router.push({ name: "home" });
         },
+        //주문하기
         btn_order() {
             getOrder(
-                //this.params,
-                //JSON.stringify(this.params),
-                //{storeNo:this.sellerNo, customerNo:this.customerNo},
                 this.customerNo,
-                this.sellerNo,
+                //sessionId가 상점번호
+                this.mySessionId,
                 this.params,
                 (response) => {
                     console.log(response);
@@ -285,8 +291,28 @@ export default {
             );
         },
         cl_item(menu) {
+            //메뉴 선택
             this.selected = menu;
         },
+        //전체 호출 내역반환
+        totalhochul() {
+            getCall(
+                this.mySessionId,
+                (response) => {
+                    console.log(response.data);
+                    for (var i = 0; i < response.data.length; i++) {
+                        if (response.data[i].customerId == this.userId) {
+                            this.number = response.data[i].orderNo;
+                            console.log(this.number);
+                        }
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        },
+        //호출하기
         cl_hochul() {
             console.log("호출");
             console.log(this.userId + " " + this.mySessionId);
@@ -303,6 +329,7 @@ export default {
                 }
             );
         },
+        //호출 취소
         cl_cancleho() {
             console.log("호출취소");
             console.log(this.userId + " " + this.mySessionId);
@@ -318,14 +345,17 @@ export default {
                 }
             );
         },
+        //장바구니보기
         btn_jang() {
             this.content = true;
             console.log("jang");
         },
+        //채팅보기
         btn_chat() {
             this.content = false;
             console.log("chat");
         },
+        //장바구니에 추가하기
         btn_add() {
             console.log(this.selected.itemName);
             if (this.selected.itemName == "") {
@@ -356,8 +386,11 @@ export default {
             this.session.on("streamCreated", ({ stream }) => {
                 this.count++;
                 const subscriber = this.session.subscribe(stream);
-                console.log(stream.connection);
-                this.subscribers.push(subscriber);
+                console.log(JSON.parse(stream.connection.data));
+                //판매자만 sub에 넣기
+                if (JSON.parse(stream.connection.data).clientData.type == 0) {
+                    this.subscribers.push(subscriber);
+                }
             });
 
             // On every Stream destroyed...
@@ -377,58 +410,44 @@ export default {
 
             // public 채팅 signal 받기
             this.session.on("signal:public-chat", (event) => {
-                this.$refs.chat.addMessage(event.data, JSON.parse(event.data).sender === this.myUserName, false);
+                console.log(JSON.parse(event.data).sender);
+                this.$refs.chat.addMessage(event.data, JSON.parse(event.data).sender === this.userId, false);
             });
 
             // private 채팅 signal 받기
             this.session.on("signal:private-chat", (event) => {
                 this.$refs.chat.addMessage(event.data, false, true);
             });
+
+            //호출삭제되면 시그널받아서 순번 다시 조회하기
+            this.session.on("signal:delete-hochul", (event) => {
+                this.console.log(event);
+            });
+
             // --- Connect to the session with a valid user token ---
 
             // 'getToken' method is simulating what your server-side should do.
             // 'token' parameter should be retrieved and returned by your own backend
             this.getToken(this.mySessionId).then((token) => {
                 this.session
-                    .connect(token, { clientData: this.myUserName })
+                    .connect(token, { clientData: this.clientdata })
                     .then(() => {
-                        let publisher = "";
                         // --- Get your own camera stream with the desired properties ---
-                        if (this.isPublisher(this.myUserName)) {
-                            publisher = this.OV.initPublisher(undefined, {
-                                audioSource: undefined, // The source of audio. If undefined default microphone
-                                videoSource: undefined, // The source of video. If undefined default webcam
-                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                                publishVideo: true, // Whether you want to start publishing with your video enabled or not
-                                //resolution: "640x480", // The resolution of your video
-                                resolution: "120x80",
-                                frameRate: 30, // The frame rate of your video
-                                insertMode: "PREPEND", // How the video is inserted in the target element 'video-container'
-                                mirror: false, // Whether to mirror your local video or not
-                            });
-                            this.mainStreamManager = publisher;
 
-                            // --- Publish your stream ---
-                        } else {
-                            publisher = this.OV.initPublisher(undefined, {
-                                audioSource: undefined, // The source of audio. If undefined default microphone
-                                videoSource: undefined, // The source of video. If undefined default webcam
-                                publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                                publishVideo: false, // Whether you want to start publishing with your video enabled or not
-                                resolution: "120x80", // The resolution of your video
-                                frameRate: 30, // The frame rate of your video
-                                insertMode: "AFTER", // How the video is inserted in the target element 'video-container'
-                                mirror: false, // Whether to mirror your local video or not
-                            });
-                            this.publisher = publisher;
-                        }
+                        let publisher = this.OV.initPublisher(undefined, {
+                            audioSource: undefined, // The source of audio. If undefined default microphone
+                            videoSource: undefined, // The source of video. If undefined default webcam
+                            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                            publishVideo: false, // Whether you want to start publishing with your video enabled or not
+                            //resolution: "640x480", // The resolution of your video
+                            resolution: "120x80",
+                            frameRate: 30, // The frame rate of your video
+                            insertMode: "PREPEND", // How the video is inserted in the target element 'video-container'
+                            mirror: false, // Whether to mirror your local video or not
+                        });
+                        this.publisher = publisher;
 
-                        if (this.isPublisher(this.myUserName)) {
-                            this.session.publish(this.mainStreamManager);
-                        } else {
-                            //소비자일때 이렇게 하고 uservideo만 갔다쓰면됨
-                            //this.session.publish(this.publisher);
-                        }
+                        this.session.publish(this.publisher);
                     })
                     .catch((error) => {
                         console.log("There was an error connecting to the session:", error.code, error.message);
@@ -436,6 +455,36 @@ export default {
             });
 
             window.addEventListener("beforeunload", this.leaveSession);
+        },
+        // 판매자에서 호출삭제하면 받을 시그널
+        reHocul() {
+            this.session
+                .signal({
+                    data: {},
+                    to: [],
+                    type: "delete-hochul",
+                })
+                .then(() => {
+                    console.log("호출 삭제");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+
+        getHocul() {
+            this.session
+                .signal({
+                    data: {},
+                    to: [],
+                    type: "add-hochul",
+                })
+                .then(() => {
+                    console.log("호출 완료");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         },
 
         sendMessage({ content, to }) {
@@ -448,7 +497,7 @@ export default {
 
             let messageData = {
                 content: content,
-                sender: this.myUserName,
+                sender: this.userId,
                 time: current,
             };
 
@@ -591,6 +640,10 @@ export default {
     margin-top: 20px;
     background: rgb(255, 111, 97, 30%);
     border-radius: 10px;
+}
+
+.el-button {
+    color: black !important;
 }
 
 .scrollbar-flex-content {

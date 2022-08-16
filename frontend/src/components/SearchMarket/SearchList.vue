@@ -49,11 +49,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .div_list {
     margin: 10px 0px;
     border: 1px solid #ff6f61;
-    border-radius: 10%;
+    border-radius: 10px;
     background-color: rgba(255, 111, 97, 0.4);
 }
 
