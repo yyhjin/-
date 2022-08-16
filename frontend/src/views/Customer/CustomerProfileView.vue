@@ -9,7 +9,7 @@
                 <div class="modifyForm">
                     <h5>아이디</h5>
                     <el-input placeholder="연락처" v-model="userinfo.id" class="input_id" disabled />
-                    <h5 style="padding-top: 20px">닉네임</h5>
+                    <h5>닉네임</h5>
                     <el-input placeholder="닉네임" v-model="userinfo.nick" class="input_nick" />
                     <h5>비밀번호</h5>
                     <el-input placeholder="패스워드" v-model="password" class="input_pass" type="password" />
@@ -22,7 +22,7 @@
                     <el-input placeholder="연락처" v-model="userinfo.phone_number" class="input_phone" />
                     <h5 style="float: left">주소</h5>
                     <div class="searchAddress">
-                        <el-button round color="#FF6F61" @click="execDaumPostcode()" class="btn_address">주소 검색</el-button><br />
+                        <el-button color="#e07c49" style="color: white" @click="execDaumPostcode()" class="btn_address">주소 검색</el-button><br />
                         <!--<el-input type="text" v-model="postcode" placeholder="우편번호"/>-->
                         <el-input type="text" v-model="userinfo.address" id="address" placeholder="기본 주소" style="margin-top: 10px" /><br />
                         <el-input type="text" v-model="userinfo.detailAddress" id="detailAddress" placeholder="상세 주소" style="margin-top: 10px" />
@@ -31,8 +31,8 @@
                 </div>
 
                 <div style="margin-top: 30px">
-                    <el-button color="#FF6F61" style="width: 100px" round class="btn_modify" @click="cl_modify">수정</el-button>
-                    <el-button style="width: 100px" round class="btn_cancle" @click="cl_cancle">취소</el-button>
+                    <el-button color="#e07c49" style="width: 100px; color: white" class="btn_modify" @click="cl_modify">수정</el-button>
+                    <el-button style="width: 100px" class="btn_cancle" @click="cl_cancle">취소</el-button>
                 </div>
             </div>
         </el-card>
@@ -176,11 +176,11 @@ export default {
     margin: auto;
 }
 .adjustC {
-    --el-color-primary: #ff6f61;
+    --el-color-primary: #42413e;
 }
 .card {
     width: 300px !important;
-    margin-top: 40px;
+    margin-top: 30px;
     text-align: center;
 }
 

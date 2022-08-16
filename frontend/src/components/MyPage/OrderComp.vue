@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-card @click="dialogVisible = true" class="card1">
+        <el-card @click="dialogVisible = true" class="card1" shadow="always">
             <el-row>
                 <el-col :span="6">
                     <div class="order_pic">
@@ -74,7 +74,5 @@ export default {
 <style scoped>
 .card1 {
     margin-bottom: 10px;
-    border: 2px solid rgb(60, 189, 146);
-    border-radius: 10px;
 }
 </style>
