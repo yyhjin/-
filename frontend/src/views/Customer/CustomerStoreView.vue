@@ -1,45 +1,54 @@
 <template>
-    <div>
-        <div class="about" style="margin-top: -10px; maring-bottom: -10px">
-            <h3 style="margin-left: 10px; display: inline-block">{{ this.storeName }}</h3>
-            <div style="width: 25px; weight: 25px; display: inline-block; margin-left: 10px" @click="cl_JJIM()" v-if="this.jjim == false">
-                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa="">
-                    <path
-                        fill="currentColor"
-                        d="m512 747.84 228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72L512 747.84zM313.6 924.48a70.4 70.4 0 0 1-102.144-74.24l37.888-220.928L88.96 472.96A70.4 70.4 0 0 1 128 352.896l221.76-32.256 99.2-200.96a70.4 70.4 0 0 1 126.208 0l99.2 200.96 221.824 32.256a70.4 70.4 0 0 1 39.04 120.064L774.72 629.376l37.888 220.928a70.4 70.4 0 0 1-102.144 74.24L512 820.096l-198.4 104.32z"
-                    ></path>
-                </svg>
+    <div style="margin: auto">
+        <el-card class="box-card">
+            <template #header>
+                <div class="about" style="margin-top: -10px; maring-bottom: -10px">
+                    <h3 style="margin-left: 10px; display: inline-block">{{ this.storeName }}</h3>
+                    <div style="width: 25px; weight: 25px; display: inline-block; margin-left: 10px" @click="cl_JJIM()" v-if="this.jjim == false">
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa="">
+                            <path
+                                fill="currentColor"
+                                d="m512 747.84 228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72L512 747.84zM313.6 924.48a70.4 70.4 0 0 1-102.144-74.24l37.888-220.928L88.96 472.96A70.4 70.4 0 0 1 128 352.896l221.76-32.256 99.2-200.96a70.4 70.4 0 0 1 126.208 0l99.2 200.96 221.824 32.256a70.4 70.4 0 0 1 39.04 120.064L774.72 629.376l37.888 220.928a70.4 70.4 0 0 1-102.144 74.24L512 820.096l-198.4 104.32z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <div style="width: 25px; weight: 25px; display: inline-block; margin-left: 10px" @click="cl_JJIM()" v-else>
+                        <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa="">
+                            <path
+                                fill="currentColor"
+                                d="M283.84 867.84 512 747.776l228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72z"
+                            ></path>
+                        </svg>
+                    </div>
+                    <el-button type="info" plain @click="btn_out()" style="float: right; margin-top: 20px; margin-right: 10px">나가기</el-button>
+                </div>
+            </template>
+            <div style="height: 250px">
+                <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" />
             </div>
-            <div style="width: 25px; weight: 25px; display: inline-block; margin-left: 10px" @click="cl_JJIM()" v-else>
-                <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" data-v-029747aa="">
-                    <path
-                        fill="currentColor"
-                        d="M283.84 867.84 512 747.776l228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72z"
-                    ></path>
-                </svg>
+        </el-card>
+        <el-card class="box-card" style="margin-top: 10px">
+            <template #header>
+                <div style="text-align: right">
+                    <h3 style="display: inline-block" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h3>
+                    <el-button type="info" plain @click="cl_hochul()" v-if="this.hochul == false" style="margin-top: 20px; margin-right: 10px; margin-bottom: 10px">문의하기</el-button>
+                    <el-button type="warning" plain @click="cl_cancleho()" v-else style="margin-left: 20px; margin-right: 10px">호출취소 </el-button>
+                </div>
+            </template>
+            <div class="scrollbar-flex-content">
+                <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" @click="cl_item(menu)">
+                    <store-menu :menu="menu" />
+                </div>
             </div>
-            <el-button type="danger" plain @click="btn_out()" style="float: right; margin-top: 20px; margin-right: 10px">나가기</el-button>
-        </div>
-        <div style="height: 250px">
-            <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" />
-        </div>
-        <div style="text-align: right; margin-top: 10px">
-            <h3 style="display: inline-block" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h3>
-            <el-button type="danger" plain @click="cl_hochul()" v-if="this.hochul == false" style="margin-top: 20px; margin-right: 10px; margin-bottom: 10px">문의하기</el-button>
-            <el-button type="success" plain @click="cl_cancleho()" v-else style="margin-left: 10px; margin-right: 10px">호출취소 </el-button>
-        </div>
-        <div class="scrollbar-flex-content">
-            <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" @click="cl_item(menu)">
-                <store-menu :menu="menu" />
-            </div>
-        </div>
-        <div>
+        </el-card>
+
+        <el-card class="box-card" style="margin-top: 10px">
             <div class="div_content">
                 <div>
                     <div v-if="this.content == true">
-                        <div>
+                        <div style="margin-top: -30px">
                             <h3 style="margin-left: 10px; display: inline-block">장바구니</h3>
-                            <el-button type="danger" plain @click="btn_preorder()" style="float: right; margin: 20px">주문하기</el-button>
+                            <el-button type="info" plain @click="btn_preorder()" style="float: right; margin-right: 10px; margin-top: 15px">주문하기</el-button>
                         </div>
                         <div>
                             <el-table :data="orderItems" style="width: 90%; margin: auto" max-height="250">
@@ -57,17 +66,17 @@
                             </div>
                         </div>
                         <div>
-                            <h4 style="margin-left: 10px; margin-top: -30px">추가하기</h4>
+                            <h4 style="margin-left: 10px; margin-top: -20px">추가하기</h4>
                             <div style="text-align: center">
-                                <el-input v-model="this.selected.itemName" placeholder="품목" style="width: 155px">
+                                <el-input v-model="this.selected.itemName" placeholder="품목" style="width: 140px">
                                     <template #prepend>품목</template>
                                 </el-input>
-                                <el-input v-model="this.selected.count" placeholder="수량" style="width: 155px">
+                                <el-input v-model="this.selected.count" placeholder="수량" style="width: 140px">
                                     <template #prepend>수량</template>
                                 </el-input>
                             </div>
                             <div style="text-align: right">
-                                <el-button type="danger" :icon="Plus" circle @click="btn_add()" style="margin: 10px 20px" />
+                                <el-button :icon="Plus" circle @click="btn_add()" style="margin: 10px 10px; background-color: #42413e; color: white" />
                             </div>
                         </div>
                     </div>
@@ -77,10 +86,10 @@
                     </div>
                 </div>
             </div>
-            <div>
-                <el-button type="danger" plain @click="btn_jang()" style="margin-left: 5px">장바구니</el-button>
-                <el-button type="danger" plain @click="btn_chat()">채팅</el-button>
-            </div>
+        </el-card>
+        <div>
+            <el-button type="info" plain @click="btn_jang()" style="margin-left: 5px">장바구니</el-button>
+            <el-button type="info" plain @click="btn_chat()">채팅</el-button>
         </div>
         <el-dialog v-model="centerDialogVisible" title="주문 확인" width="90%" center>
             <el-table :data="orderItems" style="width: 90%; margin: auto" max-height="250">
@@ -100,7 +109,7 @@
             <template #footer>
                 <span class="dialog-footer">
                     <el-button type="primary" @click="btn_order">주문하기</el-button>
-                    <el-button @click="centerDialogVisible = false">취소</el-button>
+                    <el-button @click="centerDialogVisible = false" class="btn_cancle" style="background-color: white">취소</el-button>
                 </span>
             </template>
         </el-dialog>
@@ -144,7 +153,7 @@ export default {
     },
 
     mounted() {
-        this.joinSession();
+        //this.joinSession();
     },
     created() {
         //this.myUserName = this.$route.params.userName;
@@ -649,23 +658,31 @@ export default {
 };
 </script>
 <style scoped>
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text {
+    font-size: 14px;
+}
+
+.item {
+    margin-bottom: 18px;
+}
+
+.box-card {
+    margin-left: -10px;
+    width: 320px;
+}
+
 .dialog-footer button:first-child {
     margin-right: 10px;
 }
 
-.el-button--danger.is-link,
-.el-button--danger.is-plain,
-.el-button--danger.is-text {
-    --el-button-hover-bg-color: rgb(255, 111, 97, 30%) !important;
-    --el-button-hover-border-color: rgb(255, 111, 97, 30%) !important;
-}
-
 .div_content {
     margin-top: 20px;
-}
-
-.el-button {
-    color: black !important;
 }
 
 .scrollbar-flex-content {
@@ -681,7 +698,15 @@ export default {
     margin: 10px;
     text-align: center;
     border-radius: 4px;
-    background: var(--el-color-danger-light-9);
-    color: var(--el-color-danger);
+    background: white;
+    border: 1px solid;
+    color: #42413e;
+}
+
+.el-button--warning.is-link,
+.el-button--warning.is-plain,
+.el-button--warning.is-text {
+    --el-button-border-color: #e07c49 !important;
+    --el-button-bg-color: #e07c49 !important;
 }
 </style>
