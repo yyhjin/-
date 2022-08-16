@@ -9,19 +9,9 @@
             </div>
 
             <el-card class="box-card searchBar">
-                <el-input class="search_type" v-model="sell_type" placeholder="상점 검색" @keyup.enter="enterKey" />
+                <el-input class="search_name" v-model="storeName" placeholder="상점 검색" @keyup.enter="enterKey" />
                 <el-button :icon="Search" size="large" circle @click="enterKey" />
             </el-card>
-            <!-- <div class="adjustC radio_gr">
-                <el-checkbox-group v-model="checkList">
-                    <el-checkbox label="정육점" />
-                    <el-checkbox label="수산물" />
-                    <el-checkbox label="청과물" />
-                    <el-checkbox label="철물점" />
-                    <el-checkbox label="음식점" />
-                    <el-checkbox label="잡화점" />
-                </el-checkbox-group>
-            </div>-->
             <search-type></search-type>
         </div>
     </div>
@@ -32,6 +22,7 @@ import SearchType from "@/components/SearchType.vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { Back, Search } from "@element-plus/icons-vue";
+import { searchName } from "@/api/store";
 
 export default {
     components: { SearchType },
@@ -39,7 +30,7 @@ export default {
 
     data() {
         return {
-            sell_type: "",
+            storeName: "",
         };
     },
     setup() {
@@ -52,7 +43,15 @@ export default {
             store.dispatch(`storeInMarket/getStore`, marketno);
         };
 
-        return { Back, Search, stores, marketno, marketname };
+        const name_stores = (stores) => {
+            store.commit(`storeInMarket/SET_STORE_LIST`, stores);
+        };
+
+        const clearlist = () => {
+            store.commit(`storeInM1arket/CLEAR_STORE_LIST`);
+        };
+
+        return { Back, Search, stores, marketno, marketname, name_stores, clearlist };
     },
 
     created() {
@@ -65,7 +64,19 @@ export default {
             this.$router.push({ name: "search" });
         },
         enterKey() {
-            console.log(this.sell_type);
+            console.log(this.storeName);
+            searchName(
+                this.marketno,
+                this.storeName,
+                (success) => {
+                    console.log(success.data);
+                    this.clearlist();
+                    this.name_stores(success.data);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
         },
     },
 };
@@ -90,7 +101,7 @@ export default {
 .btn_back {
     margin-right: 20px;
 }
-.search_type {
+.search_name {
     height: 40px !important;
     width: 190px !important;
     margin-right: 30px;

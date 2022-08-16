@@ -38,4 +38,8 @@ async function getIMG(storeNo, success, fail) {
     await api.get(`/img/${storeNo}`).then(success).catch(fail);
 }
 
-export { StoreInMarketList, StoreDetail, StoreRoomDetail, marketByName, storeRegister, getStoreBySellerNo, modifyStore, getIMG };
+async function searchName(marketNo, storeName, success, fail) {
+    await api.get(`/name?marketNo=${marketNo}&storeName=${storeName}`).then(success).catch(fail);
+}
+
+export { StoreInMarketList, StoreDetail, StoreRoomDetail, marketByName, storeRegister, getStoreBySellerNo, modifyStore, getIMG, searchName };
