@@ -1,7 +1,7 @@
 <template>
     <div class="div_div">
         <div class="div_big1">
-            <h2>{{ this.marketname }} {{ this.marketno }}</h2>
+            <h2>{{ this.marketname }}</h2>
             <div class="searchBar">
                 <el-button color="#FF6F61" round class="btn_back" @click="cl_btn">돌아가기</el-button>
                 <el-input class="search_type" v-model="sell_type" placeholder="Please Input" @keyup.enter="enterKey" />
