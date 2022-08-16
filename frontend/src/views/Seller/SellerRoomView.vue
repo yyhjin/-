@@ -69,7 +69,7 @@ import { sellerOrderList } from "@/api/order.js";
 import { menuList, getItem, delelteItem, modifyItem, addItem } from "@/api/item.js";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":7602";
 const OPENVIDU_SERVER_SECRET = "jangbo602";
 //openvidu http port:8081
 //openvidu https port :8443
@@ -327,105 +327,66 @@ export default {
         const drawer_bills = ref(false);
         const bills = ref([]);
 
-        const loadBills = function (storeId) {
-            sellerOrderList(
-                storeId,
-                (res) => {
-                    //dummy
-                    res.data = [
-                        {
-                            orderNo: 1,
-                            customerId: "재승",
-                            orderItems: [
-                                { itemName: "사과", count: 3, price: 2000 },
-                                { itemName: "배", count: 2, price: 3000 },
-                                { itemName: "수박", count: 1, price: 10000 },
-                            ],
-                            orderDate: "20220803",
-                            status: 0,
-                        },
-                        {
-                            orderNo: 1,
-                            customerId: "재승",
-                            orderItems: [
-                                { itemName: "사과", count: 3, price: 2000 },
-                                { itemName: "배", count: 2, price: 3000 },
-                                { itemName: "수박", count: 1, price: 10000 },
-                            ],
-                            orderDate: "20220803",
-                            status: 1,
-                        },
-                    ];
+const loadBills = function(storeId){
+    sellerOrderList(storeId,
+    (res)=>{
+        //dummy
+        res.data=[{orderNo:1,customerId:"재승",orderItems:[{itemName:"사과",count:3,price:2000 },{itemName:"배",count:2,price:3000 },{itemName:"수박",count:1,price:10000 }],orderDate:"20220803",status:0 },
+        {orderNo:1,customerId:"재승",orderItems:[{itemName:"사과",count:3,price:2000 },{itemName:"배",count:2,price:3000 },{itemName:"수박",count:1,price:10000 }],orderDate:"20220803",status:1 }]
 
-                    this.bills = res.data;
-                },
-                () => {}
-            );
-        };
-        const clickBills = function () {
-            this.loadBills(route.params.storeNo);
-            console.log(JSON.stringify(this.bills));
-            this.drawer_bills = true;
-        };
+        this.bills=res.data
+    },
+    ()=>{})
+}
+const clickBills = function(){
+    this.loadBills(route.params.storeNo)
+    console.log(JSON.stringify(this.bills))
+    this.drawer_bills=true;
+    
+}
 
-        /* chatting */
 
-        /* 메뉴 */
-        const drawer_menues = ref(false);
 
-        const clickMenues = function () {
-            this.drawer_menues = true;
-            menuList(
-                route.params.storeNo, //입장할때 받아온 storeNo
-                (res) => {
-                    this.items = res.data;
-                    console.log(JSON.parse(this.items));
-                },
-                () => {}
-            );
-        };
+/* chatting */
 
-        /* 덤 */
-        const innerDrawer = ref(false);
-        const items = ref([]);
 
-        return {
-            //components,
-            UserVideo,
-            ChatComp,
-            //openvidu
-            OV,
-            session,
-            mainStreamManager,
-            publisher,
-            subscribers,
-            sessionName,
-            clientdata,
-            joinSession,
-            leaveSession,
-            updateMainVideoStreamManager,
-            getToken,
-            createSession,
-            createToken,
-            connectCustomer,
-            isConnected,
-            customers,
-            //bills
-            drawer_bills,
-            bills,
-            loadBills,
-            clickBills,
-            //chatting
 
-            //menues
-            drawer_menues,
-            innerDrawer,
-            items,
-            clickMenues,
-            clickMenues,
-        };
-    }, // setup 종료.
-};
+/* 메뉴 */
+const drawer_menues = ref(false)
+
+const clickMenues = function(){
+    this.drawer_menues=true;
+    menuList(route.params.storeNo,//입장할때 받아온 storeNo
+    (res)=>{
+        this.items=res.data
+        console.log(JSON.parse(this.items))
+    },
+    ()=>{})
+    } 
+
+
+/* 덤 */
+const innerDrawer = ref(false)
+const items = ref([])
+
+   return{
+    //components, 
+    UserVideo,ChatComp,
+    //openvidu
+    OV,session,mainStreamManager,publisher,subscribers,sessionName,clientdata,joinSession,leaveSession,
+    updateMainVideoStreamManager,getToken,createSession,createToken,connectCustomer,
+    isConnected,
+    customers,
+    //bills
+    drawer_bills,bills,loadBills,clickBills,
+    //chatting
+    
+    //menues
+    drawer_menues,innerDrawer,items,clickMenues,
+    }
+
+  }// setup 종료.
+}
 </script>
 
 <style scoped>

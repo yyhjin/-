@@ -1,6 +1,5 @@
 <template>
     <div class="root-div">
-        <h2 style="text-align: center">{{ this.userinfo.name }}님의 마이페이지</h2>
         <!--------------------- 회원 정보 ------------------------>
         <div class="user_Info">
             <el-card class="box-card">
@@ -12,13 +11,18 @@
                     </div>
                 </template>
 
-                <div>
+                <div style="margin-bottom: 10px">
                     <!-- 간략한 회원정보  -->
                     <el-descriptions>
-                        <el-descriptions-item label="이름">{{ this.userinfo.name }}</el-descriptions-item>
                         <el-descriptions-item label="아이디">{{ this.userinfo.id }}</el-descriptions-item>
+                        <el-descriptions-item label="이름">{{ this.userinfo.name }}</el-descriptions-item>
                     </el-descriptions>
                 </div>
+
+                <el-row>
+                    <el-col :span="7"> 비밀번호 </el-col>
+                    <el-col :span="5"> <span style="font-size: x-small" @click="dialogVisible = true">변경 하기</span> </el-col>
+                </el-row>
             </el-card>
         </div>
 
@@ -35,7 +39,7 @@
                     <div>
                         <!-- zzimcomp -->
                         <div v-if="zzimlist.length == 0" style="text-align: center">
-                            <div><h2>찜한 가게가 없어용</h2></div>
+                            <el-empty description="찜한 가게가 없습니다." style="margin-top: -35px" />
                         </div>
                         <div v-else>
                             <div v-for="(zzimstore, idx) in zzimlist" :key="idx">
@@ -56,7 +60,7 @@
                     </div>
                 </template>
                 <!-- ordercomp -->
-                <el-scrollbar height="300px">
+                <el-scrollbar height="250px">
                     <div v-for="(order, idx) in orderList" :key="idx" @click="dialogVisible = true">
                         <OrderComp :order="order" />
                     </div>
@@ -65,20 +69,33 @@
         </div>
 
         <!--------------------- 구매내역/ ------------------------>
+        <!--------------------- 비밀번호 확인 모달 ------------------------>
+        <el-dialog v-model="dialogVisible" title="확인" width="80%">
+            <h5 style="margin-left: 5px; margin-top: -10px">비밀번호 재입력</h5>
+            <el-input v-model="pass" type="password" placeholder="password" show-password />
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="confirm()">확인</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
 <script>
 import OrderComp from "@/components/MyPage/OrderComp.vue";
 import ZzimComp from "@/components/MyPage/ZzimComp.vue";
+import { loginCustomer } from "@/api/customer";
 import { getCustomer, getJJim } from "@/api/customer.js";
 import { useStore } from "vuex";
 import { computed, reactive, ref } from "vue";
+import { ElMessage } from "element-plus";
 
 export default {
     components: { OrderComp, ZzimComp },
     setup() {
         const store = useStore();
+        const pass = ref();
         const userNo = computed(() => store.state.userInfo.userNo);
         const userinfo = reactive({
             id: "",
@@ -94,7 +111,15 @@ export default {
             store.dispatch(`orderStore/getOrder`, no);
         };
 
-        return { userNo, userinfo, orderList, getOrder, dialogVisible, handleClose };
+        const open = (message) => {
+            ElMessage({
+                showClose: true,
+                message: message,
+                type: "error",
+            });
+        };
+
+        return { userNo, userinfo, orderList, getOrder, dialogVisible, handleClose, pass, open };
     },
 
     data() {
@@ -132,6 +157,26 @@ export default {
         //this.getOrder(1);
     },
     methods: {
+        confirm() {
+            loginCustomer(
+                { username: this.userinfo.id, password: this.pass },
+                (response) => {
+                    if (response.data.response == "success") {
+                        this.goPass();
+                    } else {
+                        this.open("비밀번호가 다릅니다.");
+                    }
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
+        },
+        goPass() {
+            this.$router.push({
+                name: "CustomerPass",
+            });
+        },
         goProfile() {
             this.$router.push({
                 name: "profile",
@@ -142,18 +187,10 @@ export default {
 };
 </script>
 <style scoped>
-.el-card {
-    --el-card-border-color: #ff6f61 !important;
-}
 .dialog-footer button:first-child {
     margin-right: 10px;
 }
-.root-div {
-    /* width 주고,중앙 정렬. */
-    margin-left: auto;
-    margin-right: auto;
-    width: 340px;
-}
+
 .card-header {
     display: flex;
     justify-content: space-between;
@@ -164,8 +201,6 @@ export default {
     text-decoration: underline;
 }
 .box-card {
-    border: 1px solid #ff6f61;
-    border-radius: 10px;
     margin-bottom: 10px;
 }
 </style>

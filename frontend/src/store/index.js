@@ -44,6 +44,7 @@ export default createStore({
     plugins: [
         createPersistedState({
             paths: ["storeInMarket", "userInfo"],
+            storage: window.sessionStorage,
         }),
     ],
 });

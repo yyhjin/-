@@ -1,7 +1,7 @@
 <template>
-    <div style="margin-left: 10px; margin-right: 15px">
+    <div style="margin-left: 10px">
         <!-- chat-bar -->
-        <div ref="content">
+        <div ref="content" style="margin-top: 10px">
             <!-- 채팅 내용 -->
             <ul style="margin-left: -35px" id="chat-bar">
                 <li v-for="(chat, idx) in state.chats" :key="idx">
@@ -31,23 +31,22 @@
                     </div>
                 </li>
             </ul>
+            <!-- 채팅내용. -->
 
             <div>
                 <!-- 메시지 보낼 유저 선택창 -->
                 <div>
                     <el-select v-model="state.selectedUser" class="m-2" style="width: 120px; margin-bottom: 10px; margin-top: 10px">
                         <el-option value="all">all</el-option>
-                        <!--<el-option v-for="(sub, idx) in state.subscribers" :value="sub.stream.connection" :key="idx" :label="JSON.parse(sub.stream.connection.data).clientData.userName">
-                                {{ JSON.parse(sub.stream.connection.data).clientData.userName }}
-                            사장님</el-option
-                        >-->
-                        <el-option v-for="(sub, idx) in state.subscribers" :value="sub.stream.connection" :key="idx" label="사장님"> 사장님</el-option>
+                        <el-option v-for="(sub, idx) in state.subscribers" :value="sub.stream.connection" :key="idx" :label="JSON.parse(sub.stream.connection.data).clientData">
+                            {{ JSON.parse(sub.stream.connection.data).clientData }}</el-option
+                        >
                     </el-select>
                 </div>
 
                 <!-- 메시지 작성 -->
                 <div>
-                    <el-input v-model="state.message" :rows="2" type="textarea" @keydown.enter="sendMessage" style="width: 270px; margin-bottom: 10px" />
+                    <el-input v-model="state.message" :rows="2" type="textarea" @keydown.enter="sendMessage" style="width: 230px; margin-bottom: 10px" />
                     <svg
                         @click="sendMessage()"
                         class="h-6 w-6 send-icon cursor-pointer"
@@ -88,9 +87,8 @@ ul {
     list-style: none;
 }
 .div_chat {
-    border: 2px solid #ff6f61;
-    border-radius: 10px;
-    margin-top: 10px;
+    border: 2px solid #42413e;
+    border-radius: 5px;
 }
 </style>
 

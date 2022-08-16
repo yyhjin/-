@@ -11,7 +11,17 @@ const storeInMarket = {
     mutations: {
         SET_STORE_LIST: (state, stores) => {
             stores.forEach((store) => {
-                state.stores.push({ no: store.storeNo, name: store.storeName, item: store.storeCategory, image: store.storeImg, idx: store.storeIdx });
+                state.stores.push({
+                    addr: store.storeAddr,
+                    item: store.storeCategory,
+                    idx: store.storeIdx,
+                    image: store.storeImg,
+                    intro: store.storeIntro,
+                    name: store.storeName,
+                    no: store.storeNo,
+                    phone: store.storePhone,
+                    subject: store.storeSubject,
+                });
             });
         },
         SET_MARKETNO: (state, no) => {

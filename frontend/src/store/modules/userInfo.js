@@ -1,10 +1,10 @@
 const userInfo = {
-    namespaced: true,
+    namespaced: true, //중첩네임스페이스 사용.
     state: {
-        userType: "구매자",
-        userNo: "9999",
-        tokken: "1",
-        userId: "hello",
+        userType: "",
+        userNo: "",
+        tokken: "",
+        userId: "",
     },
     getters: {
         isAuthenticated: function (state) {
@@ -25,16 +25,16 @@ const userInfo = {
             state.userId = id;
         },
         CLEAR_USERTYPE: (state) => {
-            state.userType = "구매자";
+            state.userType = "";
         },
         CLEAR_USERNO: (state) => {
-            state.userNo = "9999";
+            state.userNo = "";
         },
         CLEAR_TOKKEN: (state) => {
             state.tokken = "";
         },
         CLEAR_USERID: (state) => {
-            state.userId = "hello";
+            state.userId = "";
         },
     },
     actions: {
