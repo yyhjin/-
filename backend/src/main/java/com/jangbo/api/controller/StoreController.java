@@ -49,6 +49,16 @@ public class StoreController {
         return new ResponseEntity<>(storeList, HttpStatus.OK);
     }
 
+    /*상점 목록 조회*/
+    @GetMapping("/name")
+    @ApiOperation(value = "한 시장안에 상점 목록 api", notes = "시장 내부에서 이름검색 ", httpMethod = "GET")
+    public ResponseEntity<List<Store>> findStorebyName(String storeName,int marketNo) {
+        List<Store> storeList =storeService.findStoreByNameandMarketNo(storeName,marketNo);
+        return new ResponseEntity<>(storeList, HttpStatus.OK);
+    }
+
+
+
     /* 상점 정보 조회*/
     @GetMapping("/{storeNo}")
     @ApiOperation(value = "상점 정보 조회 api", notes = "상점번호로 정보조회(방정보 하나하나 )", httpMethod = "GET")
