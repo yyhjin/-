@@ -25,16 +25,16 @@ const userInfo = {
             state.userId = id;
         },
         CLEAR_USERTYPE: (state) => {
-            state.userType = "구매자";
+            state.userType = "";
         },
         CLEAR_USERNO: (state) => {
-            state.userNo = "9999";
+            state.userNo = "";
         },
         CLEAR_TOKKEN: (state) => {
             state.tokken = "";
         },
         CLEAR_USERID: (state) => {
-            state.userId = "hello";
+            state.userId = "";
         },
     },
     actions: {

@@ -148,6 +148,9 @@ export default {
       }
       )
       */
+     
+
+     
     },
     data() {
         return {
@@ -165,41 +168,21 @@ export default {
     setup() {
         const store = useStore();
         const router = useRouter();
+        //소비자 정보
         const customerNo = computed(() => store.state.userInfo.userNo);
-        const storeName = ref();
-        const number = ref();
         const myUserNo = computed(() => store.state.userInfo.userNo);
         const userId = computed(() => store.state.userInfo.userId);
+
+        const storeName = ref();
+        const number = ref();
         //찜 버튼용
         const jjim = ref(false);
 
         const menus = ref([
-            {
-                itemName: "고기",
-                itemNo: "1",
-                price: "1000",
-                recent: "true",
-            },
-            {
-                itemName: "사과",
-                itemNo: "2",
-                price: "3500",
-                recent: "true",
-            },
+            {itemName:"고기",itemNo:"1",price:"1000",recent:"true",},{itemName:"사과",itemNo:"2",price:"3500",recent:"true",},
         ]);
         const orderItems = ref([
-            {
-                itemName: "꽁치",
-                itemNo: "3",
-                count: "1",
-                price: "5000",
-            },
-            {
-                itemName: "삼겹살",
-                itemNo: "4",
-                count: "1",
-                price: "10000",
-            },
+           {itemName:"꽁치",itemNo:"3",count:"1",price:"5000",},{itemName:"삼겹살",itemNo:"4",count:"1",price:"10000",},
         ]);
 
         const selected = ref({
@@ -210,14 +193,7 @@ export default {
         });
 
         const params = ref([
-            {
-                itemNo: "3",
-                count: "1",
-            },
-            {
-                itemNo: "4",
-                count: "1",
-            },
+            {itemNo:"3",count:"1",},{itemNo:"4",count:"1",},
         ]);
         const hochul = ref(false);
         const content = ref(true);
