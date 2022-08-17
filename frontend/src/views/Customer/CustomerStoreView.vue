@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <el-scrollbar height="800px">
+    
+        
             <div class="about" style="margin-top: -10px; maring-bottom: -10px">
                 <h3 style="margin-left: 10px; display: inline-block">{{ this.storeName }}</h3>
                 <div style="width: 25px; weight: 25px; display: inline-block; margin-left: 10px" @click="cl_JJIM()" v-if="this.jjim == false">
@@ -85,7 +85,7 @@
                     </div>
                 </div>
             </div>
-        </el-card>
+       
         <div>
             <el-button type="info" plain @click="btn_jang()" style="margin-left: 5px">장바구니</el-button>
             <el-button type="info" plain @click="btn_chat()">채팅</el-button>

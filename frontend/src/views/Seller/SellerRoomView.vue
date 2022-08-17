@@ -671,7 +671,6 @@ function callNotificationStop(){
 .customer {
     border: 2px;
     border-style: groove;
-
     width: 150px;
     height: 120px;
     margin: 10px;
