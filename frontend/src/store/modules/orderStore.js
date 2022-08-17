@@ -1,4 +1,5 @@
 import { getOrderList } from "@/api/customer";
+import { getItemList } from "@/api/item";
 
 const orderStore = {
     namespaced: true,
@@ -13,7 +14,7 @@ const orderStore = {
                 marketNo: "9999",
                 storeNo: "777",
                 storeName: "우리동네 분식집",
-                status: "1", 
+                status: "1",
                 orderNo: "356",
                 orderDate: "2022-08-10",
                 orderItems: [
@@ -22,8 +23,13 @@ const orderStore = {
                 ],
             },
         ],
+        //db에 저장되있는거
+        sellList: [],
+        //입장할때 들고갈꺼
+        openList: [],
+        storeNo: "",
     },
-mutations: {
+    mutations: {
         /*
         SET_SIDO_LIST: (state, sidos) => {
             sidos.forEach((sido) => {
@@ -35,6 +41,14 @@ mutations: {
                 state.guguns.push({ value: gugun.gugunCode, text: gugun.gugunName });
             });
         },*/
+
+        REMOVE_ITEM: (state, value) => {
+            state.openList.splice(value, 1);
+        },
+        SET_STORENO: (state, NO) => {
+            state.storeNo = NO;
+        },
+
         SET_ITEM: (state, items) => {
             items.forEach((item) => {
                 state.orderList.orderItems.push({
@@ -45,6 +59,40 @@ mutations: {
                     price: item.price,
                 });
             });
+        },
+        SET_OPENLIST: (state, items) => {
+            items.forEach((item) => {
+                state.openList.push({
+                    itemNo: item.itemNo,
+                    itemName: item.itemName,
+                    price: item.price,
+                    recent: item.recent,
+                });
+            });
+        },
+        SET_OPENLIST2: (state, item) => {
+            state.openList.push({
+                itemNo: item.itemNo,
+                itemName: item.itemName,
+                price: item.price,
+                recent: item.recent,
+            });
+        },
+        CLEAR_OPENLIST: (state) => {
+            state.openList = [];
+        },
+        SET_SELLLIST: (state, items) => {
+            items.forEach((item) => {
+                state.sellList.push({
+                    itemNo: item.itemNo,
+                    itemName: item.itemName,
+                    price: item.price,
+                    recent: item.recent,
+                });
+            });
+        },
+        CLEAR_SELLLIST: (state) => {
+            state.sellList = [];
         },
         SET_ORDERLIST2: (state, orders) => {
             orders.forEach((order) => {
@@ -85,6 +133,23 @@ mutations: {
                 },
                 (error) => {
                     console.log(error);
+                }
+            );
+        },
+        getSellList: ({ commit }, no) => {
+            console.log(no);
+            getItemList(
+                no,
+                (res) => {
+                    console.log(res.data);
+                    commit("CLEAR_SELLLIST");
+                    commit("SET_SELLLIST", res.data);
+
+                    //commit("CLEAR_OPENLIST");
+                    //commit("SET_OPENLIST", res.data);
+                },
+                (err) => {
+                    console.log(err);
                 }
             );
         },
