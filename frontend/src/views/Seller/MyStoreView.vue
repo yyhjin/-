@@ -4,10 +4,10 @@
       <el-radio-button label="true" />
       <el-radio-button label="false" />
     </el-radio-group> -->
-    <el-card class="card-box">
+    <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <h1>내 상점</h1>
+          <h2>내 상점</h2>
         </div>
       </template>
 
@@ -48,8 +48,17 @@
       <div class="mystore_unregistered" v-else>
         <h3 style="text-align: center">
           지금 가게를 등록하세요!
-          <el-button size="small" plain @click="routerPush('store_register')"
-            >등록하러가기</el-button
+          <el-button
+            size="small"
+            color="#42413e"
+            @click="routerPush('store_register')"
+            style="
+              display: block;
+              margin-top: 20px;
+              margin-left: 35%;
+              color: white;
+            "
+            >등록하기</el-button
           >
         </h3>
       </div>
@@ -230,5 +239,12 @@ export default {
   width: 500px;
   margin: auto;
   margin-bottom: 20px;
+}
+
+@media all and (min-width: 768px) {
+  .box-card {
+    margin: auto;
+    width: 70%;
+  }
 }
 </style>
