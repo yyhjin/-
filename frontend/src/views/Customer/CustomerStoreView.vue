@@ -1,7 +1,5 @@
 <template>
-  <!-- <div> -->
-  <!-- <el-scrollbar height="800px"> -->
-  <div class="about">
+  <div class="about" style="margin-top: -10px; maring-bottom: -10px">
     <h3 style="margin-left: 10px; display: inline-block">
       {{ this.storeName }}
     </h3>
@@ -94,8 +92,8 @@
     >
       <store-menu :menu="menu" />
     </div>
-    <!-- </div> -->
-    <!-- <div> -->
+  </div>
+  <div>
     <!-- 장바구니 -->
     <div class="div_content">
       <div>
@@ -177,7 +175,7 @@
         </div>
       </div>
     </div>
-    <!-- </el-card> -->
+
     <div>
       <el-button type="info" plain @click="btn_jang()" style="margin-left: 5px"
         >장바구니</el-button
