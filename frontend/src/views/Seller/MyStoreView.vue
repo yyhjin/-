@@ -46,21 +46,15 @@
       <!---------------가게 미등록 -----------                            <el-button type="info" style="width: 200px; margin-left: 75px" @click="routerPush('store_profile', { storeNo: this.shopInfo.storeNo })">수정</el-button>
 --------->
       <div class="mystore_unregistered" v-else>
-        <h3 style="text-align: center">
-          지금 가게를 등록하세요!
-          <el-button
-            size="small"
-            color="#42413e"
-            @click="routerPush('store_register')"
-            style="
-              display: block;
-              margin-top: 20px;
-              margin-left: 35%;
-              color: white;
-            "
-            >등록하기</el-button
-          >
-        </h3>
+        <h3 style="text-align: center">지금 가게를 등록하세요!</h3>
+
+        <el-button
+          size="small"
+          color="#42413e"
+          @click="routerPush('store_register')"
+          style="display: block; margin-top: 30px; margin: auto; color: white"
+          >등록하기</el-button
+        >
       </div>
     </el-card>
     <div v-if="isRegistered">

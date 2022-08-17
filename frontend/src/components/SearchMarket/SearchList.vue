@@ -1,6 +1,6 @@
 <template>
   <el-scrollbar max-height="600px">
-    <div class="listDiv">
+    <div class="box-card">
       <!-- <h1>시장 검색결과</h1> -->
       <!-- <div
         class="div_list"
@@ -78,5 +78,13 @@ export default {
   margin-top: 30px;
   display: inline-block;
   width: 300px;
+}
+
+@media all and (min-width: 768px) {
+  .box-card {
+    margin: auto;
+    width: 350px;
+    margin-top: 30px;
+  }
 }
 </style>
