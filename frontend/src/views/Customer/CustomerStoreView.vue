@@ -80,17 +80,38 @@
                             </div>
                         </div>
 
-                        <div v-else>
-                            <room-chat ref="chat" @message="sendMessage" :subscribers="subscribers"></room-chat>
-                        </div>
+                    <div v-else>
+                        <room-chat ref="chat" @message="sendMessage" :subscribers="subscribers"></room-chat>
                     </div>
                 </div>
-                <div>
-                    <el-button type="danger" plain @click="btn_jang()" style="margin-left: 5px">장바구니</el-button>
-                    <el-button type="danger" plain @click="btn_chat()">채팅</el-button>
-                </div>
             </div>
-        </el-scrollbar>
+        </el-card>
+        <div>
+            <el-button type="info" plain @click="btn_jang()" style="margin-left: 5px">장바구니</el-button>
+            <el-button type="info" plain @click="btn_chat()">채팅</el-button>
+        </div>
+        <el-dialog v-model="centerDialogVisible" title="주문 확인" width="90%" center>
+            <el-table :data="orderItems" style="width: 90%; margin: auto" max-height="250">
+                <el-table-column prop="itemName" label="물품" width="90" />
+                <el-table-column prop="price" label="가격" width="90" />
+                <el-table-column prop="count" label="수량" width="60" />
+                <el-table-column label="삭제" width="60">
+                    <template #default="scope">
+                        <el-button link type="primary" size="small" @click.prevent="deleteRow(scope.$index)"> 삭제 </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div style="text-align: right; margin-right: 20px; margin-top: -10px">
+                <h4>합계 : {{ money }}원</h4>
+            </div>
+
+            <template #footer>
+                <span class="dialog-footer">
+                    <el-button type="primary" @click="btn_order">주문하기</el-button>
+                    <el-button @click="centerDialogVisible = false" class="btn_cancle" style="background-color: white">취소</el-button>
+                </span>
+            </template>
+        </el-dialog>
     </div>
 </template>
 
@@ -398,6 +419,9 @@ export default {
             this.leaveSession();
             this.$router.push({ name: "home" });
         },
+        btn_preorder() {
+            this.centerDialogVisible = true;
+        },
         //주문하기
         btn_order() {
             // //시그널
@@ -694,27 +718,35 @@ export default {
 };
 </script>
 <style scoped>
-.el-button--danger.is-link,
-.el-button--danger.is-plain,
-.el-button--danger.is-text {
-    --el-button-hover-bg-color: rgb(255, 111, 97, 30%) !important;
-    --el-button-hover-border-color: rgb(255, 111, 97, 30%) !important;
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.text {
+    font-size: 14px;
+}
+
+.item {
+    margin-bottom: 18px;
+}
+
+.box-card {
+    margin-left: -10px;
+    width: 320px;
+}
+
+.dialog-footer button:first-child {
+    margin-right: 10px;
 }
 
 .div_content {
     margin-top: 20px;
-    background: rgb(255, 111, 97, 30%);
-    border-radius: 10px;
-}
-
-.el-button {
-    color: black !important;
 }
 
 .scrollbar-flex-content {
     display: flex;
-    border: 1px solid #ff6f61;
-    border-radius: 10px;
 }
 .scrollbar-demo-item {
     flex-shrink: 0;
@@ -726,7 +758,15 @@ export default {
     margin: 10px;
     text-align: center;
     border-radius: 4px;
-    background: var(--el-color-danger-light-9);
-    color: var(--el-color-danger);
+    background: white;
+    border: 1px solid;
+    color: #42413e;
+}
+
+.el-button--warning.is-link,
+.el-button--warning.is-plain,
+.el-button--warning.is-text {
+    --el-button-border-color: #e07c49 !important;
+    --el-button-bg-color: #e07c49 !important;
 }
 </style>

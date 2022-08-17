@@ -1,22 +1,22 @@
 <template>
     <div class="firstDiv">
-        <el-space wrap>
-            <el-card class="card1">
-                <div class="selectType" style="margin-top: 30px">
-                    <el-radio-group class="adjustC" v-model="searchType" size="large">
-                        <el-radio-button label="주소검색" />
-                        <el-radio-button label="이름검색" />
-                    </el-radio-group>
-                    <div v-if="searchType == '주소검색'">
-                        <search-address></search-address>
-                    </div>
-                    <div v-else>
-                        <search-name></search-name>
-                    </div>
+        <el-card shadow="always" style="margin: auto" class="box-card">
+            <div style="font-weight: bold">시장을 검색하세요!</div>
+            <div class="selectType" style="margin-top: 20px">
+                <el-radio-group class="adjustC" v-model="searchType" size="large">
+                    <el-radio-button label="주소 검색" />
+                    <el-radio-button label="이름 검색" />
+                </el-radio-group>
+                <div v-if="searchType == '주소 검색'">
+                    <search-address></search-address>
                 </div>
-            </el-card>
-        </el-space>
-        <div style="margin-top: 40px">
+                <div v-else>
+                    <search-name></search-name>
+                </div>
+            </div>
+        </el-card>
+        <div style="margin-top: 30px">
+            <h4 style="margin-top: 40px; margin-bottom: 10px">방문할 시장을 선택해주세요</h4>
             <search-list></search-list>
         </div>
     </div>
@@ -39,19 +39,16 @@ export default {
 </script>
 
 <style scoped>
-.adjustC {
-    --el-color-primary: #ff6f61;
-}
-
 .firstDiv {
     text-align: center;
 }
-
-.card1 {
-    width: 300px !important;
-    margin-top: 40px;
-    text-align: center;
-    border: 2px solid #ff6f61 !important;
-    border-radius: 20px !important;
+.adjustC {
+    --el-color-primary: #e07c49;
+}
+@media all and (min-width: 768px) {
+    .box-card {
+        margin: auto;
+        width: 300px;
+    }
 }
 </style>

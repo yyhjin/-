@@ -1,27 +1,33 @@
-#build stage
-FROM node:lts-alpine as build-stage
+#node 이미지를 받는다 build이미지이구나 
+# node 기반의 이미지로 생성된다. 
+FROM node:latest as build-stage 
 
-# make the 'app' folder the current working directory
-WORKDIR /frontend
-# copy both 'package.json' and 'package-lock.json' (if available)
-# COPY package*.json ./
+# RUN, CMD, ENTRYPOINT의 명령이 실행될 디렉터리 
+WORKDIR /app 
 
-# install project dependencies leaving out dev dependencies
+# package*.json이 WORKDIR에 복사된다 
+COPY package*.json ./ 
+
+# 복사했으니 디펜던시 설치가 가능하다 
 RUN npm install 
 
-# # copy project files and folders to the current working directory (i.e. 'app' folder)
-# COPY . .
+# 소스코드를 복사한다 
+COPY ./ . 
 
-# build app for production with minification
-RUN npm run build --prod
+# build 해서 /dist 폴더에 빌드 파일이 생성된다. 
+RUN npm run build 
 
-#production stage 
-FROM nginx:stable-alpine as production-stage
-COPY  ./nginx/nginx.conf /etc/nginx/conf.d/default2.conf
-RUN rm -rf /usr/share/nginx/html/*
+# nginx 이미지를 받는다. 실행 이미지이구나 
+FROM nginx as production-stage 
 
-COPY --from=build-stage frontend/dist /usr/share/nginx/html/
+# app 디렉터리 생성 
+RUN mkdir /app 
+
+# builder에서 빌드한 바이너리를 실행할 이미지로 전달해주기 위해 copy --from 옵션을 사용하여 실행 이미지로 전달한다 
+COPY --from=build-stage /app/dist /app 
+
+# 작성한 nginx 설정파일을 복사한다. 
+COPY  ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 7602
-CMD [ "nginx","-g", "daemon off;" ]
-
+CMD ["nginx", "-g", "daemon off;"]

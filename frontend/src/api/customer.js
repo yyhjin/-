@@ -40,4 +40,9 @@ async function getJJim(no, success, fail) {
     await api.get(`/${no}/interstore`).then(success).catch(fail);
 }
 
-export { getId, joinCustomer, loginCustomer, updateCustomer, getCustomer, getOrderList, setJJim, getJJim };
+//비밀번호수정
+async function setPass(no, params, success, fail) {
+    await api.put(`/change_pwd/${no}`, params).then(success).catch(fail);
+}
+
+export { getId, joinCustomer, loginCustomer, updateCustomer, getCustomer, getOrderList, setJJim, getJJim, setPass };

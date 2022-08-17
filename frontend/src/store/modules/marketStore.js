@@ -5,7 +5,7 @@ const marketStore = {
     state: {
         sidos: [{ value: "없음", text: "선택하세요" }],
         guguns: [{ value: "없음", text: "선택하세요" }],
-        markets: [{ name: "시장에 놀러오세요~", address: "대한민국 어딘가", no: "" }],
+        markets: [{ name: "방문할 시장을 선택해주세요", address: "", no: "0" }],
     },
 
     mutations: {
@@ -25,7 +25,7 @@ const marketStore = {
             });
         },
         SET_MARKET_INIT: (state) => {
-            state.markets = [{ name: "시장에 놀러오세요~", address: "대한민국 어딘가", no: "" }];
+            state.markets = [{ name: "시장이 없습니다", address: "", no: "0" }];
         },
         CLEAR_SIDO_LIST: (state) => {
             state.sido = [{ value: "없음", text: "선택하세요" }];

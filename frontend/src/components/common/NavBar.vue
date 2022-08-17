@@ -24,7 +24,7 @@
     <img
       src="@/assets/jangbojang-logo.png"
       alt="logo"
-      style="width: 100px"
+      style="width: 100px; margin: 6px"
       @click="cl_img()"
     />
     <div class="div_nav" style="float: right; margin-top: 30px">
@@ -40,34 +40,13 @@
         v-if="this.userNo == ''"
         >회원가입</router-link
       >
-      <!-- <router-link
-        style="margin-right: 10px"
-        to="/search"
-        v-if="this.userType == '구매자' && this.userNo != '9999'"
-        >시장검색</router-link
-      >
-      <router-link
-        style="margin-right: 10px"
-        :to="{ name: 'mypage', params: { id: $store.state.userInfo.userNo } }"
-        v-if="this.userType == '구매자' && this.userNo != '9999'"
-        >마이페이지</router-link
-      >
-      <router-link
-        style="margin-right: 20px"
-        :to="{ name: 'mystore', params: { id: $store.state.userInfo.userNo } }"
-        v-if="this.userType == '판매자' && this.userNo != '9999'"
-        >내 가게</router-link
-      >
-      <span
-        style="margin-right: 10px; font-weight: bold"
-        v-if="this.userNo != '9999'"
-        @click="logout"
-        >로그아웃</span
-      > -->
 
       <div v-if="this.userNo != ''" style="display: inline-block">
         <el-dropdown>
-          <el-button class="dropbtn"> MENU </el-button>
+          <el-button class="dropbtn" :icon="Menu">
+            <!-- <el-icon color="#e07c49"><Menu /></el-icon> -->
+          </el-button>
+
           <template #dropdown>
             <el-dropdown-menu>
               <el-dropdown-item
@@ -156,6 +135,10 @@ export default {
 </script>
 
 <style scoped>
+nav {
+  background-color: white;
+}
+
 .nav_room {
   height: 40px;
 }
@@ -166,12 +149,12 @@ export default {
 
 nav a {
   font-weight: bold;
-  color: #ff6f61;
+  color: #e07c49;
   text-decoration: none;
 }
 
 nav a.router-link-exact-active {
-  color: #3cbd92;
+  color: #e2b9a5;
 }
 
 .example-showcase .el-dropdown-link {
@@ -187,16 +170,18 @@ nav a.router-link-exact-active {
 }
 
 .dropbtn {
-  background-color: #ff6f61;
+  background-color: #e07c49;
   color: white;
   padding: 16px;
   font-size: 16px;
   border: none;
   cursor: pointer;
+  margin-top: -10px;
+  margin-right: 10px;
 }
 
 .dropbtn:hover {
-  background-color: #3cbd92;
+  background-color: #df9874;
   color: white;
 }
 </style>

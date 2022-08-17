@@ -1,21 +1,17 @@
 <template>
     <div class="div_div">
         <div class="div_big1">
-            <h2>{{ this.marketname }}</h2>
-            <div class="searchBar">
-                <el-button color="#FF6F61" round class="btn_back" @click="cl_btn">돌아가기</el-button>
-                <el-input class="search_type" v-model="sell_type" placeholder="Please Input" @keyup.enter="enterKey" />
+            <div>
+                <el-button circle class="btn_back" @click="cl_btn" :icon="Back" style="float: left; margin-top: 5px"></el-button>
             </div>
-            <!-- <div class="adjustC radio_gr">
-                <el-checkbox-group v-model="checkList">
-                    <el-checkbox label="정육점" />
-                    <el-checkbox label="수산물" />
-                    <el-checkbox label="청과물" />
-                    <el-checkbox label="철물점" />
-                    <el-checkbox label="음식점" />
-                    <el-checkbox label="잡화점" />
-                </el-checkbox-group>
-            </div>-->
+            <div style="text-align: center">
+                <h2 style="display: inline; margin-left: -50px">{{ this.marketname }}</h2>
+            </div>
+
+            <el-card class="box-card searchBar">
+                <el-input class="search_name" v-model="storeName" placeholder="상점 검색" @keyup.enter="enterKey" />
+                <el-button :icon="Search" size="large" circle @click="enterKey" />
+            </el-card>
             <search-type></search-type>
         </div>
     </div>
@@ -25,6 +21,8 @@
 import SearchType from "@/components/SearchType.vue";
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { Back, Search } from "@element-plus/icons-vue";
+import { searchName } from "@/api/store";
 
 export default {
     components: { SearchType },
@@ -32,7 +30,7 @@ export default {
 
     data() {
         return {
-            sell_type: "",
+            storeName: "",
         };
     },
     setup() {
@@ -45,7 +43,15 @@ export default {
             store.dispatch(`storeInMarket/getStore`, marketno);
         };
 
-        return { stores, marketno, marketname };
+        const name_stores = (stores) => {
+            store.commit(`storeInMarket/SET_STORE_LIST`, stores);
+        };
+
+        const clearlist = () => {
+            store.commit(`storeInMarket/CLEAR_STORE_LIST`);
+        };
+
+        return { Back, Search, stores, marketno, marketname, name_stores, clearlist };
     },
 
     created() {
@@ -58,7 +64,19 @@ export default {
             this.$router.push({ name: "search" });
         },
         enterKey() {
-            console.log(this.sell_type);
+            console.log(this.storeName);
+            searchName(
+                this.marketno,
+                this.storeName,
+                (success) => {
+                    console.log(success.data);
+                    this.clearlist();
+                    this.name_stores(success.data);
+                },
+                (error) => {
+                    console.log(error);
+                }
+            );
         },
     },
 };
@@ -71,23 +89,22 @@ export default {
 
 .div_big1 {
     display: inline-block;
-    width: 300px;
+    margin-top: 10px;
 }
 
 .searchBar {
-    margin-top: 20px;
+    margin-top: 30px;
     margin-bottom: 20px;
     width: 300px;
 }
 
 .btn_back {
-    width: 80px;
-    height: 40px !important;
     margin-right: 20px;
 }
-.search_type {
-    height: 30px !important;
+.search_name {
+    height: 40px !important;
     width: 190px !important;
+    margin-right: 30px;
 }
 .adjustC {
     --el-color-primary: #ff6f61;

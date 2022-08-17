@@ -19,6 +19,7 @@ import StoreRegisterView from "../views/Seller/StoreRegisterView.vue";
 import SellerProfileView from "../views/Seller/SellerProfileView";
 // import OpenVidu  from "../views/OpenVidu";
 import TestTwo from "../views/Seller/TestTwo.vue";
+import CustomerPass from "../views/Customer/CustomerPass";
 
 import store from "@/store/index";
 import { ElMessage } from "element-plus";
@@ -98,6 +99,12 @@ const routes = [
         path: "/customer/:id/profile",
         name: "profile",
         component: CustomerProfileView,
+        beforeEnter: beforeAuth(true),
+    },
+    {
+        path: "/customer/:id/CustomerPass",
+        name: "CustomerPass",
+        component: CustomerPass,
         beforeEnter: beforeAuth(true),
     },
     {
