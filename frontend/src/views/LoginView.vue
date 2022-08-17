@@ -2,7 +2,7 @@
     <!-- <router-link to="/">home</router-link> -->
     <div class="firstDiv">
         <!-- <el-space wrap> -->
-        <el-card shadow="always">
+        <el-card class="box-card" shadow="always">
             <!-- <h1>Login</h1> -->
             <div class="selectType" style="margin-top: 10px">
                 <el-radio-group class="adjustC" v-model="userType" size="large">
@@ -194,5 +194,12 @@ export default {
 .buttonLogin {
     margin-top: 40px;
     margin-bottom: 20px;
+}
+
+@media all and (min-width: 768px) {
+    .box-card {
+        margin: auto;
+        width: 350px;
+    }
 }
 </style>

@@ -1,5 +1,8 @@
 <template>
     <div class="div_div">
+        <div>
+            <el-page-header :icon="ArrowLeft" content="가게 오픈" @back="this.$router.go(-1)" />
+        </div>
         <div class="div_big">
             <ModalView v-if="isModalViewed" @close-modal="isModalViewed = false">
                 <Content msg="Hello Vue in CodeSandbox!" @close-modal="isModalViewed = false" />
@@ -89,13 +92,12 @@ export default {
 
             // 오픈버튼 임시로 만들어 둿어요.
             this.$router.push({
-        name: 'seller_room',
-        params: { storeNo:29 }
-      })
+                name: "seller_room",
+                params: { storeNo: 29 },
+            });
         },
         cl_add() {
             console.log(this.file);
-            
         },
         item_delete(file) {
             for (var i = 0; i < this.fileList.length; i++) {

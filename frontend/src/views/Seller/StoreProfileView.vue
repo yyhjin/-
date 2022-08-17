@@ -10,11 +10,12 @@
                         <el-row>
                             <div class="pic_img" style="margin-right: 10px">
                                 <!-- 프로필 사진이 없다면 기본이미지로 : 백엔드에서 부탁하는게 좋을 듯함.. -->
-                                <el-image style="width: 100px; height: 100px" src="" fit="fill" />
+                                <el-image style="width: 100px; height: 100px" :src="this.imgsrc" fit="fill" />
                             </div>
                             <div class="pic_reg" style="margin-left: 10px">
-                                <h3 style="margin-top: 5px">프로필 사진을 등록하세요</h3>
-                                <el-button type="info" size="large">등록</el-button>
+                                <h3 style="margin-top: 5px">{{ img_message }}</h3>
+                                <input type="file" accept="image/*" @change="imgChange" ref="input_tag" hidden />
+                                <el-button @click="clickInput" type="info">사진 수정</el-button>
                             </div>
                         </el-row>
                     </el-card>
@@ -46,7 +47,9 @@
 </template>
 
 <script>
-import { StoreDetail, modifyStore } from "@/api/store.js";
+import { StoreDetail, modifyStore, updateImg } from "@/api/store.js";
+import { ElMessage } from "element-plus";
+
 export default {
     mounted() {
         StoreDetail(
@@ -64,9 +67,16 @@ export default {
                 console.log(err);
             }
         );
+        this.imgsrc = this.$route.params.img;
     },
     data() {
         return {
+            img: "",
+            imgsrc: "",
+            img_message: "프로필 사진을 등록하세요!",
+            img_valiation: true,
+            img_change: false,
+
             size: "default",
             storeDetail: {},
             form: {
@@ -92,22 +102,72 @@ export default {
         };
     },
     methods: {
+        open() {
+            ElMessage({
+                message: "수정 성공",
+                type: "success",
+            });
+        },
         goBack() {
             this.$router.go(-1);
+        },
+        clickInput() {
+            this.$refs.input_tag.click();
+        },
+        imgChange(e) {
+            const file = e.target.files;
+            this.img_validation = true;
+            if (file[0].size > 1024 * 1024 * 2) {
+                this.img_validation = false;
+                this.imgsrc = "";
+                this.img_message = `2MB이하만 등록 가능합니다.`;
+            }
+            if (file[0].type.indexOf("image") < 0) {
+                this.img_validation = false;
+                this.imgsrc = "";
+                this.img_message = `이미지 파일만 등록 가능합니다.`;
+            }
+            if (this.img_validation == true) {
+                this.img_message = `등록 가능한 사진입니다!.`;
+                this.img = file[0];
+                //미리보기 띄우기위해.
+                this.imgsrc = URL.createObjectURL(this.img);
+                this.img_change = true;
+            }
         },
         //수정버튼
         commitProfile(storeNo, form) {
             modifyStore(
                 storeNo,
                 form,
-                (res) => {
-                    res;
+                (response) => {
+                    console.log(response);
+
+                    if (this.img_change == true) {
+                        let formdata = new FormData();
+                        formdata.append("file", this.img);
+                        updateImg(
+                            storeNo,
+                            formdata,
+                            (response) => {
+                                response;
+                                this.open();
+                                this.goBack();
+                            },
+                            (error) => {
+                                console.log(error);
+                            }
+                        );
+                    }
+
+                    this.open();
+                    this.goBack();
                 },
                 (err) => {
-                    console.log(err);
+                    err;
+                    //console.log(err);
                 }
             );
-            this.goBack();
         },
     },
 };

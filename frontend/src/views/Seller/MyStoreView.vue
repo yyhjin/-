@@ -17,17 +17,21 @@
                     <el-row>
                         <el-col :span="6" class="profile_box">
                             <!-- 프로필 사진이 없다면 기본이미지로 : 백엔드에서 부탁하는게 좋을 듯함.. -->
-                            <img class="profile_pic" :src="this.shopInfo.profileimg" />
+                            <img class="profile_pic" :src="this.img" />
                         </el-col>
                         <el-col :span="18" class="profile_register">
-                            <div>프로필 사진을 등록하세요</div>
-                            <el-button type="info" style="width: 200px; margin-left: 75px">등록</el-button>
+                            <div style="text-align: left">
+                                <h4 style="margin-top: -10px; display: inline-block">상점명 : {{ this.shopInfo.storeName }}</h4>
+                                <h4 style="margin-right: 100px; float: right; display: inline-block; margin-top: 0px">업종 : {{ this.shopInfo.storeCategory }}</h4>
+                                <h4 style="margin-bottom: 0px; margin-top: -10px">상점 주소 : {{ this.shopInfo.storeAddr }}</h4>
+                            </div>
                         </el-col>
                     </el-row>
                 </div>
                 <!-- smartphone 사이즈 일 때. -->
             </div>
-            <!---------------가게 미등록 -------------------->
+            <!---------------가게 미등록 -----------                            <el-button type="info" style="width: 200px; margin-left: 75px" @click="routerPush('store_profile', { storeNo: this.shopInfo.storeNo })">수정</el-button>
+--------->
             <div class="mystore_unregistered" v-else>
                 <h3 style="text-align: center">
                     지금 가게를 등록하세요!
@@ -35,11 +39,11 @@
                 </h3>
             </div>
         </el-card>
-        <div>
+        <div v-if="isRegistered">
             <el-card class="div_card" @click="routerPush('openStore')">
                 <h2>가게 오픈</h2>
             </el-card>
-            <el-card class="div_card" @click="routerPush('store_profile', { storeNo: this.shopInfo.storeNo })">
+            <el-card class="div_card" @click="routerPush('store_profile', { storeNo: this.shopInfo.storeNo, img: this.img })">
                 <h2>상점정보 관리</h2>
             </el-card>
             <el-card class="div_card" @click="routerPush('store_menu', { storeNo: this.shopInfo.storeNo })">
@@ -67,7 +71,7 @@ seller id(from vuex)
 =>BillList,Menus
 */
 
-import { getStoreBySellerNo } from "@/api/store.js";
+import { getStoreBySellerNo, getIMG } from "@/api/store.js";
 import { menuList } from "@/api/item.js";
 import { sellerOrderList } from "@/api/order.js";
 // import MyStoreBtnComp from '@/components/Mystore/MyStoreBtnComp.vue'
@@ -84,8 +88,10 @@ export default {
             shopInfo: {},
             menuList: [],
             billList: [],
+            img: "",
         };
     },
+    created() {},
     methods: {
         routerPush(to, params) {
             console.log(params);
@@ -114,6 +120,15 @@ export default {
                         console.log("상점정보 확인 완료.추가정보 조회");
                         this.loadBillList(storeNo);
                         this.loadMenuList(storeNo);
+                        getIMG(
+                            storeNo,
+                            (response) => {
+                                this.img = response.data;
+                            },
+                            (error) => {
+                                console.log(error);
+                            }
+                        );
                     }
                 },
                 //catch

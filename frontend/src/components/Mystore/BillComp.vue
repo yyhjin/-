@@ -53,7 +53,7 @@
         <div>
             <el-button @click="changeState(1)" size="small" v-if="isSeller">포장 완료</el-button>
             <el-button @click="changeState(2)" size="small" v-if="isSeller">배달 완료</el-button>
-            <el-button @click="total()" type="danger" size="small">주문 취소 </el-button>
+            <el-button @click="changeState(3)" type="danger" size="small">주문 취소 </el-button>
         </div>
     </el-card>
 </template>
