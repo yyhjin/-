@@ -28,8 +28,11 @@
         <el-row>
           <el-col :span="7"> 비밀번호 </el-col>
           <el-col :span="5">
-            <span style="font-size: x-small" @click="dialogVisibleb = true"
-              >변경 하기</span
+            <span
+              style="font-size: x-small"
+              class="button-chgprofile"
+              @click="dialogVisibleb = true"
+              >변경하기</span
             >
           </el-col>
         </el-row>

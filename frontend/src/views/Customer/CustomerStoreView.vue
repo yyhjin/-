@@ -105,14 +105,21 @@
                 <h4>합계 : {{ money }}원</h4>
             </div>
 
-            <template #footer>
-                <span class="dialog-footer">
-                    <el-button type="primary" @click="btn_order">주문하기</el-button>
-                    <el-button @click="centerDialogVisible = false" class="btn_cancle" style="background-color: white">취소</el-button>
-                </span>
-            </template>
-        </el-dialog>
-    </div>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="btn_order" color="#42413e"
+            >주문하기</el-button
+          >
+          <el-button
+            @click="centerDialogVisible = false"
+            class="btn_cancle"
+            style="background-color: white"
+            >취소</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
+  </div>
 </template>
 
 <script>
@@ -142,11 +149,11 @@ const OPENVIDU_SERVER_URL = "https://localhost:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 window.onbeforeunload = () => {
-    // Gracefully leave session
-    if (this.session) {
-        this.removeUser();
-        this.leaveSession();
-    }
+  // Gracefully leave session
+  if (this.session) {
+    this.removeUser();
+    this.leaveSession();
+  }
 };
 
 export default {
@@ -173,7 +180,7 @@ export default {
         //this.sellerNo = this.$route.path.no (판매자 번호 받기)
         //this.storeName = this.$route.params.storeName (가게 이름 받ㄱ기)
 
-        /* 메뉴검색
+    /* 메뉴검색
     getItem(
       12,
       (response)=> {
@@ -185,27 +192,27 @@ export default {
       }
       )
       */
-    },
-    data() {
-        return {
-            OV: undefined,
-            session: undefined,
-            publisher: undefined,
-            subscribers: [],
+  },
+  data() {
+    return {
+      OV: undefined,
+      session: undefined,
+      publisher: undefined,
+      subscribers: [],
 
-            //myUserNo: "",
-            //오픈비두 필수입력
-            mySessionId: "1",
-            myUserName: "",
-        };
-    },
-    setup() {
-        const store = useStore();
-        const router = useRouter();
-        //소비자 정보
-        const customerNo = computed(() => store.state.userInfo.userNo);
-        const myUserNo = computed(() => store.state.userInfo.userNo);
-        const userId = computed(() => store.state.userInfo.userId);
+      //myUserNo: "",
+      //오픈비두 필수입력
+      mySessionId: "1",
+      myUserName: "",
+    };
+  },
+  setup() {
+    const store = useStore();
+    const router = useRouter();
+    //소비자 정보
+    const customerNo = computed(() => store.state.userInfo.userNo);
+    const myUserNo = computed(() => store.state.userInfo.userNo);
+    const userId = computed(() => store.state.userInfo.userId);
         const myConnectionId = ref("")
         const myConnection = ref("")
         //webrtc client정보
@@ -234,25 +241,25 @@ export default {
            {itemName:"꽁치",itemNo:"3",count:"1",price:"5000",},{itemName:"삼겹살",itemNo:"4",count:"1",price:"10000",},
         ]);
 
-        const selected = ref({
-            itemName: "",
-            itemNo: "",
-            count: "",
-            price: "",
-        });
+    const selected = ref({
+      itemName: "",
+      itemNo: "",
+      count: "",
+      price: "",
+    });
 
         const params = ref([]);
         const hochul = ref(false);
         const content = ref(true);
 
-        const deleteRow = (index) => {
-            orderItems.value.splice(index, 1);
-            params.value.splice(index, 1);
-        };
+    const deleteRow = (index) => {
+      orderItems.value.splice(index, 1);
+      params.value.splice(index, 1);
+    };
 
-        const open = (message) => {
-            ElMessage.error(message);
-        };
+    const open = (message) => {
+      ElMessage.error(message);
+    };
 
         
         return { clientdata, router, Check, Star, StarFilled, jjim, myUserNo, number, userId, myConnectionId,myConnection,
@@ -267,9 +274,9 @@ export default {
                 sum += this.orderItems[i].count * this.orderItems[i].price;
             }
 
-            return sum;
-        },
+      return sum;
     },
+  },
 
     methods: {
         /*---------------------------------------------------------joinSession---------------------------------------------------------------*/
@@ -558,215 +565,225 @@ export default {
                 });
         },
 
-        getHocul() {
+    getHocul() {
             console.log("호출 요청");
-            this.session
-                .signal({
-                    data: JSON.stringify({connectionId:this.myConnectionId,userNo:this.myUserNo,userName:this.userId}),
-                    to: [this.sellerConnection],
-                    type: "send-call",
-                })
-                .then(() => {
-                    console.log("호출 완료");
+      this.session
+        .signal({
+          data: JSON.stringify({connectionId:this.myConnectionId,userNo:this.myUserNo,userName:this.userId}),
+          to: [this.sellerConnection],
+          type: "send-call",
+        })
+        .then(() => {
+          console.log("호출 완료");
                     this.hochul=true;
                     //호출 등록 완료, 호출 등록 상태로 변경. 몇번째 호출인지 알려준다.
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        },
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
 
-        sendMessage({ content, to }) {
-            let now = new Date();
-            let current = now.toLocaleTimeString([], {
-                hour: "2-digit",
-                minute: "2-digit",
-                hour12: false, // true인 경우 오후 10:25와 같이 나타냄.
-            });
+    sendMessage({ content, to }) {
+      let now = new Date();
+      let current = now.toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false, // true인 경우 오후 10:25와 같이 나타냄.
+      });
 
-            let messageData = {
-                content: content,
-                sender: this.userId,
-                time: current,
-            };
+      let messageData = {
+        content: content,
+        sender: this.userId,
+        time: current,
+      };
 
-            // 전체 메시지
-            if (to === "all") {
-                this.session
-                    .signal({
-                        data: JSON.stringify(messageData),
-                        to: [],
-                        type: "public-chat",
-                    })
-                    .then(() => {
-                        console.log("메시지 전송 완료");
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            }
+      // 전체 메시지
+      if (to === "all") {
+        this.session
+          .signal({
+            data: JSON.stringify(messageData),
+            to: [],
+            type: "public-chat",
+          })
+          .then(() => {
+            console.log("메시지 전송 완료");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
 
-            // 개인 메시지
-            if (to !== "all") {
-                this.session
-                    .signal({
-                        data: JSON.stringify(messageData),
-                        to: [to],
-                        type: "private-chat",
-                    })
-                    .then(() => {
-                        // 내가 보낸 개인 메시지 추가
-                        this.$refs.chat.addMessage(JSON.stringify(messageData), true, true);
-                        console.log("메시지 전송 완료");
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
-            }
-        },
+      // 개인 메시지
+      if (to !== "all") {
+        this.session
+          .signal({
+            data: JSON.stringify(messageData),
+            to: [to],
+            type: "private-chat",
+          })
+          .then(() => {
+            // 내가 보낸 개인 메시지 추가
+            this.$refs.chat.addMessage(JSON.stringify(messageData), true, true);
+            console.log("메시지 전송 완료");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+    },
 
-        leaveSession() {
-            // --- Leave the session by calling 'disconnect' method over the Session object ---
-            if (this.session) this.session.disconnect();
+    leaveSession() {
+      // --- Leave the session by calling 'disconnect' method over the Session object ---
+      if (this.session) this.session.disconnect();
 
-            this.session = undefined;   
-            this.mainStreamManager = undefined;
-            this.publisher = undefined;
-            this.subscribers = [];
-            this.OV = undefined;
+      this.session = undefined;   
+      this.mainStreamManager = undefined;
+      this.publisher = undefined;
+      this.subscribers = [];
+      this.OV = undefined;
 
-            window.removeEventListener("beforeunload", this.leaveSession);
-        },
-        /*
+      window.removeEventListener("beforeunload", this.leaveSession);
+    },
+    /*
     updateMainVideoStreamManager(stream) {
       if (this.mainStreamManager === stream) return;
       this.mainStreamManager = stream;
     },
 */
-        /**
-         * --------------------------
-         * SERVER-SIDE RESPONSIBILITY
-         * --------------------------
-         * These methods retrieve the mandatory user token from OpenVidu Server.
-         * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
-         * the API REST, openvidu-java-client or openvidu-node-client):
-         *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
-         *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
-         *   3) The Connection.token must be consumed in Session.connect() method
-         */
+    /**
+     * --------------------------
+     * SERVER-SIDE RESPONSIBILITY
+     * --------------------------
+     * These methods retrieve the mandatory user token from OpenVidu Server.
+     * This behavior MUST BE IN YOUR SERVER-SIDE IN PRODUCTION (by using
+     * the API REST, openvidu-java-client or openvidu-node-client):
+     *   1) Initialize a Session in OpenVidu Server	(POST /openvidu/api/sessions)
+     *   2) Create a Connection in OpenVidu Server (POST /openvidu/api/sessions/<SESSION_ID>/connection)
+     *   3) The Connection.token must be consumed in Session.connect() method
+     */
 
-        getToken(mySessionId) {
-            return this.createSession(mySessionId).then((sessionId) => this.createToken(sessionId));
-        },
-
-        // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
-        createSession(sessionId) {
-            return new Promise((resolve, reject) => {
-                axios
-                    .post(
-                        `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
-                        JSON.stringify({
-                            customSessionId: sessionId,
-                        }),
-                        {
-                            auth: {
-                                username: "OPENVIDUAPP",
-                                password: OPENVIDU_SERVER_SECRET,
-                            },
-                        }
-                    )
-                    .then((response) => response.data)
-                    .then((data) => resolve(data.id))
-                    .catch((error) => {
-                        if (error.response.status === 409) {
-                            resolve(sessionId);
-                        } else {
-                            console.warn(`No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`);
-                            if (
-                                window.confirm(
-                                    `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
-                                )
-                            ) {
-                                location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
-                            }
-                            reject(error.response);
-                        }
-                    });
-            });
-        },
-
-        // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
-        createToken(sessionId) {
-            return new Promise((resolve, reject) => {
-                axios
-                    .post(
-                        `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
-                        {},
-                        {
-                            auth: {
-                                username: "OPENVIDUAPP",
-                                password: OPENVIDU_SERVER_SECRET,
-                            },
-                        }
-                    )
-                    .then((response) => response.data)
-                    .then((data) => resolve(data.token))
-                    .catch((error) => reject(error.response));
-            });
-        },
+    getToken(mySessionId) {
+      return this.createSession(mySessionId).then((sessionId) =>
+        this.createToken(sessionId)
+      );
     },
+
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-session
+    createSession(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions`,
+            JSON.stringify({
+              customSessionId: sessionId,
+            }),
+            {
+              auth: {
+                username: "OPENVIDUAPP",
+                password: OPENVIDU_SERVER_SECRET,
+              },
+            }
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.id))
+          .catch((error) => {
+            if (error.response.status === 409) {
+              resolve(sessionId);
+            } else {
+              console.warn(
+                `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}`
+              );
+              if (
+                window.confirm(
+                  `No connection to OpenVidu Server. This may be a certificate error at ${OPENVIDU_SERVER_URL}\n\nClick OK to navigate and accept it. If no certificate warning is shown, then check that your OpenVidu Server is up and running at "${OPENVIDU_SERVER_URL}"`
+                )
+              ) {
+                location.assign(`${OPENVIDU_SERVER_URL}/accept-certificate`);
+              }
+              reject(error.response);
+            }
+          });
+      });
+    },
+
+    // See https://docs.openvidu.io/en/stable/reference-docs/REST-API/#post-connection
+    createToken(sessionId) {
+      return new Promise((resolve, reject) => {
+        axios
+          .post(
+            `${OPENVIDU_SERVER_URL}/openvidu/api/sessions/${sessionId}/connection`,
+            {},
+            {
+              auth: {
+                username: "OPENVIDUAPP",
+                password: OPENVIDU_SERVER_SECRET,
+              },
+            }
+          )
+          .then((response) => response.data)
+          .then((data) => resolve(data.token))
+          .catch((error) => reject(error.response));
+      });
+    },
+  },
 };
 </script>
 <style scoped>
 .card-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .text {
-    font-size: 14px;
+  font-size: 14px;
 }
 
 .item {
-    margin-bottom: 18px;
+  margin-bottom: 18px;
 }
 
 .box-card {
-    margin-left: -10px;
-    width: 320px;
+  margin-left: -10px;
+  width: 320px;
 }
 
 .dialog-footer button:first-child {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 .div_content {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 .scrollbar-flex-content {
-    display: flex;
+  display: flex;
 }
 .scrollbar-demo-item {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    height: 50px;
-    margin: 10px;
-    text-align: center;
-    border-radius: 4px;
-    background: white;
-    border: 1px solid;
-    color: #42413e;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 50px;
+  margin: 10px;
+  text-align: center;
+  border-radius: 4px;
+  background: white;
+  border: 1px solid;
+  color: #42413e;
 }
 
 .el-button--warning.is-link,
 .el-button--warning.is-plain,
 .el-button--warning.is-text {
-    --el-button-border-color: #e07c49 !important;
-    --el-button-bg-color: #e07c49 !important;
+  --el-button-border-color: #e07c49 !important;
+  --el-button-bg-color: #e07c49 !important;
+}
+
+.el-button.is-plain {
+  --el-button-hover-bg-color: #42413e;
+  --el-button-hover-text-color: white;
+  --el-button-hover-border-color: white;
 }
 </style>
