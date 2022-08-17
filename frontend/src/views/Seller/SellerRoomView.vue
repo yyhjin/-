@@ -72,7 +72,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":7602";
 const OPENVIDU_SERVER_SECRET = "jangbo602";
 //openvidu http port:8081
-//openvidu https port :8443
+//openvidu https port :7602
 
 export default {
     //마운트 시 세션 START.
