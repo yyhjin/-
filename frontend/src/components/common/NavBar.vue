@@ -4,7 +4,7 @@
     v-if="$route.path.substring(0, 5) == '/room'"
     style="display: flex; justify-content: space-between"
   >
-    <span>room 안에 진입했을때 변경된 navbar</span>
+    <h3>room 안</h3>
     <span>
       <el-button
         type="danger"
@@ -15,12 +15,12 @@
             params: { id: $store.getters['userInfo/isAuthenticated'] },
           })
         "
-        >가게 닫기</el-button
+        >닫기</el-button
       >
     </span>
   </nav>
 
-  <nav>
+  <nav v-else>
     <img
       src="@/assets/jangbojang-logo.png"
       alt="logo"
@@ -40,11 +40,9 @@
         v-if="this.userNo == ''"
         >회원가입</router-link
       >
-
       <div v-if="this.userNo != ''" style="display: inline-block">
         <el-dropdown>
-          <el-button class="dropbtn" :icon="Menu">
-            <!-- <el-icon color="#e07c49"><Menu /></el-icon> -->
+          <el-button :icon="Menu" style="font-size: 30px" class="dropbtn">
           </el-button>
 
           <template #dropdown>
@@ -96,6 +94,7 @@
 import { useStore } from "vuex";
 import { computed } from "vue";
 import { ElMessage } from "element-plus";
+import { Menu } from "@element-plus/icons-vue";
 
 export default {
   name: "SearchAddress",
@@ -117,7 +116,7 @@ export default {
       });
     };
 
-    return { userType, userNo, logOut, logOutMarket, out };
+    return { Menu, userType, userNo, logOut, logOutMarket, out };
   },
   methods: {
     logout() {
@@ -170,8 +169,9 @@ nav a.router-link-exact-active {
 }
 
 .dropbtn {
-  background-color: #e07c49;
-  color: white;
+  /* background-color: #e07c49;
+  color: white; */
+  color: #e07c49;
   padding: 16px;
   font-size: 16px;
   border: none;

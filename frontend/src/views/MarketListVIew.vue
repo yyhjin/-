@@ -34,7 +34,7 @@ export default {
   components: { SearchAddress, SearchName, SearchList },
   data() {
     return {
-      searchType: "주소검색",
+      searchType: "주소 검색",
     };
   },
 };
