@@ -1,18 +1,22 @@
 <template>
     <div class="div_big">
         <div class="div_market" v-for="item in storeList" v-bind:key="item">
-            <el-card class="box-card">
+            <el-card class="box-card" shadow="never">
                 <div class="div_item">
-                    <img class="mk_img" src="@/assets/defaultshop.png" alt="상점사진" @click="cl_detail(item.no)" style="margin-top: -5px" />
+                    <img class="mk_img" src="@/assets/defaultshop.png" alt="상점사진" @click="cl_detail(item.no)" style="margin-top: 5px; margin-left: 10px; width: 60px; height: 60px" />
 
                     <h4 class="mk_name">{{ item.name }}({{ item.item }})</h4>
-                    <div style="text-align: left; margin-top: -20px; padding-left: 90px">
-                        <h4>{{ item.subject }}제목</h4>
-                        <h4 style="margin-top: -20px">{{ item.intro }}소개</h4>
+                    <div style="text-align: left; margin-top: -10px; padding-left: 90px" v-if="item.subject">
+                        <h5>{{ item.subject }}제목</h5>
+                        <h5 style="margin-top: -20px">{{ item.intro }}소개</h5>
+                    </div>
+                    <div style="text-align: left; margin-top: 50px; padding-left: 90px" v-else>
+                        <h5></h5>
+                        <h5 style="margin-top: -20px">상점 CLOSE</h5>
                     </div>
                     <div class="mk_enter">
-                        <el-button type="danger" round @click="cl_enter(item)" style="margin-right: 10px; margin-bottom: 10px; margin-top: -100px" v-if="item.idx == true">입장</el-button>
-                        <el-button type="info" round @click="cl_no()" style="margin-right: 10px; margin-top: -100px" v-else>입장</el-button>
+                        <el-button type="danger" @click="cl_enter(item)" style="margin-right: 10px; margin-bottom: 10px; margin-top: -90px" v-if="item.idx == true">입장</el-button>
+                        <el-button type="info" @click="cl_no()" style="margin-right: 10px; margin-top: -90px" v-else>입장</el-button>
                     </div>
                 </div>
             </el-card>
@@ -24,8 +28,8 @@
             <el-descriptions-item label="상점명" label-align="center" align="center" label-class-name="my-label" class-name="my-content" width="150px">{{
                 this.one_market.storeName
             }}</el-descriptions-item>
-            <el-descriptions-item label="방 제목" label-align="center" align="center">{{ this.one_market.storeSubject }}</el-descriptions-item>
-            <el-descriptions-item label="소개글" label-align="center" align="center">{{ this.one_market.storeIntro }}</el-descriptions-item>
+            <el-descriptions-item v-if="this.one_market.storeSubject" label="방 제목" label-align="center" align="center">{{ this.one_market.storeSubject }}</el-descriptions-item>
+            <el-descriptions-item v-if="this.one_market.storeSubject" label="소개글" label-align="center" align="center">{{ this.one_market.storeIntro }}</el-descriptions-item>
 
             <el-descriptions-item label="업종" label-align="center" align="center">
                 <el-tag size="small">{{ this.one_market.storeCategory }}</el-tag>
@@ -75,7 +79,15 @@ export default {
             });
         };
         const storeList = computed(() => store.state.storeInMarket.stores);
-        return { img, router, one_market, storeList, dialogVisible, handleClose, open };
+        return {
+            img,
+            router,
+            one_market,
+            storeList,
+            dialogVisible,
+            handleClose,
+            open,
+        };
     },
 
     methods: {
@@ -98,6 +110,7 @@ export default {
                 no,
                 (response) => {
                     console.log(response);
+
                     this.one_market.storeAddr = response.data.storeAddr;
                     this.one_market.storeName = response.data.storeName;
                     this.one_market.storePhone = response.data.storePhone;
@@ -111,6 +124,7 @@ export default {
                 no,
                 (response) => {
                     console.log(response);
+
                     this.one_market.storeSubject = response.data.storeSubject;
                     this.one_market.storeIntro = response.data.storeIntro;
                 },

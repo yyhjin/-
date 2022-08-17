@@ -37,7 +37,8 @@
             <div class="order_items" v-for="(item, idx) in this.bill.orderItems" :key="idx">
                 <div class="item">{{ item.itemName }} x {{ item.count }} | {{ item.price * item.count }}원</div>
             </div>
-            <el-button @click="innerDrawer = true" size="small" v-if="isSeller">덤 추가!</el-button>
+            <el-button @click="openDum" size="small" v-if="isSeller">덤 추가!</el-button> 
+            
         </div>
 
         <!-- (구매자)step bar & 취소표시  -->
@@ -53,7 +54,7 @@
         <div>
             <el-button @click="changeState(1)" size="small" v-if="isSeller">포장 완료</el-button>
             <el-button @click="changeState(2)" size="small" v-if="isSeller">배달 완료</el-button>
-            <el-button @click="total()" type="danger" size="small">주문 취소 </el-button>
+            <el-button @click="changeState(3)" type="danger" size="small">주문 취소 </el-button>
         </div>
     </el-card>
 </template>
@@ -67,15 +68,20 @@ export default {
             isSeller: this.$store.state.userInfo.userType == "판매자",
         };
     },
-    methods: {
-        changeState(orderstate) {
-            const body = { orderNo: this.bill.orderstate, status: `${orderstate}` };
-            changeOrderState(body, () => {
-                console.log("성공");
-            });
+    methods:{
+        changeState(orderstate){
+            const body = { orderNo: this.bill.orderstate, status: `${orderstate}`}    
+            changeOrderState(body,
+            ()=>{console.log("성공")})
+           
         },
-    },
-};
+        openDum(){
+            this.$emit('openDum')
+
+        }
+    }
+
+}
 </script>
 
 <style>

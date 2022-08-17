@@ -22,7 +22,7 @@ function SellerInstance() {
         header: {
             "content-type": "application/json",
         },
-        withCredentials: true // 쿠키 cors 통신 설정
+        withCredentials: true, // 쿠키 cors 통신 설정
     });
     return instance;
 }

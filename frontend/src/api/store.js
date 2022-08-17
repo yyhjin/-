@@ -35,11 +35,17 @@ async function modifyStore(storeNo, storeEditPatchReq, success, fail) {
 
 //상점 프로필사진 불러오기
 async function getIMG(storeNo, success, fail) {
-    await api.get(`/img/${storeNo}`).then(success).catch(fail);
+    await api.get(`/image/${storeNo}`).then(success).catch(fail);
 }
 
+//시장에서 이름으로 상점찾기
 async function searchName(marketNo, storeName, success, fail) {
     await api.get(`/name?marketNo=${marketNo}&storeName=${storeName}`).then(success).catch(fail);
 }
 
-export { StoreInMarketList, StoreDetail, StoreRoomDetail, marketByName, storeRegister, getStoreBySellerNo, modifyStore, getIMG, searchName };
+//프로필 사진 수정
+async function updateImg(storeNo, formdata, success, fail) {
+    await api_register.post(`/image?storeNo=${storeNo}`, formdata).then(success).catch(fail);
+}
+
+export { StoreInMarketList, StoreDetail, StoreRoomDetail, marketByName, storeRegister, getStoreBySellerNo, modifyStore, getIMG, searchName, updateImg };

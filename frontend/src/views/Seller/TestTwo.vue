@@ -16,24 +16,26 @@
 </template>
 
 <script setup>
-
 import {ref} from "vue"
 import { useRouter } from 'vue-router'
 const router = useRouter()
+const menu = [{"itemNo":7,"itemName":"사과","price":1000,"recent":true},{"itemNo":8,"itemName":"배","price":1000,"recent":true},{"itemNo":9,"itemName":"공기밥","price":2000,"recent":true}]
 const inputform = ref({
   userNo:1,
   userName:"",
   storeNo:1,
   isSeller:"",//0,1
   storeName:"",
-  
+  //webrtc 갖고 들어갈 메뉴.
+  instoreMenu: menu.map((obj)=>({...obj,soldout:false}))//객체에 품절여부 속성 추가해서 push
 })
 const goRoom =function(){
   const params = {userNo: inputform.value.userNo, 
                   storeNo: inputform.value.storeNo,
                   isSeller: inputform.value.isSeller,
                   userName: inputform.value.userName,
-                  storeName: inputform.value.storeName, }
+                  storeName: inputform.value.storeName,
+                  instoreMenu: JSON.stringify(inputform.value.instoreMenu) }
   console.log(params)
   if(inputform.value.isSeller==0){
      router.push({
