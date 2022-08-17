@@ -85,7 +85,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 const OPENVIDU_SERVER_URL = "https://localhost:4443";
 const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 //openvidu http port:8081
-//openvidu https port :8443
+//openvidu https port :7602
 
 export default {
     //메뉴변경시 소비자들에게 push.
