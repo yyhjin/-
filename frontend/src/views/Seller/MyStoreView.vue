@@ -4,7 +4,7 @@
       <el-radio-button label="true" />
       <el-radio-button label="false" />
     </el-radio-group> -->
-    <el-card class="box-card">
+    <el-card class="card-box">
       <template #header>
         <div class="card-header">
           <h2>내 상점</h2>
@@ -47,18 +47,17 @@
 --------->
       <div class="mystore_unregistered" v-else>
         <h3 style="text-align: center">지금 가게를 등록하세요!</h3>
-
         <el-button
-          size="small"
-          color="#42413e"
+          round
+          color="#e07c49"
           @click="routerPush('store_register')"
-          style="display: block; margin-top: 30px; margin: auto; color: white"
+          style="color: white"
           >등록하기</el-button
         >
       </div>
     </el-card>
     <div v-if="isRegistered">
-      <el-card class="div_card" @click="routerPush('openStore')">
+      <el-card class="div_card" @click="cl_open()">
         <h2>가게 오픈</h2>
       </el-card>
       <el-card
@@ -106,10 +105,23 @@ seller id(from vuex)
 import { getStoreBySellerNo, getIMG } from "@/api/store.js";
 import { menuList } from "@/api/item.js";
 import { sellerOrderList } from "@/api/order.js";
+import { computed } from "vue";
+import { useStore } from "vuex";
+
 // import MyStoreBtnComp from '@/components/Mystore/MyStoreBtnComp.vue'
 export default {
   mounted() {
     this.loadData(this.$store.state.userInfo.userNo);
+  },
+  setup() {
+    const store = useStore();
+    const storeNo = computed(() => store.state.orderStore.storeNo);
+
+    const setStoreNo = (no) => {
+      store.commit(`orderStore/SET_STORENO`, no);
+    };
+
+    return { storeNo, setStoreNo };
   },
 
   // components:{ MyStoreBtnComp },
@@ -123,8 +135,12 @@ export default {
       img: "",
     };
   },
-  created() {},
   methods: {
+    cl_open() {
+      this.setStoreNo(this.shopInfo.storeNo);
+      console.log(this.storeNo);
+      this.routerPush("openStore", { storeNo: this.shopInfo.storeNo });
+    },
     routerPush(to, params) {
       console.log(params);
       this.$router.push({
@@ -238,7 +254,7 @@ export default {
 @media all and (min-width: 768px) {
   .box-card {
     margin: auto;
-    width: 70%;
+    width: 350px;
   }
 }
 </style>
