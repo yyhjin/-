@@ -80,10 +80,10 @@ import { sellerOrderList } from "@/api/order.js";
 import { menuList } from "@/api/item.js";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-// const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
-// const OPENVIDU_SERVER_SECRET = "jangbo602";
-const OPENVIDU_SERVER_URL = "https://localhost:4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":7602";
+const OPENVIDU_SERVER_SECRET = "jangbo602";
+// const OPENVIDU_SERVER_URL = "https://localhost:4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 //openvidu http port:8081
 //openvidu https port :7602
 
