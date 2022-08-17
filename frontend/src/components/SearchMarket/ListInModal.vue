@@ -1,17 +1,19 @@
 <template>
-  <el-scrollbar max-height="600px">
-    <div class="listDiv">
-      <el-table :data="marketList" style="width: 100%" @row-click="cl_market">
-        <el-table-column
-          prop="name"
-          label="이름"
-          width="160"
-          style="font-weight: bold"
-        />
-        <el-table-column prop="address" label="주소" />
-      </el-table>
-    </div>
-  </el-scrollbar>
+  <div style="width: 300px; margin: auto; display: block">
+    <el-scrollbar max-height="600px">
+      <div class="listDiv">
+        <el-table :data="marketList" style="width: 100%" @row-click="cl_market">
+          <el-table-column
+            prop="name"
+            label="이름"
+            width="160"
+            style="font-weight: bold"
+          />
+          <el-table-column prop="address" label="주소" />
+        </el-table>
+      </div>
+    </el-scrollbar>
+  </div>
 </template>
 
 <script>

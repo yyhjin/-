@@ -5,7 +5,7 @@ const marketStore = {
     state: {
         sidos: [{ value: "없음", text: "선택하세요" }],
         guguns: [{ value: "없음", text: "선택하세요" }],
-        markets: [{ name: "방문할 시장을 선택해주세요", address: "", no: "0" }],
+        markets: [{ name: "시장이 없습니다", address: "", no: "0" }],
     },
 
     mutations: {
