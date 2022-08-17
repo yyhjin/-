@@ -1,18 +1,23 @@
 package com.jangbo.api.controller;
 
+import com.jangbo.api.request.InterStoreReq;
 import com.jangbo.api.request.OrderRegisterReq;
 import com.jangbo.api.request.OrderStateEditReq;
 import com.jangbo.api.service.*;
 import com.jangbo.db.dto.OrdersDto;
 import com.jangbo.db.entity.*;
+import com.jangbo.db.repository.OrdersRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "주문 api", tags={"주문"})
@@ -30,6 +35,9 @@ public class OrdersController {
     StoreService storeService;
     @Autowired
     ItemService itemService;
+
+    @Autowired
+    OrdersRepository ordersRepository;
 
     @ApiOperation(value = "주문목록 조회(소비자)" , notes="소비자번호로 해당 소비자의 주문목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/customer")
@@ -115,6 +123,29 @@ public class OrdersController {
     }
 
 
+    @ApiOperation(value = "덤 추가", notes = "기존 주문서에 덤을 추가한다.", httpMethod = "POST")
+    @PostMapping("/{order_no}")
+    @Transactional
+    public boolean freeItem(
+            @PathVariable("order_no") Integer orderNo,
+            @RequestBody @Valid FreeItemRequest freeItemRequest
+    ) {
+        Orders orders = ordersRepository.findOrdersByOrderNo(orderNo);
 
+        OrderItem orderItem = new OrderItem();
+        orderItem.setOrders(orders);
+        orderItem.setCount(freeItemRequest.getCount());
+        orderItem.setItemName("덤) "+freeItemRequest.getItemName());
+        orderItem.setPrice(0);
+
+        return true;
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class FreeItemRequest {
+        private Integer count;
+        private String itemName;
+    }
 
 }
