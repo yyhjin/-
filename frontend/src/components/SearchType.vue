@@ -86,7 +86,9 @@ export default {
         },
         cl_enter(item) {
             //this.item = item;
-            const params = { storeNo: item.no, storeName: item.name };
+
+            //TODO: params에 찜정보도 넣어서 가져가야 합니다!!!!!!!!!!!
+            const params = { storeNo: item.no, storeName: item.name};
             console.log(params);
             this.router.push({
                 name: "customer_room",

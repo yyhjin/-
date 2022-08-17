@@ -21,21 +21,27 @@
                 </div>
                 <el-button type="danger" plain @click="btn_out()" style="float: right; margin-top: 20px; margin-right: 10px">나가기</el-button>
             </div>
+            <!-- 화면 송출 부분. -->
             <div style="height: 250px">
-                <user-video v-for="sub in subscribers" :key="sub.stream.connection.connectionId" :stream-manager="sub" />
+                <user-video :stream-manager="sellerSubs" />
             </div>
+
+            <!--하단메뉴 -->
+            <!-- 호출 -->
             <div style="text-align: center; margin-top: 10px">
                 <h3 style="display: inline-block" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h3>
                 <h3 style="display: inline-block" v-else>호출을 눌러 문의하세요</h3>
-                <el-button type="danger" plain @click="cl_hochul()" v-if="this.hochul == false" style="float: right; margin-top: 15px; margin-right: 10px">호출하기 </el-button>
-                <el-button type="success" plain @click="cl_cancleho()" v-else style="float: right; margin-top: 15px; margin-right: 10px">호출취소 </el-button>
+                <el-button type="danger" plain @click="getHocul" v-if="this.hochul == false" style="float: right; margin-top: 15px; margin-right: 10px">호출하기 </el-button>
+                <el-button type="success" plain @click="reHocul" v-else style="float: right; margin-top: 15px; margin-right: 10px">호출취소 </el-button>
             </div>
+            <!-- 메뉴판 -->
             <div class="scrollbar-flex-content">
                 <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" @click="cl_item(menu)">
                     <store-menu :menu="menu" />
                 </div>
             </div>
             <div>
+                <!-- 장바구니 -->
                 <div class="div_content">
                     <div>
                         <div v-if="this.content == true">
@@ -69,7 +75,7 @@
                                     </el-input>
                                 </div>
                                 <div style="text-align: right">
-                                    <el-button type="danger" :icon="Check" circle @click="cl_add()" style="margin: 10px 20px" />
+                                    <el-button type="danger" :icon="Check" circle @click="btn_add()" style="margin: 10px 20px" />
                                 </div>
                             </div>
                         </div>
@@ -89,11 +95,14 @@
 </template>
 
 <script>
+//storeNo와 storeName  router.params에 넣어서 가지고 들어옴
+
+
 import StoreMenu from "@/components/Room/StoreMenu.vue";
 import UserVideo from "@/components/Openvidu/UserVideo";
 import RoomChat from "@/components/Openvidu/RoomChat.vue";
 import { Check, Star, StarFilled } from "@element-plus/icons-vue";
-import { makeCall, deleteCall, getCall } from "@/api/call";
+import { makeCall, deleteCall, getCall } from "@/api/call"; //webrtc대체
 import { setJJim } from "@/api/customer";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -106,8 +115,10 @@ import { OpenVidu } from "openvidu-browser";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
-const OPENVIDU_SERVER_SECRET = "jangbo602";
+// const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+// const OPENVIDU_SERVER_SECRET = "jangbo602";
+const OPENVIDU_SERVER_URL = "https://localhost:4443";
+const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 window.onbeforeunload = () => {
     // Gracefully leave session
@@ -118,6 +129,10 @@ window.onbeforeunload = () => {
 };
 
 export default {
+    beforeRouteLeave(to, from, next) {
+            this.leaveSession();
+            next();
+    },
     components: {
         StoreMenu,
         UserVideo,
@@ -126,6 +141,7 @@ export default {
 
     mounted() {
         this.joinSession();
+        
     },
     created() {
         //this.myUserName = this.$route.params.userName;
@@ -148,9 +164,6 @@ export default {
       }
       )
       */
-     
-
-     
     },
     data() {
         return {
@@ -172,16 +185,31 @@ export default {
         const customerNo = computed(() => store.state.userInfo.userNo);
         const myUserNo = computed(() => store.state.userInfo.userNo);
         const userId = computed(() => store.state.userInfo.userId);
+        const myConnectionId = ref("")
+        const myConnection = ref("")
+        //webrtc client정보
+        const clientdata = ref({
+            //myUserName
+            type: 1, //0,1
+            userName: userId,
+            userNo: myUserNo,
+            isConnected: false, //호출연결여부.
+        });
+        //seller 와 통신을 위한 webrtc정보 저장..
+        const sellerConnectionId=ref("");
+        const sellerSubs=ref(undefined);
+        const sellerConnection=ref(undefined)
 
-        const storeName = ref();
-        const number = ref();
+        const storeName = ref("");
+        const number = ref("");
         //찜 버튼용
         const jjim = ref(false);
-
         const menus = ref([
-            {itemName:"고기",itemNo:"1",price:"1000",recent:"true",},{itemName:"사과",itemNo:"2",price:"3500",recent:"true",},
+            //TODO:dummy삭제
+            // {itemName:"고기",itemNo:"1",price:"1000",recent:"true",},{itemName:"사과",itemNo:"2",price:"3500",recent:"true",},
         ]);
         const orderItems = ref([
+            //TODO:dummy삭제
            {itemName:"꽁치",itemNo:"3",count:"1",price:"5000",},{itemName:"삼겹살",itemNo:"4",count:"1",price:"10000",},
         ]);
 
@@ -192,9 +220,7 @@ export default {
             price: "",
         });
 
-        const params = ref([
-            {itemNo:"3",count:"1",},{itemNo:"4",count:"1",},
-        ]);
+        const params = ref([]);
         const hochul = ref(false);
         const content = ref(true);
 
@@ -207,15 +233,12 @@ export default {
             ElMessage.error(message);
         };
 
-        const clientdata = ref({
-            //myUserName
-            type: 1, //0,1
-            userName: userId,
-            userNo: myUserNo,
-        });
-
-        return { clientdata, router, Check, Star, StarFilled, jjim, myUserNo, number, userId, params, customerNo, storeName, menus, selected, orderItems, hochul, content, deleteRow, open };
+        
+        return { clientdata, router, Check, Star, StarFilled, jjim, myUserNo, number, userId, myConnectionId,myConnection,
+        params, customerNo, storeName, menus, selected, orderItems, hochul, content, deleteRow, open,
+        sellerConnectionId,sellerSubs,sellerConnection};
     },
+    //////////////////////////////setup ends///////////////////////////////////////////////
     computed: {
         money() {
             var sum = 0;
@@ -228,6 +251,130 @@ export default {
     },
 
     methods: {
+        /*---------------------------------------------------------joinSession---------------------------------------------------------------*/
+        joinSession() {
+            // --- Get an OpenVidu object ---
+            this.OV = new OpenVidu();
+            // --- Init a session ---
+            this.session = this.OV.initSession();
+            // --- Specify the actions when events take place in the session ---
+            // On every new Stream received...
+            
+            this.session.on("streamCreated", ({ stream }) => {
+                this.count++;
+                const subscriber = this.session.subscribe(stream);
+                console.log(JSON.parse(stream.connection.data));
+                
+                //판매자만 subscribers에 넣기,판매자 정보 저장.
+                if (JSON.parse(stream.connection.data).clientData.type == 0) {
+                    this.sellerConnectionId=stream.connection.connctionId
+                    this.sellerConnection=stream.connection
+                    this.sellerSubs=subscriber
+                    this.subscribers.push(subscriber);
+                    
+                    //메뉴 요청하기
+                    // this.requestMenu();
+                }
+                
+            });
+
+            this.session.on("streamDestroyed", ({ stream }) => {
+                // this.$store.commit('decrease')
+                this.count--;
+                //판매자가 나갔다면 커넥션 종료.
+                if(this.sellerConnectionId == stream.connection.connctionId){
+                    alert("판매자가 상점을 종료했습니다!")
+                    this.btn_out();
+                }
+                // const index = this.subscribers.indexOf(stream.streamManager, 0)
+                // if (index >= 0) {
+                //     this.subscribers.splice(index, 1);
+                // }
+            });
+
+            // On every asynchronous exception...
+            this.session.on("exception", ({ exception }) => {
+                console.warn(exception);
+            });
+
+            // public 채팅 signal 받기
+            this.session.on("signal:public-chat", (event) => {
+                console.log(JSON.parse(event.data).sender);
+                this.$refs.chat.addMessage(event.data, JSON.parse(event.data).sender === this.userId, false);
+            });
+
+            // private 채팅 signal 받기
+            this.session.on("signal:private-chat", (event) => {
+                this.$refs.chat.addMessage(event.data, false, true);
+            });
+
+            //호출삭제되면 시그널받아서 순번 다시 조회하기
+            this.session.on("signal:delete-hochul", (event) => {
+                this.console.log(event);
+            });
+            //판매자의 음성 on-off 컨트롤
+            this.session.on("signal:linkCall", (event) => {
+                console.log("호출변경");
+                console.log(event.data)
+                    console.log(this.isConnected);
+                    this.isConnected = !this.isConnected;
+                    this.publisher.publishAudio(this.isConnected); //false
+                    this.publisher.publishVideo(this.isConnected); //false
+                    console.log(this.isConnected ? "연결됨" : "연결해제됨");
+                    
+                    //만약 호출중이었다면 호출 해제.
+                    if(this.hochul){
+                        this.reHocul();
+                    }
+            });
+            this.session.on("signal:loadMenu",(event)=>{
+                console.log("메뉴변경감지!")
+                console.log(JSON.parse(event.data)) 
+                this.menus= JSON.parse(event.data)
+
+            })
+            this.session.on("signal:callCount",(event)=>{
+                console.log("호출카운트최신화.!")
+                console.log(JSON.parse(event.data)) 
+                this.number=event.data
+                
+
+            })
+
+            // --- Connect to the session with a valid user token ---
+
+            //createtoken
+            this.createToken(this.mySessionId).then((token) => {
+                this.session
+                    .connect(token, { clientData: this.clientdata })
+                    .then(() => {
+                        //  --- Get your own camera stream with the desired properties ---
+
+                        let publisher = this.OV.initPublisher(undefined, {
+                            audioSource: undefined, // The source of audio. If undefined default microphone
+                            videoSource: undefined, // The source of video. If undefined default webcam
+                            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
+                            publishVideo: false, // Whether you want to start publishing with your video enabled or not
+                            //resolution: "640x480", // The resolution of your video
+                            resolution: "120x80",
+                            frameRate: 30, // The frame rate of your video
+                            insertMode: "PREPEND", // How the video is inserted in the target element 'video-container'
+                            mirror: false, // Whether to mirror your local video or not
+                        });
+                        this.publisher = publisher;
+                        this.session.publish(this.publisher);
+                        this.myConnection= publisher.stream.connection
+                        this.myConnectionId= publisher.stream.connection.connectionId
+                    })
+                    .catch((error) => {
+                        console.log("There was an error connecting to the session:", error.code, error.message);
+                    });
+            });
+
+            window.addEventListener("beforeunload", this.leaveSession);
+        },
+/*---------------------------------------------------------joinSession ends---------------------------------------------------------------*/
+        //TODO:호출 시그널
         //찜등록
         cl_JJIM() {
             setJJim(
@@ -253,6 +400,21 @@ export default {
         },
         //주문하기
         btn_order() {
+            // //시그널
+            // console.log(this.sellerConnection)
+             this.session.signal({
+                    data: JSON.stringify(this.userId), //일단 주문자 ID만 보냄.,
+                    to: [this.sellerConnection],
+                    type: "makeOrder",
+                })
+                .then(() => {
+                    console.log("판매자에게 주문을알림");
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+
+            //axios
             getOrder(
                 this.customerNo,
                 //sessionId가 상점번호
@@ -265,10 +427,13 @@ export default {
                     console.log(error);
                 }
             );
+            
         },
+
         cl_item(menu) {
             //메뉴 선택
             this.selected = menu;
+            this.selected.count="";
         },
         //전체 호출 내역반환
         totalhochul() {
@@ -321,7 +486,7 @@ export default {
                 }
             );
         },
-        //장바구니보기
+        // 장바구니보기
         btn_jang() {
             this.content = true;
             console.log("jang");
@@ -330,7 +495,7 @@ export default {
         btn_chat() {
             this.content = false;
             console.log("chat");
-        },
+        }, 
         //장바구니에 추가하기
         btn_add() {
             console.log(this.selected.itemName);
@@ -349,99 +514,20 @@ export default {
             return userName.includes("pu");
         },
 
-        joinSession() {
-            // --- Get an OpenVidu object ---
-            this.OV = new OpenVidu();
 
-            // --- Init a session ---
-            this.session = this.OV.initSession();
-
-            // --- Specify the actions when events take place in the session ---
-
-            // On every new Stream received...
-            this.session.on("streamCreated", ({ stream }) => {
-                this.count++;
-                const subscriber = this.session.subscribe(stream);
-                console.log(JSON.parse(stream.connection.data));
-                //판매자만 sub에 넣기
-                if (JSON.parse(stream.connection.data).clientData.type == 0) {
-                    this.subscribers.push(subscriber);
-                }
-            });
-
-            // On every Stream destroyed...
-            this.session.on("streamDestroyed", ({ stream }) => {
-                // this.$store.commit('decrease')
-                this.count--;
-                const index = this.subscribers.indexOf(stream.streamManager, 0);
-                if (index >= 0) {
-                    this.subscribers.splice(index, 1);
-                }
-            });
-
-            // On every asynchronous exception...
-            this.session.on("exception", ({ exception }) => {
-                console.warn(exception);
-            });
-
-            // public 채팅 signal 받기
-            this.session.on("signal:public-chat", (event) => {
-                console.log(JSON.parse(event.data).sender);
-                this.$refs.chat.addMessage(event.data, JSON.parse(event.data).sender === this.userId, false);
-            });
-
-            // private 채팅 signal 받기
-            this.session.on("signal:private-chat", (event) => {
-                this.$refs.chat.addMessage(event.data, false, true);
-            });
-
-            //호출삭제되면 시그널받아서 순번 다시 조회하기
-            this.session.on("signal:delete-hochul", (event) => {
-                this.console.log(event);
-            });
-
-            // --- Connect to the session with a valid user token ---
-
-            // 'getToken' method is simulating what your server-side should do.
-            // 'token' parameter should be retrieved and returned by your own backend
-            this.getToken(this.mySessionId).then((token) => {
-                this.session
-                    .connect(token, { clientData: this.clientdata })
-                    .then(() => {
-                        // --- Get your own camera stream with the desired properties ---
-
-                        let publisher = this.OV.initPublisher(undefined, {
-                            audioSource: undefined, // The source of audio. If undefined default microphone
-                            videoSource: undefined, // The source of video. If undefined default webcam
-                            publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
-                            publishVideo: false, // Whether you want to start publishing with your video enabled or not
-                            //resolution: "640x480", // The resolution of your video
-                            resolution: "120x80",
-                            frameRate: 30, // The frame rate of your video
-                            insertMode: "PREPEND", // How the video is inserted in the target element 'video-container'
-                            mirror: false, // Whether to mirror your local video or not
-                        });
-                        this.publisher = publisher;
-
-                        this.session.publish(this.publisher);
-                    })
-                    .catch((error) => {
-                        console.log("There was an error connecting to the session:", error.code, error.message);
-                    });
-            });
-
-            window.addEventListener("beforeunload", this.leaveSession);
-        },
         // 판매자에서 호출삭제하면 받을 시그널
+        
         reHocul() {
+            console.log("호출 삭제 요청")
             this.session
                 .signal({
-                    data: {},
-                    to: [],
-                    type: "delete-hochul",
+                    data: this.myConnectionId,
+                    to: [this.sellerConnection],
+                    type: "delete-call",
                 })
                 .then(() => {
-                    console.log("호출 삭제");
+                    console.log("호출 삭제 완료");
+                    this.hochul=false;
                 })
                 .catch((error) => {
                     console.log(error);
@@ -449,14 +535,17 @@ export default {
         },
 
         getHocul() {
+            console.log("호출 요청");
             this.session
                 .signal({
-                    data: {},
-                    to: [],
-                    type: "add-hochul",
+                    data: JSON.stringify({connectionId:this.myConnectionId,userNo:this.myUserNo,userName:this.userId}),
+                    to: [this.sellerConnection],
+                    type: "send-call",
                 })
                 .then(() => {
                     console.log("호출 완료");
+                    this.hochul=true;
+                    //호출 등록 완료, 호출 등록 상태로 변경. 몇번째 호출인지 알려준다.
                 })
                 .catch((error) => {
                     console.log(error);
@@ -516,7 +605,7 @@ export default {
             // --- Leave the session by calling 'disconnect' method over the Session object ---
             if (this.session) this.session.disconnect();
 
-            this.session = undefined;
+            this.session = undefined;   
             this.mainStreamManager = undefined;
             this.publisher = undefined;
             this.subscribers = [];

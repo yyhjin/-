@@ -5,6 +5,7 @@
             <div>
                 {{customerData.customerName}}
                 <div v-if="customerData.isConnected">음성 연결됨.</div>
+                <div v-if="customerData.isCalling">호출중임.</div>
             </div>
         </div>
 </template>

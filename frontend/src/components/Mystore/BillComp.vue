@@ -37,7 +37,8 @@
             <div class="order_items" v-for="(item,idx) in this.bill.orderItems" :key="idx">
                 <div class="item">{{ item.itemName }} x {{ item.count }} | {{ item.price*item.count }}원</div>
             </div>
-            <el-button @click="innerDrawer = true" size="small" v-if="isSeller">덤 추가!</el-button> 
+            <el-button @click="openDum" size="small" v-if="isSeller">덤 추가!</el-button> 
+            
         </div>
        
         
@@ -77,6 +78,10 @@ export default {
             changeOrderState(body,
             ()=>{console.log("성공")})
            
+        },
+        openDum(){
+            this.$emit('openDum')
+
         }
     }
 
