@@ -39,7 +39,6 @@
 
         <div>
           <el-button
-            round
             @click="ck_login()"
             color="#42413e"
             style="width: 100px"

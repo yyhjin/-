@@ -84,10 +84,8 @@
         </el-form-item> -->
 
         <div style="text-align: center; margin-top: 30px">
-          <el-button @click="register()" color="#42413e" round>
-            등록
-          </el-button>
-          <el-button @click="goBack()" round> 뒤로 </el-button>
+          <el-button @click="register()" color="#42413e"> 등록 </el-button>
+          <el-button @click="goBack()"> 취소 </el-button>
         </div>
       </el-form>
     </el-card>

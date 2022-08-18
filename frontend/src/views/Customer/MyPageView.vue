@@ -97,11 +97,11 @@
         type="password"
         placeholder="password"
         show-password
+        @keyup.enter="confirm()"
       />
       <template #footer>
         <span class="dialog-footer">
           <el-button
-            round
             style="background-color: #42413e; color: white"
             @click="confirm()"
             >확인</el-button
