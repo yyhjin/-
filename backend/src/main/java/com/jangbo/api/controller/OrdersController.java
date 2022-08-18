@@ -1,7 +1,5 @@
 package com.jangbo.api.controller;
 
-import com.jangbo.api.request.DumOrderItemsReq;
-import com.jangbo.api.request.InterStoreReq;
 import com.jangbo.api.request.OrderRegisterReq;
 import com.jangbo.api.request.OrderStateEditReq;
 import com.jangbo.api.service.*;
