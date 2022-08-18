@@ -31,10 +31,6 @@ public class Seller {
     @Column(length = 20)
     private String sellerPhone;
 
-//    @OneToOne(fetch = LAZY)
-//    @JoinColumn(name = "store_no")
-//    private Store store;
-
     @NotBlank
     private String sellerPwd;
 

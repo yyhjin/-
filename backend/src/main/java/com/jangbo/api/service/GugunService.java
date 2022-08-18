@@ -13,6 +13,7 @@ public class GugunService {
     @Autowired
     GugunRepository gugunRepository;
 
+    /** 시도코드에 해당하는 구군 목록 조회 */
     public List<GugunDto> findAllByGugunCodeStartsWith(String sidocode) {
         return gugunRepository.findAllByGugunCodeStartsWith(sidocode);
     }

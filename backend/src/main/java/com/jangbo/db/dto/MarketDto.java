@@ -13,16 +13,7 @@ public class MarketDto {
     private String marketAddr;
     private Float lat;
     private Float lng;
-    //private String sidoGugun;
 
-//    public MarketDto(Integer marketNo,String marketName, String marketAddr, Float lat, Float lng, String sidoGugun) {
-//        this.marketNo = marketNo;
-//        this.marketName = marketName;
-//        this.marketAddr = marketAddr;
-//        this.lat = lat;
-//        this.lng = lng;
-//        this.sidoGugun = sidoGugun;
-//    }
 
     public MarketDto(Market market) {
         this.marketNo = market.getMarketNo();

@@ -82,7 +82,6 @@ public class OrdersController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-
     @ApiOperation(value = "주문" , notes="주문서를 생성한다.",httpMethod = "POST")
     @PostMapping("/{customer_no}/{store_no}")
     @Transactional
@@ -97,10 +96,9 @@ public class OrdersController {
 
         Orders createorder = new Orders();
         createorder.setCustomer(customer);
-        //createorder.setOrderItems(order.getOrderItems());
         createorder.setMarketNo(marketno);
         createorder.setStoreNo(storeNo);
-        createorder.setStatus("ORDER");
+        createorder.setStatus("0");
 
         Integer orderno = ordersService.ordersave(createorder).getOrderNo();
 
@@ -115,8 +113,7 @@ public class OrdersController {
             orderitem.setItemName(item.getItemName());
             orderitem.setPrice(item.getPrice() * body.getProducts().get(i).getCount());
 
-
-            Integer orderitemno = orderItemService.orderitemsave(orderitem).getOrderItemNo();
+            orderItemService.orderitemsave(orderitem).getOrderItemNo();
         }
 
         return new ResponseEntity(orderno, HttpStatus.OK);

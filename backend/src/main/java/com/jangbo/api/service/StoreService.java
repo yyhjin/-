@@ -27,46 +27,32 @@ public class StoreService {
     private final FileService fileService;
 
 
-
-
-
     /** 상점- 전체 목록 조회  */
     @Transactional(readOnly = true)
     public List<StoreInfoRes> findAll() {
-
         return storeRepository.findAll()
                 .stream()
                 .map(StoreInfoRes::new)
                 .collect(Collectors.toList());
     }
 
-
-    /**
-     * 상점 - 시장에 따른 상점목록 조회
-     */
+    /** 상점 - 시장에 따른 상점목록 조회 */
     @Transactional(readOnly = true)
     public List<Store> findStoresByMarket(Integer marketNo) {
         return storeRepository.findByMarket(marketRepository.getOne(marketNo));
 
     }
 
-    /**
-     * 상점 -상점 이름 검색
-     * */
+    /** 상점 -상점 이름 검색 */
     @Transactional(readOnly = true)
     public List<Store> findStoreByNameandMarketNo(String storeName,int marketNo){
-
         List<Store> list = storeRepository.findAllByStoreNameSQL(storeName,marketNo);
         return list;
     }
 
-
-    /**
-     * 상점 - 상점 정보 조회
-     */
+    /** 상점 - 상점 정보 조회 */
     @Transactional(readOnly = true)
     public StoreInfoRes findStoreById(int storeNo) {
-
         Store store = storeRepository.findById(storeNo)
                 .orElseThrow(() -> new IllegalAccessError("[storeNo=" + storeNo + "] 해당 상점이 존재하지 않습니다."));
 
@@ -79,11 +65,7 @@ public class StoreService {
 
     }
 
-
-
-    /**
-     * 상점 - 상점 등록
-     */
+    /** 상점 - 상점 등록 */
     @Transactional
     public Integer save(StoreRegisterPostReq storeRegisterPostReq) {
         Seller seller = sellerRepository.findOne(storeRegisterPostReq.getSellerNo());
@@ -102,9 +84,7 @@ public class StoreService {
 
     }
 
-    /**
-     * 상점 - 상점 정보 수정
-     */
+    /** 상점 - 상점 정보 수정 */
     @Transactional
     public Integer updateStore(Integer storeNo, StoreEditPatchReq storeEditPatchReq) {
         Market market = marketRepository.getOne(storeEditPatchReq.getMarketNo());
@@ -115,9 +95,7 @@ public class StoreService {
         return storeNo;
     }
 
-    /**
-     * 상점 - 상점 정보삭제
-     */
+    /** 상점 - 상점 정보삭제 */
     @Transactional
     public void delete(Integer storeNo) {
         Store store = storeRepository.findById(storeNo)
@@ -129,9 +107,7 @@ public class StoreService {
     }
 
 
-    /**
-     * 상점 - 방 정보 조회
-     */
+    /** 상점 - 방 정보 조회 */
     @Transactional(readOnly = true)
     public RoomInfoRes findRoomById(int storeNo) {
         Store store = storeRepository.findById(storeNo)
@@ -139,9 +115,7 @@ public class StoreService {
         return new RoomInfoRes(store);
     }
 
-    /**
-     * 상점 - 방 정보 수정
-     */
+    /** 상점 - 방 정보 수정 */
     @Transactional
     public Integer updateRoom(Integer storeNo, RoomEditPatchReq roomEditPatchReq) {
         Store store = storeRepository.findById(storeNo)
