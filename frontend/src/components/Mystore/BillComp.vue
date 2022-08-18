@@ -44,7 +44,13 @@
           {{ item.price * item.count }}원
         </div>
       </div>
-      <el-button @click="openDum" size="small" v-if="isSeller"
+      <el-button
+        @click="openDum"
+        size="small"
+        v-if="isSeller"
+        style="margin-top: 5px; margin-bottom: 5px; color: white"
+        round
+        color="#e07c49"
         >덤 추가!</el-button
       >
     </div>
@@ -69,13 +75,21 @@
     </div>
     <!-- (판매자)status변경버튼 :구매자는 취소버튼만.-->
     <div>
-      <el-button @click="changeState(1)" size="small" v-if="isSeller"
+      <el-button
+        @click="changeState(1)"
+        size="small"
+        v-if="isSeller"
+        color="#42413e"
         >포장 완료</el-button
       >
-      <el-button @click="changeState(2)" size="small" v-if="isSeller"
+      <el-button
+        @click="changeState(2)"
+        size="small"
+        v-if="isSeller"
+        color="#42413e"
         >배달 완료</el-button
       >
-      <el-button @click="changeState(3)" type="danger" size="small" round
+      <el-button @click="changeState(3)" color="red" size="small" round
         >주문 취소
       </el-button>
     </div>
