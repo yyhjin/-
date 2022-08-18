@@ -111,6 +111,4 @@ export default {
   max-width: 400px;
   margin: auto;
 }
-.bill_header {
-}
 </style>

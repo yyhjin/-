@@ -105,7 +105,7 @@
 <script>
 import { getCustomer, updateCustomer } from "@/api/customer.js";
 import { useStore } from "vuex";
-import { computed, ref, reactive } from "vue";
+import { computed, reactive } from "vue";
 import { ElMessage } from "element-plus";
 
 export default {
@@ -135,9 +135,6 @@ export default {
       });
     };
     return {
-      password,
-      password_double,
-      same,
       userNo,
       userType,
       userinfo,
