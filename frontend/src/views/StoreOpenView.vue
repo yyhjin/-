@@ -82,7 +82,7 @@ export default {
             recent: "",
         });
 
-        const sellList = computed(() => store.state.orderStore.openList);
+        const sellList = computed(() => store.state.orderStore.sellList);
 
         //가게오픈할때 가져가기
         const openList = computed(() => store.state.orderStore.openList);
