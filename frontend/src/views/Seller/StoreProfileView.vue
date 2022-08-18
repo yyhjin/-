@@ -31,11 +31,13 @@
                 <el-form-item label="전화번호">
                     <el-input v-model="form.storePhone" />
                 </el-form-item>
-                <el-form-item label="시장">
-                    <el-input v-model="form.marketNo" />
-                </el-form-item>
-                <el-form-item label="상세위치">
-                    <el-input v-model="form.storeAddr" />
+                <el-form-item label="시장" style="margin-top: 40px">
+                    <div style="width: 100%; margin-top: -30px">
+                        <el-button @click="search()" color="#e07c49" round size="small" style="float: right; color: white; margin-bottom: 10px"> 시장 검색 </el-button>
+                    </div>
+                    <el-input v-model="form.marketName" disabled />
+                    <el-input v-model="form.marketNo" disabled style="display: none" />
+                    <el-input v-model="form.storeAddr" placeholder="상세 위치를 입력해주세요" style="margin-top: 10px" />
                 </el-form-item>
                 <div style="margin-top: 50px; text-align: right">
                     <el-button size="large" @click="commitProfile(this.$route.params.storeNo, this.form)" style="margin-right: 20px; background-color: #42413e; color: white"> 수정 </el-button>
@@ -44,16 +46,26 @@
             </el-form>
         </el-card>
     </div>
+    <el-dialog v-model="dialogVisible" title="시장 검색" width="90%">
+        <search-name></search-name>
+        <list-in-modal @market_register="marketReceive"></list-in-modal>
+    </el-dialog>
 </template>
 
 <script>
 import { StoreDetail, modifyStore, updateImg } from "@/api/store.js";
 import { ElMessage } from "element-plus";
 import { ArrowLeft } from "@element-plus/icons-vue";
+import { ref } from "vue";
+import { marketByNo } from "@/api/market";
+import SearchName from "@/components/SearchMarket/SearchName.vue";
+import ListInModal from "@/components/SearchMarket/ListInModal.vue";
 
 export default {
+    components: { SearchName, ListInModal },
     setup() {
-        return { ArrowLeft };
+        const dialogVisible = ref(false);
+        return { ArrowLeft, dialogVisible };
     },
     mounted() {
         StoreDetail(
@@ -66,6 +78,17 @@ export default {
                 this.form.storePhone = this.storeDetail.storePhone;
                 this.form.marketNo = this.storeDetail.market.marketNo;
                 this.form.storeAddr = this.storeDetail.storeAddr;
+
+                marketByNo(
+                    this.form.marketNo,
+                    (res) => {
+                        console.log(res);
+                        this.form.marketName = res.data.marketName;
+                    },
+                    (err) => {
+                        console.log(err);
+                    }
+                );
             },
             (err) => {
                 console.log(err);
@@ -88,6 +111,7 @@ export default {
                 storeCategory: "",
                 storePhone: "",
                 marketNo: "",
+                marketName: "",
                 storeAddr: "",
             },
             options: [
@@ -172,6 +196,14 @@ export default {
                     //console.log(err);
                 }
             );
+        },
+        search() {
+            this.dialogVisible = true;
+        },
+        marketReceive(market) {
+            this.form.marketName = market.name;
+            this.form.marketNo = market.no;
+            this.dialogVisible = false;
         },
     },
 };
