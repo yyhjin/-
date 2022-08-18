@@ -9,19 +9,19 @@ const orderStore = {
             { storeNo: "777", storeName: "다이소", status: "배달준비중", order_item: "샴푸1개", orderNo: "356", orderDate: "2022-08-10" },
         ]*/
         orderList: [
-            {
-                marketName: "시장장",
-                marketNo: "9999",
-                storeNo: "777",
-                storeName: "우리동네 분식집",
-                status: "1",
-                orderNo: "356",
-                orderDate: "2022-08-10",
-                orderItems: [
-                    { count: "1", itemName: "닭강정", orderItemNo: "12", orderNo: "357", price: "10000" },
-                    { count: "1", itemName: "떡볶이", orderItemNo: "13", orderNo: "555", price: "5000" },
-                ],
-            },
+            // {
+            //     marketName: "시장장",
+            //     marketNo: "9999",
+            //     storeNo: "777",
+            //     storeName: "우리동네 분식집",
+            //     status: "1",
+            //     orderNo: "356",
+            //     orderDate: "2022-08-10",
+            //     orderItems: [
+            //         { count: "1", itemName: "닭강정", orderItemNo: "12", orderNo: "357", price: "10000" },
+            //         { count: "1", itemName: "떡볶이", orderItemNo: "13", orderNo: "555", price: "5000" },
+            //     ],
+            // },
         ],
         //db에 저장되있는거
         sellList: [],
@@ -116,8 +116,8 @@ const orderStore = {
 
         CLEAR_ORDERLIST: (state) => {
             state.orderList = [
-                { storeNo: "999", storeName: "재승이네청과", status: "배달완료", order_item: "사과1박스", orderNo: "999", orderDate: "2022-08-11" },
-                { storeNo: "777", storeName: "다이소", status: "배달준비중", order_item: "샴푸1개", orderNo: "356", orderDate: "2022-08-10" },
+                // { storeNo: "999", storeName: "재승이네청과", status: "배달완료", order_item: "사과1박스", orderNo: "999", orderDate: "2022-08-11" },
+                // { storeNo: "777", storeName: "다이소", status: "배달준비중", order_item: "샴푸1개", orderNo: "356", orderDate: "2022-08-10" },
             ];
         },
     },
