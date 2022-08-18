@@ -28,7 +28,7 @@
         </li>
     </ul> -->
         <el-card class="box-card" style="margin-top: 30px">
-            <el-table :data="itemList" style="width: 420px; margin: auto" max-height="250">
+            <el-table :data="itemList" style="width: 420px; margin: auto" max-height="400">
                 <el-table-column fixed label="" width="40">
                     <!-- v-slot:default="scope" -->
                     <template #default="scope">
