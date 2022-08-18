@@ -123,7 +123,7 @@ import UserVideo from "@/components/Openvidu/UserVideo";
 import RoomChat from "@/components/Openvidu/RoomChat.vue";
 import { Plus, Star, StarFilled } from "@element-plus/icons-vue";
 import { makeCall, deleteCall, getCall } from "@/api/call"; //webrtc대체
-import { setJJim } from "@/api/customer";
+import { setJJim, getJJim } from "@/api/customer";
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import axios from "axios";
@@ -170,6 +170,27 @@ export default {
         this.storeName = this.$route.params.storeName;
         //this.sellerNo = this.$route.path.no (판매자 번호 받기)
         //this.storeName = this.$route.params.storeName (가게 이름 받ㄱ기)
+        console.log(this.userId);
+
+        getJJim(
+            this.myUserNo,
+            (res) => {
+                console.log(res);
+                res.data.forEach((store) => {
+                    this.zzimlist.push({
+                        storeNo: store.storeNo,
+                    });
+                });
+                for (var i = 0; i < this.zzimlist.length; i++) {
+                    if (this.zzimlist[i].storeNo == this.mySessionId) {
+                        this.jjim = true;
+                    }
+                }
+            },
+            (err) => {
+                console.log(err);
+            }
+        );
 
         /* 메뉴검색
     getItem(
@@ -200,6 +221,7 @@ export default {
     setup() {
         const store = useStore();
         const router = useRouter();
+        const zzimlist = ref([]);
         //소비자 정보
         const customerNo = computed(() => store.state.userInfo.userNo);
         const myUserNo = computed(() => store.state.userInfo.userNo);
@@ -281,6 +303,7 @@ export default {
             sellerConnectionId,
             sellerSubs,
             sellerConnection,
+            zzimlist,
         };
     },
     //////////////////////////////setup ends///////////////////////////////////////////////
