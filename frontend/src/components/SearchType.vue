@@ -7,15 +7,15 @@
 
                     <h4 class="mk_name">{{ item.name }}({{ item.item }})</h4>
                     <div style="text-align: left; margin-top: -10px; padding-left: 90px" v-if="item.subject">
-                        <h5>{{ item.subject }}제목</h5>
-                        <h5 style="margin-top: -20px">{{ item.intro }}소개</h5>
+                        <h5>{{ item.subject }}</h5>
+                        <h6 style="margin-top: -20px">{{ item.intro }}</h6>
                     </div>
                     <div style="text-align: left; margin-top: 50px; padding-left: 90px" v-else>
                         <h5></h5>
                         <h5 style="margin-top: -20px">상점 CLOSE</h5>
                     </div>
                     <div class="mk_enter">
-                        <el-button type="danger" @click="cl_enter(item)" style="margin-right: 10px; margin-bottom: 10px; margin-top: -90px" v-if="item.idx == true">입장</el-button>
+                        <el-button type="danger" @click="cl_enter(item)" style="margin-right: 10px; margin-bottom: 10px; margin-top: -100px" v-if="item.idx == true">입장</el-button>
                         <el-button type="info" @click="cl_no()" style="margin-right: 10px; margin-top: -90px" v-else>입장</el-button>
                     </div>
                 </div>
@@ -24,6 +24,9 @@
     </div>
 
     <el-dialog v-model="dialogVisible" title="상점 정보" width="90%">
+        <img src="@/assets/defaultshop.png" alt="상점사진" style="width: 200px; height: 200px" v-if="!this.img" />
+        <img :src="img" alt="상점사진" style="width: 200px; height: 200px; margin-top: -20px; margin-bottom: 20px" v-else />
+
         <el-descriptions :column="1" border>
             <el-descriptions-item label="상점명" label-align="center" align="center" label-class-name="my-label" class-name="my-content" width="150px">{{
                 this.one_market.storeName
@@ -43,7 +46,7 @@
 <script>
 import { computed, reactive, ref } from "vue";
 import { useStore } from "vuex";
-import { StoreDetail, StoreRoomDetail } from "@/api/store.js";
+import { StoreDetail, StoreRoomDetail, getIMG } from "@/api/store.js";
 import { ElMessage } from "element-plus";
 import { useRouter } from "vue-router";
 
@@ -132,18 +135,18 @@ export default {
                     console.log(error);
                 }
             );
-            /*
+
             getIMG(
                 no,
                 (response) => {
                     console.log(response);
-                    this.img = response;
+                    this.img = response.data;
                 },
                 (error) => {
                     console.log(error);
                 }
             );
-            */
+
             console.log("자세히");
         },
     },

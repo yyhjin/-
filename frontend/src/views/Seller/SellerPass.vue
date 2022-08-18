@@ -5,21 +5,21 @@
                 <h5 style="margin-left: 5px; margin-bottom: 10px">이전 비밀번호</h5>
                 <el-input v-model="olds" type="password" placeholder="password" show-password />
                 <h5 style="margin-left: 5px; margin-bottom: 10px">새로운 비밀번호</h5>
-                <el-input v-model="news" type="password" @keyup.enter="cl_mo()" placeholder="password" show-password />
+                <el-input v-model="news" type="password" placeholder="password" show-password />
                 <h5 style="text-align: right; color: red; margin-top: 2px; margin-right: 2px">
                     {{ alert }}
                 </h5>
             </div>
             <div style="margin-top: 30px; text-align: right">
-                <el-button color="#42413e" style="color: white" @click="cl_mo()">수정</el-button>
-                <el-button class="btn_cancle" @click="cl_cancle()">취소</el-button>
+                <el-button round color="#42413e" style="color: white" @click="cl_mo()">수정</el-button>
+                <el-button round class="btn_cancle" @click="cl_cancle()">취소</el-button>
             </div>
         </el-card>
     </div>
 </template>
 
 <script>
-import { setPass } from "@/api/customer";
+import { setPass } from "@/api/seller";
 import { ref, computed } from "vue";
 import { useStore } from "vuex";
 import { ElMessage } from "element-plus";

@@ -18,6 +18,11 @@ async function marketByName(params, success, fail) {
     await api.get(`/market/name`, { params: params }).then(success).catch(fail);
 }
 
+//번호로 검색
+async function marketByNo(no, success, fail) {
+    await api.get(`/market/no?marketno=${no}`).then(success).catch(fail);
+}
+
 async function logout(params, success, fail) {
     await api.post("/logouts", params).then(success).catch(fail);
 }
@@ -32,4 +37,4 @@ async function getOrder(customer_no, store_no, params, success, fail) {
     await api.post(`/order/${customer_no}/${store_no}`, { products: params }).then(success).catch(fail);
 }
 
-export { sidoList, gugunList, marketList, marketByName, logout, getItem, getOrder };
+export { sidoList, gugunList, marketList, marketByNo, marketByName, logout, getItem, getOrder };

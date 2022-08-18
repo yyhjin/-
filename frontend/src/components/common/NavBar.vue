@@ -1,5 +1,5 @@
 <template>
-  <nav
+  <!-- <nav
     class="nav_room"
     v-if="$route.path.substring(0, 5) == '/room'"
     style="display: flex; justify-content: space-between"
@@ -18,9 +18,9 @@
         >닫기</el-button
       >
     </span>
-  </nav>
+  </nav> -->
 
-  <nav v-else>
+  <nav v-if="$route.path.substring(0, 5) != '/room'">
     <img
       src="@/assets/jangbojang-logo.png"
       alt="logo"

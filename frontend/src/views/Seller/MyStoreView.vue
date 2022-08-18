@@ -1,14 +1,15 @@
 <template>
-  <div class="root_div">
+  <div>
     <!-- 등록 여부<el-radio-group v-model="isRegistered" size="small">
       <el-radio-button label="true" />
       <el-radio-button label="false" />
     </el-radio-group> -->
-    <el-card class="card-box">
+    <el-card class="box-card">
       <template #header>
         <div class="card-header">
           <h2>내 상점</h2>
         </div>
+        <span class="button-chgprofile" @click="goProfile">회원 정보 수정</span>
       </template>
 
       <!---------------가게 등록 -------------------->
@@ -21,21 +22,14 @@
             </el-col>
             <el-col :span="18" class="profile_register">
               <div style="text-align: left">
-                <h4 style="margin-top: -10px; display: inline-block">
+                <h4 style="margin-top: -10px">
                   상점명 : {{ this.shopInfo.storeName }}
                 </h4>
-                <h4
-                  style="
-                    margin-right: 100px;
-                    float: right;
-                    display: inline-block;
-                    margin-top: 0px;
-                  "
-                >
+                <h4 style="margin-top: -10px">
                   업종 : {{ this.shopInfo.storeCategory }}
                 </h4>
-                <h4 style="margin-bottom: 0px; margin-top: -10px">
-                  상점 주소 : {{ this.shopInfo.storeAddr }}
+                <h4 style="margin-top: -10px; margin-bottom: -5px">
+                  위치 : {{ this.shopInfo.storeAddr }}
                 </h4>
               </div>
             </el-col>
@@ -57,29 +51,36 @@
       </div>
     </el-card>
     <div v-if="isRegistered">
-      <el-card class="div_card" @click="cl_open()">
+      <el-card
+        class="box-card"
+        @click="cl_open()"
+        style="margin-top: 20px; text-align: center"
+      >
         <h2>가게 오픈</h2>
       </el-card>
       <el-card
-        class="div_card"
+        class="box-card"
         @click="
           routerPush('store_profile', {
             storeNo: this.shopInfo.storeNo,
             img: this.img,
           })
         "
+        style="margin-top: 10px; text-align: center"
       >
         <h2>상점정보 관리</h2>
       </el-card>
       <el-card
-        class="div_card"
+        class="box-card"
         @click="routerPush('store_menu', { storeNo: this.shopInfo.storeNo })"
+        style="margin-top: 10px; text-align: center"
       >
         <h2>메뉴 관리</h2>
       </el-card>
       <el-card
-        class="div_card"
+        class="box-card"
         @click="routerPush('store_bills', { storeNo: this.shopInfo.storeNo })"
+        style="margin-top: 10px; text-align: center"
       >
         <h2>판매 내역</h2>
       </el-card>
@@ -136,6 +137,13 @@ export default {
     };
   },
   methods: {
+    goProfile() {
+      this.$router.push({
+        name: "sellerProfile",
+        // params: { user:this.dummy }
+      });
+    },
+
     cl_open() {
       this.setStoreNo(this.shopInfo.storeNo);
       console.log(this.storeNo);
@@ -256,5 +264,11 @@ export default {
     margin: auto;
     width: 350px;
   }
+}
+.button-chgprofile {
+  font-size: small;
+  float: right;
+  text-decoration: underline;
+  margin-top: -20px;
 }
 </style>
