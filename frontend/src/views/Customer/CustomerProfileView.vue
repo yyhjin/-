@@ -111,9 +111,6 @@ import { ElMessage } from "element-plus";
 export default {
   setup() {
     const store = useStore();
-    const password = ref("");
-    const password_double = ref("");
-    const same = ref("확인");
     const userinfo = reactive({
       id: "",
       nick: "",

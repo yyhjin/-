@@ -54,7 +54,18 @@
           <el-input v-model="form.storeName" />
         </el-form-item>
         <el-form-item label="업종">
-          <el-input v-model="form.storeCategory" />
+          <el-select
+            v-model="form.storeCategory"
+            class="m-2"
+            placeholder="선택"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="전화번호">
           <el-input v-model="form.storePhone" />
@@ -126,6 +137,19 @@ export default {
         storePhone: "", //번호
         storeImg: "",
       },
+      options: [
+        { value: "채소/청과", label: "채소/청과" },
+        { value: "방앗간", label: "방앗간" },
+        { value: "생선/건어물", label: "생선/건어물" },
+        { value: "축산", label: "축산" },
+        { value: "의류/신발", label: "의류/신발" },
+        { value: "이불/커튼", label: "이불/커튼" },
+        { value: "음식점", label: "음식점" },
+        { value: "떡집", label: "떡집" },
+        { value: "반찬", label: "반찬" },
+        { value: "마트", label: "마트" },
+        { value: "그 외 기타", label: "그 외 기타" },
+      ],
     };
   },
   setup() {
@@ -137,9 +161,9 @@ export default {
         type: "success",
       });
     };
-    const open2 = () => {
+    const open2 = (message) => {
       ElMessage({
-        message: "등록 실패",
+        message: message,
         type: "error",
       });
     };
@@ -169,6 +193,7 @@ export default {
       if (this.img_validation == true) {
         this.img_message = `등록 가능한 사진입니다!`;
         this.img = file[0];
+        this.img_change = true;
         //미리보기 띄우기위해.
         this.imgsrc = URL.createObjectURL(this.img);
       }
@@ -200,11 +225,16 @@ export default {
             //catch
             (error) => {
               console.log(error);
-              this.open2();
+              this.open2("등록 실패");
             }
           );
+        },
+        //catch
+        (error) => {
+          console.log(error);
         }
       );
+
       // axios({method:'POST',
       // url:"http://localhost:8080/store",
       // headers:{

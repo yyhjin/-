@@ -28,9 +28,11 @@
           />
         </div>
 
-        <div style="margin-top: 30px; margin-bottom: 10px">
+        <span class="button-chgprofile" @click="goPass">비밀번호 수정</span>
+
+        <div style="margin-top: 80px; margin-bottom: 10px">
           <el-button
-            color="#FF6F61"
+            color="rgb(66, 65, 62)"
             style="width: 100px"
             class="btn_modify"
             @click="cl_modify"
@@ -43,11 +45,33 @@
       </div>
     </el-card>
   </div>
+  <!--------------------- 비밀번호 확인 모달 ------------------------>
+  <el-dialog v-model="dialogVisible" title="확인" width="40%">
+    <h5 style="margin-left: 5px; margin-top: -10px">비밀번호 입력</h5>
+    <el-input
+      v-model="pass"
+      type="password"
+      placeholder="password"
+      show-password
+      @keyup.enter="confirm()"
+    />
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button
+          round
+          style="background-color: #42413e; color: white"
+          @click="confirm()"
+          >확인</el-button
+        >
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script>
-import { getSeller, updateSeller } from "@/api/seller.js";
+import { getSeller, updateSeller, loginSeller } from "@/api/seller.js";
 import { useStore } from "vuex";
 import { computed, ref, reactive } from "vue";
+import { ElMessage } from "element-plus";
 
 export default {
   setup() {
@@ -55,16 +79,45 @@ export default {
     const password = ref("");
     const password_double = ref("");
     const same = ref("확인");
+    const dialogVisible = ref(false);
+    const pass = ref();
     const userinfo = reactive({
       name: "",
       number: "",
       phone_number: "",
     });
-
+    const userId = computed(() => store.state.userInfo.userId);
     const userType = computed(() => store.state.userInfo.userType);
     const userNo = computed(() => store.state.userInfo.userNo);
 
-    return { password, password_double, same, userNo, userType, userinfo };
+    const open = (message) => {
+      ElMessage({
+        showClose: true,
+        message: message,
+        type: "error",
+      });
+    };
+    const open1 = (message) => {
+      ElMessage({
+        showClose: true,
+        message: message,
+        type: "success",
+      });
+    };
+
+    return {
+      password,
+      password_double,
+      same,
+      userNo,
+      userType,
+      userinfo,
+      dialogVisible,
+      pass,
+      userId,
+      open,
+      open1,
+    };
   },
 
   watch: {},
@@ -85,6 +138,29 @@ export default {
   },
 
   methods: {
+    confirm() {
+      console.log(this.userId);
+      loginSeller(
+        { username: this.userId, password: this.pass },
+        (response) => {
+          if (response.data.response == "success") {
+            this.$router.push({
+              name: "SellerPass",
+              params: { id: this.userId },
+            });
+          } else {
+            this.open("비밀번호가 다릅니다.");
+          }
+          console.log(response);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    goPass() {
+      this.dialogVisible = true;
+    },
     cl_modify() {
       //alert("등록성공");
       //console.log(this.userNo);
@@ -118,6 +194,12 @@ export default {
 };
 </script>
 <style scoped>
+.button-chgprofile {
+  font-size: small;
+  float: right;
+  text-decoration: underline;
+  margin-top: 30px;
+}
 .card {
   margin: auto;
 }

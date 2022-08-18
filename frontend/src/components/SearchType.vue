@@ -24,8 +24,8 @@
     </div>
 
     <el-dialog v-model="dialogVisible" title="상점 정보" width="90%">
-        <img src="@/assets/defaultshop.png" alt="상점사진" style="width: 60px; height: 60px" v-if="!this.img" />
-        <img :src="img" alt="상점사진" style="width: 60px; height: 60px; margin-top: -20px; margin-bottom: 20px" v-else />
+        <img src="@/assets/defaultshop.png" alt="상점사진" style="width: 200px; height: 200px" v-if="!this.img" />
+        <img :src="img" alt="상점사진" style="width: 200px; height: 200px; margin-top: -20px; margin-bottom: 20px" v-else />
 
         <el-descriptions :column="1" border>
             <el-descriptions-item label="상점명" label-align="center" align="center" label-class-name="my-label" class-name="my-content" width="150px">{{
