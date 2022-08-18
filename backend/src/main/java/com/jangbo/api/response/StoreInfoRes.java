@@ -36,7 +36,6 @@ public class StoreInfoRes {
     String storeImg;
 
 
-
     public StoreInfoRes(Store store) {
         this.storeNo = store.getStoreNo();
         this.storeName = store.getStoreName();
@@ -54,7 +53,6 @@ public class StoreInfoRes {
     static class Seller {
         private Integer sellerNo;
 
-
         @Builder
         public Seller(Integer sellerNo) {
             this.sellerNo = sellerNo;
@@ -64,7 +62,6 @@ public class StoreInfoRes {
     @Getter
     public static class Market {
         private Integer marketNo;
-
 
         @Builder
         public Market(Integer marketNo) {

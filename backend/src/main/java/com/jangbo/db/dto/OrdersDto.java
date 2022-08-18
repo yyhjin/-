@@ -29,14 +29,12 @@ public class OrdersDto {
     private Integer marketNo;
     private Integer storeNo;
     private String status;
-    //private Integer customerNo;
     private List<OrderItemDto> orderItems;
 
     private String marketName;
 
     private Integer customerNo;
     private String customerId;
-    //private Customer customer;
     private String storeName;
 
 
@@ -47,6 +45,7 @@ public class OrdersDto {
         this.storeNo = order.getStoreNo();
         this.status = order.getStatus();
 
+        // OrderItem을 리스트 형태로 넣어줌
         this.orderItems = order.getOrderItems().stream()
                 .map(o -> new OrderItemDto(o))
                 .collect(Collectors.toList());
@@ -54,9 +53,6 @@ public class OrdersDto {
         this.customerNo = order.getCustomer().getCustomerNo();
         this.customerId = order.getCustomer().getCustomerId();
 
-
-//        MarketRepository marketRepository = null;
-//        this.marketName = marketRepository.findMarketByMarketNo(order.getMarketNo()).getMarketName();
     }
 
     public OrdersDto(Orders order, String marketName, String storeName) {
@@ -66,6 +62,7 @@ public class OrdersDto {
         this.storeNo = order.getStoreNo();
         this.status = order.getStatus();
 
+        // OrderItem을 리스트 형태로 넣어줌
         this.orderItems = order.getOrderItems().stream()
                 .map(o -> new OrderItemDto(o))
                 .collect(Collectors.toList());

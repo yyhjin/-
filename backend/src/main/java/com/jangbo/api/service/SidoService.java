@@ -13,6 +13,7 @@ public class SidoService {
     @Autowired
     SidoRepository sidoRepository;
 
+    /** 시도 전체 목록 조회(시도코드 2글자만 가져옴) */
     public List<SidoDto> findAllSubstring() {
         return sidoRepository.findAllSubstring();
     }

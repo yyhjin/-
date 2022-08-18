@@ -62,7 +62,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     //소비자 - 로그인
-
     @Override
     public Customer loginCustomer(String customerId, String customerPwd) throws Exception {
         Customer customer = customerRepository.findByCustomerId(customerId);

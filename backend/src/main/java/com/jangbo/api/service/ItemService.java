@@ -16,7 +16,6 @@ import java.util.List;
 @Service
 public class ItemService {
     private final StoreRepository storeRepository;
-
     private final ItemRepository itemRepository;
 
     /** 상점 - 상점별 아이템 정보 조회 */
@@ -39,7 +38,6 @@ public class ItemService {
         return itemRepository.save(item).getItemNo();
     }
 
-
     /** 상점 - 아이템 정보 수정 */
     @Transactional
     public Integer update(Integer itemNo, ItemEditPatchReq itemEditPatchReq) {
@@ -61,7 +59,6 @@ public class ItemService {
 
 
     /**상점 - 아이템 정보삭제 */
-
     @Transactional
     public void delete(Integer itemNo) {
 

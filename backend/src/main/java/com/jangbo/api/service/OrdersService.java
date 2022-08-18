@@ -16,22 +16,19 @@ public class OrdersService {
 
     @Autowired
     OrdersRepository ordersRepository;
-
     @Autowired
     MarketRepository marketRepository;
-
     @Autowired
     StoreRepository storeRepository;
 
+    /** 소비자번호로 주문 목록 날짜 내림차순 조회 */
     public List<OrdersDto> findAllByCustomer_CustomerNoOrderByOrderDateDesc(Integer customerno) {
-        //return ordersRepository.findAllByCustomer_CustomerNo(customerno);
-        //return orders.stream().map(OrdersDto::new).collect(Collectors.toList());
-        //return orders.stream().map(o -> new OrdersDto(o)).collect(Collectors.toList());
-
+        // 전체 주문 내역 조회
         List<Orders> orders = ordersRepository.findAllByCustomer_CustomerNoOrderByOrderDateDesc(customerno);
 
         List<OrdersDto> result = new LinkedList<OrdersDto>();
 
+        // 주문 내역 전체 탐색하며 OrderItem 리스트를 OrderDto에 같이 넣어줌
         for(int i = 0; i < orders.size(); i++) {
             Orders order = orders.get(i);
             String marketname = marketRepository.findMarketByMarketNo(order.getMarketNo()).getMarketName();
@@ -44,18 +41,22 @@ public class OrdersService {
         return result;
     }
 
+    /** 상점번호로 주문 목록 날짜 내림차순 조회 */
     public List<OrdersDto> findAllByStoreNoOrderByOrderDateDesc(Integer storeno) {
         return ordersRepository.findAllByStoreNoOrderByOrderDateDesc(storeno);
     }
 
+    /** 주문번호로 해당 주문 정보 조회 */
     public Orders findOrdersByOrderNo(Integer orderno) {
         return ordersRepository.findOrdersByOrderNo(orderno);
     }
 
+    /** 주문상태 변경 */
     public Integer updateOrderState(Orders order, Integer orderno, String status) {
         return ordersRepository.updateOrderState(order, orderno, status);
     }
 
+    /** 주문 생성 */
     public Orders ordersave(Orders order) {
         return ordersRepository.save(order);
     }

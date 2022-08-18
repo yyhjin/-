@@ -70,7 +70,6 @@ public class SellerController {
     }
 
 
-
     @Data
     @AllArgsConstructor
     static class SellerDto {
@@ -79,13 +78,11 @@ public class SellerController {
         private String sellerPhone;
     }
 
-
     @Data
     @AllArgsConstructor
     static class CheckResponse {
         private boolean check;
     }
-
 
     @Data
     static class CreateUpdateSellerResponse {
