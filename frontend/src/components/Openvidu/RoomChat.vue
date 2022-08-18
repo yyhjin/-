@@ -39,7 +39,7 @@
                     <el-select v-model="state.selectedUser" class="m-2" style="width: 120px; margin-bottom: 10px; margin-top: 10px">
                         <el-option value="all">all</el-option>
                         <el-option v-for="(sub, idx) in state.subscribers" :value="sub.stream.connection" :key="idx" :label="JSON.parse(sub.stream.connection.data).clientData.userName">
-                            {{ JSON.parse(sub.stream.connection.data).clientData }}</el-option
+                            {{ JSON.parse(sub.stream.connection.data).clientData.userName }}</el-option
                         >
                     </el-select>
                 </div>

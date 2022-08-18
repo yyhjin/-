@@ -140,7 +140,16 @@ export default {
                             // 오픈버튼 임시로 만들어 둿어요.
                             this.$router.push({
                                 name: "seller_room",
-                                params: { storeNo: this.storeNo },
+                                params: { 
+                                    userNo:this.$store.state.userInfo.userNo,
+                                    userName: this.$store.state.userInfo.userId,
+                                    storeNo: this.storeNo ,
+                                    storeName:"",
+                                    storeIntro: this.intro,
+                                    storeSubject:this.subject,
+                                    instoreMenu:JSON.stringify(this.openList),
+                                    isSeller:0,
+                                    },
                             });
                         },
                         (err) => {

@@ -19,7 +19,7 @@ import { computed } from "vue";
 import { Delete } from "@element-plus/icons-vue";
 
 export default {
-    // props:[`sellList`],
+    // props:[`sellList`,'openList'],
     name: "ChoosedItem",
     setup() {
         const store = useStore();

@@ -1,5 +1,29 @@
 <template>
     <div class="root_div">
+        <div class="header">
+            <nav
+    class="nav_room"
+    v-if="$route.path.substring(0, 5) == '/room'"
+    style="display: flex; justify-content: space-between"
+  >
+    <h2 style="margin-top:0;">{{storeIntro}}</h2>
+    <span>
+    <!-- TODO:문 닫을때 close 처리 해줘야해요. -->
+      <el-button
+        type="danger"
+        size="large"
+        @click="
+        $router.push({
+            name: 'mystore',
+            params: { id: $store.getters['userInfo/isAuthenticated'] },
+        })
+        "
+        >닫기</el-button
+        >
+    </span>
+  </nav>
+  <div v-if="callQueue.length!=0"><el-alert title="손님이 호출을 기다리고 있어요!" type="error" effect="dark" :closable="false"/></div>
+        </div>
         <div class="main">
             <!--  판매자 화면 송출 페이지. -->
             <div class="sellervideo">
@@ -7,10 +31,10 @@
             </div>
             <!-- 채팅 컴포넌트 -->
             <room-chat ref="chat" @message="sendMessage" :subscribers="subscribers"></room-chat>
-            <div class="information panel">구경중인 손님 : {{ customers.length }}명 | 호출 대기중 손님:{{ callQueue.length }}명</div>
+            <div class="information panel">구경중인 손님 : {{ customers.length }}명 | 호출 대기중 손님: {{ callQueue.length }}명</div>
         </div>
         <!-- 입장한 고객들 CONTROL -->
-        <div id="customers">
+        <div id="customers" style="width:80%; max-width:800px; margin-top:10px; margin-bottom:10px">
             <CustomerComp v-for="(sub, idx) in subscribers" :key="idx" :stream-manager="sub" :customerData="customers[idx]" @click="connectCustomer(customers[idx])" />
         </div>
 
@@ -27,6 +51,8 @@
                 <el-button type="primary" style="margin-left: 16px" @click="clickBills()"> 주문서 </el-button>
             </el-badge>
             <el-button type="primary" style="margin-left: 16px" @click="clickMenues()"> 메뉴관리 </el-button>
+
+            <el-button type="danger" style="margin-left: 16px" @click="nextCall()"> 호출고객연결 </el-button>
         </div>
 
         <!-- 메뉴수정 drawer -->
@@ -39,14 +65,15 @@
         <!-- 주문서 drawer -->
         <el-drawer v-model="drawer_bills" title="주문서" size="50%">
             <div>
+                <h3 v-if="bills.length==0">아직 주문이 없네요</h3>
                 <BillComp @openDum="showDum" v-for="bill in bills" :bill="bill" :key="bill.orderNo" />
 
-                <!-- <div v-for="bill in bills" :key="bill">
+                <!-- <div v-for="bill in bills" :key="bill">s 
                     <BillComp :bill="bill" />
                     <el-button @click="innerDrawer = true">덤 추가!</el-button>
                 </div> -->
                 <!-- 덤 추가 INNER DRAWER -->
-                <el-drawer v-model="innerDrawer" title="I'm inner Drawer" :append-to-body="true">
+                <el-drawer v-model="innerDrawer" title="덤 추가하기" :append-to-body="true">
                     <el-button v-for="item in instoreMenu" :key="item" @click="onboardDum">
                         {{ item.itemName }}
                     </el-button>
@@ -123,14 +150,18 @@ export default {
         const mainStreamManager = ref(undefined);
         const publisher = ref(undefined);
         const subscribers = ref([]);
+        
+        //내(판매자) 정보
+        const storeNo = route.params.storeNo;
+        const userId = route.params.userName;
+        const storeIntro = ref(route.params.storeIntro);
+        const storeSubject = ref(route.params.storeSubject);
 
-        const storeNo = ref(route.params.storeNo);
-        const userId = ref(route.params.userName);
         const sessionName = ref(route.params.storeNo); //mySessionId :storeNo로 넣을게요
         const clientdata = ref({
             //myUserName
             type: route.params.isSeller, //0,1
-            userName: route.params.userName,
+            userName: `[판매자]+${route.params.userName}`,
             userNo: route.params.userNo,
         });
 
@@ -216,8 +247,9 @@ export default {
                 console.log(data.userName + "님에게서 호출 도착"); //모달 alert 사용하기.
                 ElMessage({
                     message: `고객이 호출하였습니다!!!!!`,
-                    type: "danger",
+                    type: "error",
                 });
+                this.callNotificationPlay();
                 for (var i = 0; i < this.customers.length; i++) {
                     if (this.customers[i].connectionId == data.connectionId) {
                         this.customers[i].isCalling = true;
@@ -230,10 +262,11 @@ export default {
             });
             this.session.on("signal:delete-call", (event) => {
                 const param = event.data;
+                this.callNotificationStop();
                 console.log(param + "님이 호출을 취소했습니다."); //모달 alert 사용하기.
                 ElMessage({
                     message: `고객이 호출을 취소했습니다.`,
-                    type: "danger",
+                    type: "message",
                 });
                 for (var i = 0; i < this.callQueue.length; i++) {
                     if (this.callQueue[i].connectionId == param) {
@@ -391,6 +424,7 @@ export default {
         //호출 연결.
         function connectCustomer(customer) {
             console.log(customer.connectionId);
+            this.callNotificationStop();//연결시 호출소리 해제.
             this.session
                 .signal({
                     type: "linkCall",
@@ -606,7 +640,14 @@ export default {
         }
         //다음손님받기
         function nextCall() {
+            if(this.callQueue.length==0){ //호출고객없을땐 x
+                ElMessage({
+                message: `호출중인 손님이 없습니다`,
+                type: "message",
+            });
+            }
             this.connectCustomer(this.callQueue.shift());
+            
         }
         //연결시.
 
@@ -623,7 +664,7 @@ export default {
 
         //호출알림 start
         function callNotificationPlay() {
-            this.callsound.loop = true; //반복재생
+           this.callsound.loop=true;
             this.callsound.play();
         }
 
@@ -653,6 +694,8 @@ export default {
             connectCustomer,
             storeNo,
             userId,
+            storeIntro,
+            storeSubject,
             isConnected,
             customers,
             //bills
@@ -702,8 +745,9 @@ export default {
 
 .customer {
     border: 2px;
+    border-radius: 15px;
     border-style: groove;
-    width: 150px;
+    width: 160px;
     height: 120px;
     margin: 10px;
 }
