@@ -98,7 +98,8 @@
                     <el-card v-for="item in instoreMenu" :key="item" @click="onboardDum(item.itemName)">
                         <div style="display:flex ;justify-content:space-between"><h2> {{ item.itemName }}</h2> <h2>{{dumArr.filter(element=>item.itemName===element).length}}</h2></div>
                     </el-card>
-                    <el-button @click="addDum(this.dumOrderNo,this.dumArr)">덤 확정!</el-button>
+                    <el-button @click="addDum(this.dumOrderNo,this.dumArr)" >덤 확정!</el-button>
+                    <el-button @click="clearDum">덤 목록 비우기!</el-button>
                 </el-drawer>
             </div>
         </el-drawer>
@@ -127,12 +128,8 @@ import { sellerOrderList,pushDum } from "@/api/order.js";
 import { menuList } from "@/api/item.js";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":4443";
 const OPENVIDU_SERVER_SECRET = "jangbo602";
-// const OPENVIDU_SERVER_URL = "https://localhost:4443";
-// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
-//openvidu http port:8081
-//openvidu https port :7602
 
 export default {
     //메뉴변경시 소비자들에게 push.
@@ -252,6 +249,7 @@ export default {
             //         console.log(this.isConnected ? "연결됨" : "연결해제됨");
             //     }
             // });
+
             this.session.on("signal:makeOrder", (event) => {
                 console.log(JSON.parse(event.data) + "님에게서 주문 도착"); //모달 alert 사용하기.
                 ElNotification({
@@ -285,12 +283,11 @@ export default {
             this.session.on("signal:delete-call", (event) => {
                 const param = event.data;
                 this.callNotificationStop();
-                console.log(param + "님이 호출을 취소했습니다."); //모달 alert 사용하기.
+                console.log(param + "님이 호출을 취소했습니다.");{ //모달 alert 사용하기.
                 ElMessage({
                     message: `고객이 호출을 취소했습니다.`,
-                    type: "message",
                 });
-                for (var i = 0; i < this.callQueue.length; i++) {
+                for (var i = 0; i < this.callQueue.length; i++) 
                     if (this.callQueue[i].connectionId == param) {
                         //i번째를 큐에서 제거.
                         this.callQueue.splice(i, 1);
@@ -641,11 +638,13 @@ export default {
             //덤메뉴 클릭시 onboard
         }
         function clearDum() {
-            this.dumArr=[]
+            while(dumArr.value.length>0){
+                dumArr.value.pop()
+            }
+            
             //onboard 덤메뉴 clear
         }
         function addDum(orderNo,dumArr) {
-            orderNo
             let body = []
             let tmp =  {}
             const countByArray = (arr) => {
@@ -665,7 +664,12 @@ export default {
                 console.log(res)
             },
             ()=>{})
-            this.claerDum();
+            ElNotification({
+                    title: '덤 추가 완료!',
+                    message: `${dumArr[0]} 외 ${body.length-1} 개의 덤 증정! `,
+                    type: 'success',
+                    })
+            clearDum()
 
             
             //onboard 덤메뉴 add
@@ -674,8 +678,6 @@ export default {
             innerDrawer.value = true;
             this.dumOrderNo=data;
             console.log(this.dumOrderNo)
-            clearDum()
-            
         }
 
         /* 호출스택관리. */

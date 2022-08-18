@@ -8,13 +8,13 @@
                 <el-row :gutter="10">
                     <el-col :span="12"> <el-input v-model="input.itemName" placeholder="품목 이름 ex)사과 1상자" /></el-col>
                     <el-col :span="7">
-                        <el-input v-model="input.price" placeholder="가격 ex)1000" :prefix-icon="Search" @keyup.enter="addItem(this.$route.params.storeNo, input)" />
+                        <el-input v-model="input.price" placeholder="가격 ex)1000"  @keyup.enter="addItem(this.$route.params.storeNo, input)" />
                     </el-col>
                     <el-col :span="2">
-                        <el-button link style="font-size: 33px; margin-left: 10px; margin-top: -4px" @click="addItem(this.$route.params.storeNo, input)"></el-button>
+                        <el-button link style="font-size: 33px; margin-left: 10px; margin-top: -4px" :icon="CirclePlus" @click="addItem(this.$route.params.storeNo, input)"></el-button>
                     </el-col>
                 </el-row>
-            </div>
+            </div>  
         </el-card>
 
         <!-- <div class="input_item">

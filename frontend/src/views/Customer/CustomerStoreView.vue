@@ -140,10 +140,8 @@ import { OpenVidu } from "openvidu-browser";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":4443";
 const OPENVIDU_SERVER_SECRET = "jangbo602";
-// const OPENVIDU_SERVER_URL = "https://localhost:4443";
-// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 window.onbeforeunload = () => {
     // Gracefully leave session
@@ -251,14 +249,10 @@ export default {
         //찜 버튼용
         const jjim = ref(false);
         const menus = ref([
-            //TODO:dummy삭제
-            // { itemName: "고기", itemNo: "1", price: "1000", recent: "true" },
-            // { itemName: "사과", itemNo: "2", price: "3500", recent: "true" },
+
         ]);
         const orderItems = ref([
-            //TODO:dummy삭제
-            // { itemName: "꽁치", itemNo: "3", count: "1", price: "5000" },
-            // { itemName: "삼겹살", itemNo: "4", count: "1", price: "10000" },
+
         ]);
 
         const selected = ref({
