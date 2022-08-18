@@ -6,12 +6,12 @@
         <el-card class="box-card" style="margin-top: 30px">
             <div class="input_item" style="width: 100%; max-width: 500px; margin-left: 20px">
                 <el-row :gutter="10">
-                    <el-col :span="12"> <el-input v-model="input.itemName" placeholder="품목 이름 ex)사과 1상자" :suffix-icon="Calendar" /></el-col>
+                    <el-col :span="12"> <el-input v-model="input.itemName" placeholder="품목 이름 ex)사과 1상자" /></el-col>
                     <el-col :span="7">
                         <el-input v-model="input.price" placeholder="가격 ex)1000" :prefix-icon="Search" @keyup.enter="addItem(this.$route.params.storeNo, input)" />
                     </el-col>
                     <el-col :span="2">
-                        <el-button link :icon="CirclePlus" style="font-size: 33px; margin-left: 10px; margin-top: -4px" @click="addItem(this.$route.params.storeNo, input)"></el-button>
+                        <el-button link style="font-size: 33px; margin-left: 10px; margin-top: -4px" @click="addItem(this.$route.params.storeNo, input)"></el-button>
                     </el-col>
                 </el-row>
             </div>
@@ -28,7 +28,7 @@
         </li>
     </ul> -->
         <el-card class="box-card" style="margin-top: 30px">
-            <el-table :data="itemList" style="width: 420px; margin: auto" max-height="250">
+            <el-table :data="itemList" style="width: 420px; margin: auto" max-height="400">
                 <el-table-column fixed label="" width="40">
                     <!-- v-slot:default="scope" -->
                     <template #default="scope">

@@ -55,6 +55,7 @@
               style="color: white"
               @click="execDaumPostcode()"
               class="btn_address"
+              size="small"
               >주소 검색</el-button
             ><br />
             <!--<el-input type="text" v-model="postcode" placeholder="우편번호"/>-->
@@ -64,22 +65,25 @@
               id="address"
               placeholder="기본 주소"
               style="margin-top: 10px"
+              disabled
             /><br />
-            <el-input
-              type="text"
-              v-model="userinfo.detailAddress"
-              id="detailAddress"
-              placeholder="상세 주소"
-              style="margin-top: 10px"
-            />
             <el-input
               type="text"
               v-model="userinfo.extraAddress"
               id="extraAddress"
               placeholder="참고 항목"
               style="margin-top: 10px"
+              disabled
             />
           </div>
+          <el-input
+            type="text"
+            v-model="userinfo.detailAddress"
+            id="detailAddress"
+            placeholder="상세 주소"
+            @keyup.enter="cl_modify"
+            style="margin-top: 10px"
+          />
         </div>
 
         <div style="margin-top: 30px">
@@ -101,14 +105,12 @@
 <script>
 import { getCustomer, updateCustomer } from "@/api/customer.js";
 import { useStore } from "vuex";
-import { computed, ref, reactive } from "vue";
+import { computed, reactive } from "vue";
+import { ElMessage } from "element-plus";
 
 export default {
   setup() {
     const store = useStore();
-    const password = ref("");
-    const password_double = ref("");
-    const same = ref("확인");
     const userinfo = reactive({
       id: "",
       nick: "",
@@ -120,7 +122,25 @@ export default {
     const userType = computed(() => store.state.userInfo.userType);
     const userNo = computed(() => store.state.userInfo.userNo);
 
-    return { password, password_double, same, userNo, userType, userinfo };
+    const open = () => {
+      ElMessage({
+        message: "수정되었습니다.",
+        type: "success",
+      });
+    };
+    const open2 = () => {
+      ElMessage({
+        message: "수정에 실패했습니다.",
+        type: "error",
+      });
+    };
+    return {
+      userNo,
+      userType,
+      userinfo,
+      open,
+      open2,
+    };
   },
 
   watch: {
@@ -188,9 +208,15 @@ export default {
         params,
         (response) => {
           console.log(response);
+          this.open();
+          this.$router.push({
+            name: "mypage",
+            param: { id: this.userinfo.id },
+          });
         },
         (error) => {
           console.log(error);
+          this.open2();
         }
       );
 

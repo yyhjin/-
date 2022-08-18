@@ -27,4 +27,9 @@ async function getSeller(no, success, fail) {
     await api.get(`/${no}`).then(success).catch(fail);
 }
 
-export { getId, getbusiId, joinSeller, loginSeller, updateSeller, getSeller };
+//비밀번호 변경
+async function setPass(no, params, success, fail) {
+    await api.put(`/change_pwd/${no}`, params).then(success).catch(fail);
+}
+
+export { getId, getbusiId, joinSeller, loginSeller, updateSeller, getSeller, setPass };

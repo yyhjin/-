@@ -20,6 +20,7 @@ import SellerProfileView from "../views/Seller/SellerProfileView";
 // import OpenVidu  from "../views/OpenVidu";
 import TestTwo from "../views/Seller/TestTwo.vue";
 import CustomerPass from "../views/Customer/CustomerPass";
+import SellerPass from "../views/Seller/SellerPass";
 
 import store from "@/store/index";
 import { ElMessage } from "element-plus";
@@ -105,6 +106,12 @@ const routes = [
         path: "/customer/:id/CustomerPass",
         name: "CustomerPass",
         component: CustomerPass,
+        beforeEnter: beforeAuth(true),
+    },
+    {
+        path: "/seller/:id/SellerPass",
+        name: "SellerPass",
+        component: SellerPass,
         beforeEnter: beforeAuth(true),
     },
     {

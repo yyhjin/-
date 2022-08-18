@@ -54,36 +54,57 @@
           <el-input v-model="form.storeName" />
         </el-form-item>
         <el-form-item label="업종">
-          <el-input v-model="form.storeCategory" />
+          <el-select
+            v-model="form.storeCategory"
+            class="m-2"
+            placeholder="선택"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </el-select>
         </el-form-item>
         <el-form-item label="전화번호">
           <el-input v-model="form.storePhone" />
         </el-form-item>
-        <el-form-item label="시장">
-          <el-button @click="search()" color="#e07c49" round>
-            시장 검색
-          </el-button>
-          <el-input v-model="form.marketNo" />
-        </el-form-item>
-        <el-form-item label="상세위치">
-          <el-input v-model="form.storeAddr" />
-        </el-form-item>
 
-        <div style="text-align: center">
-          <el-button @click="register()" color="#42413e" round>
-            등록
-          </el-button>
-          <el-button @click="goBack()" round> 뒤로 </el-button>
+        <el-form-item label="시장">
+          <div style="width: 100%">
+            <el-button
+              @click="search()"
+              color="#e07c49"
+              round
+              size="small"
+              style="float: right; color: white; margin-bottom: 10px"
+            >
+              시장 검색
+            </el-button>
+          </div>
+          <el-input v-model="form.marketName" disabled />
+          <el-input
+            v-model="form.storeAddr"
+            placeholder="상세 위치를 입력해주세요"
+            style="margin-top: 10px"
+          />
+        </el-form-item>
+        <!-- <el-form-item label="시장 상세 위치">
+          <el-input v-model="form.storeAddr" />
+        </el-form-item> -->
+
+        <div style="text-align: center; margin-top: 30px">
+          <el-button @click="register()" color="#42413e"> 등록 </el-button>
+          <el-button @click="goBack()"> 취소 </el-button>
         </div>
       </el-form>
     </el-card>
   </div>
 
   <el-dialog v-model="dialogVisible" title="시장 검색" width="90%">
-    <!-- <el-descriptions :column="1" border> -->
     <search-name></search-name>
-    <search-list></search-list>
-    <!-- </el-descriptions> -->
+    <list-in-modal @market_register="marketReceive"></list-in-modal>
   </el-dialog>
 </template>
 
@@ -91,11 +112,13 @@
 // import axios from "axios"
 import { storeRegister } from "@/api/store.js";
 import { ref } from "vue";
+import { ElMessage } from "element-plus";
+
 import SearchName from "@/components/SearchMarket/SearchName.vue";
-import SearchList from "@/components/SearchMarket/SearchList.vue";
+import ListInModal from "@/components/SearchMarket/ListInModal.vue";
 
 export default {
-  components: { SearchName, SearchList },
+  components: { SearchName, ListInModal },
   data() {
     return {
       img: "",
@@ -105,6 +128,7 @@ export default {
 
       size: "default",
       form: {
+        marketName: "", //시장이름
         marketNo: "", //시장번호
         sellerNo: this.$store.state.userInfo.userNo,
         storeAddr: "", //상세위치
@@ -113,11 +137,38 @@ export default {
         storePhone: "", //번호
         storeImg: "",
       },
+      options: [
+        { value: "채소/청과", label: "채소/청과" },
+        { value: "방앗간", label: "방앗간" },
+        { value: "생선/건어물", label: "생선/건어물" },
+        { value: "축산", label: "축산" },
+        { value: "의류/신발", label: "의류/신발" },
+        { value: "이불/커튼", label: "이불/커튼" },
+        { value: "음식점", label: "음식점" },
+        { value: "떡집", label: "떡집" },
+        { value: "반찬", label: "반찬" },
+        { value: "마트", label: "마트" },
+        { value: "그 외 기타", label: "그 외 기타" },
+      ],
     };
   },
   setup() {
     const dialogVisible = ref(false);
-    return { dialogVisible };
+
+    const open = () => {
+      ElMessage({
+        message: "등록 성공",
+        type: "success",
+      });
+    };
+    const open2 = (message) => {
+      ElMessage({
+        message: message,
+        type: "error",
+      });
+    };
+
+    return { dialogVisible, open, open2 };
   },
   methods: {
     goBack() {
@@ -142,6 +193,7 @@ export default {
       if (this.img_validation == true) {
         this.img_message = `등록 가능한 사진입니다!`;
         this.img = file[0];
+        this.img_change = true;
         //미리보기 띄우기위해.
         this.imgsrc = URL.createObjectURL(this.img);
       }
@@ -164,12 +216,25 @@ export default {
           //TODO:redirect
           console.log("등록성공");
           console.log(formdata.entries());
+          this.open();
+          this.$router.push(
+            {
+              name: "mystore",
+              params: { id: this.$store.getters["userInfo/isAuthenticated"] },
+            },
+            //catch
+            (error) => {
+              console.log(error);
+              this.open2("등록 실패");
+            }
+          );
         },
         //catch
         (error) => {
           console.log(error);
         }
       );
+
       // axios({method:'POST',
       // url:"http://localhost:8080/store",
       // headers:{
@@ -186,6 +251,11 @@ export default {
     },
     search() {
       this.dialogVisible = true;
+    },
+    marketReceive(market) {
+      this.form.marketName = market.name;
+      this.form.marketNo = market.no;
+      this.dialogVisible = false;
     },
   },
 };

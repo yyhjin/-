@@ -3,7 +3,12 @@
     <el-card shadow="always" style="margin: auto" class="box-card">
       <div style="font-weight: bold">시장을 검색하세요!</div>
       <div class="selectType" style="margin-top: 20px">
-        <el-radio-group class="adjustC" v-model="searchType" size="large">
+        <el-radio-group
+          class="adjustC"
+          v-model="searchType"
+          size="large"
+          style="margin-bottom: 20px"
+        >
           <el-radio-button label="주소 검색" />
           <el-radio-button label="이름 검색" />
         </el-radio-group>
@@ -34,7 +39,7 @@ export default {
   components: { SearchAddress, SearchName, SearchList },
   data() {
     return {
-      searchType: "주소검색",
+      searchType: "주소 검색",
     };
   },
 };
