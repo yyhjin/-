@@ -419,30 +419,30 @@ export default {
                 storeId,
                 (res) => {
                     //TODO:dummy삭제
-                    res.data = [
-                        {
-                            orderNo: 1,
-                            customerId: "재승",
-                            orderItems: [
-                                { itemName: "사과", count: 3, price: 2000 },
-                                { itemName: "배", count: 2, price: 3000 },
-                                { itemName: "수박", count: 1, price: 10000 },
-                            ],
-                            orderDate: "20220803",
-                            status: 0,
-                        },
-                        {
-                            orderNo: 1,
-                            customerId: "재승",
-                            orderItems: [
-                                { itemName: "사과", count: 3, price: 2000 },
-                                { itemName: "배", count: 2, price: 3000 },
-                                { itemName: "수박", count: 1, price: 10000 },
-                            ],
-                            orderDate: "20220803",
-                            status: 1,
-                        },
-                    ];
+                    // res.data = [
+                    //     {
+                    //         orderNo: 1,
+                    //         customerId: "재승",
+                    //         orderItems: [
+                    //             { itemName: "사과", count: 3, price: 2000 },
+                    //             { itemName: "배", count: 2, price: 3000 },
+                    //             { itemName: "수박", count: 1, price: 10000 },
+                    //         ],
+                    //         orderDate: "20220803",
+                    //         status: 0,
+                    //     },
+                    //     {
+                    //         orderNo: 1,
+                    //         customerId: "재승",
+                    //         orderItems: [
+                    //             { itemName: "사과", count: 3, price: 2000 },
+                    //             { itemName: "배", count: 2, price: 3000 },
+                    //             { itemName: "수박", count: 1, price: 10000 },
+                    //         ],
+                    //         orderDate: "20220803",
+                    //         status: 1,
+                    //     },
+                    // ];
 
                     this.bills = res.data;
                 },

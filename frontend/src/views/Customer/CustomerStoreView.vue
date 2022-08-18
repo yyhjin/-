@@ -183,13 +183,13 @@ export default {
       }
       )
       */
-    },
-    data() {
-        return {
-            OV: undefined,
-            session: undefined,
-            publisher: undefined,
-            subscribers: [],
+  },
+  data() {
+    return {
+      OV: undefined,
+      session: undefined,
+      publisher: undefined,
+      subscribers: [],
 
             //myUserNo: "",
             //오픈비두 필수입력
@@ -230,8 +230,8 @@ export default {
         ]);
         const orderItems = ref([
             //TODO:dummy삭제
-            { itemName: "꽁치", itemNo: "3", count: "1", price: "5000" },
-            { itemName: "삼겹살", itemNo: "4", count: "1", price: "10000" },
+            // { itemName: "꽁치", itemNo: "3", count: "1", price: "5000" },
+            // { itemName: "삼겹살", itemNo: "4", count: "1", price: "10000" },
         ]);
 
         const selected = ref({
