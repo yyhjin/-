@@ -15,7 +15,7 @@ public class WebConfig implements WebMvcConfigurer {
                 //.allowedOriginPatterns("")
                 .allowedOriginPatterns("*")
                 .maxAge(3600)
-                .allowedMethods("OPTIONS","POST","PATCH","GET","PUT")
+                .allowedMethods("OPTIONS","POST","PATCH","GET","PUT", "DELETE")
                 .allowedHeaders("*")
                 .exposedHeaders("Set-Cookie")
                 .allowCredentials(true);
