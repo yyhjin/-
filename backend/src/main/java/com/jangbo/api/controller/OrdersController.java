@@ -1,5 +1,6 @@
 package com.jangbo.api.controller;
 
+import com.jangbo.api.request.DumOrderItemsReq;
 import com.jangbo.api.request.InterStoreReq;
 import com.jangbo.api.request.OrderRegisterReq;
 import com.jangbo.api.request.OrderStateEditReq;
@@ -123,19 +124,21 @@ public class OrdersController {
     @ApiOperation(value = "덤 추가", notes = "기존 주문서에 덤을 추가한다.", httpMethod = "POST")
     @PostMapping("/{order_no}")
     @Transactional
-    public boolean freeItem(
+    public ResponseEntity<Integer> freeItem(
             @PathVariable("order_no") Integer orderNo,
             @RequestBody @Valid FreeItemRequest freeItemRequest
     ) {
         Orders orders = ordersRepository.findOrdersByOrderNo(orderNo);
 
-        OrderItem orderItem = new OrderItem();
-        orderItem.setOrders(orders);
-        orderItem.setCount(freeItemRequest.getCount());
-        orderItem.setItemName("덤) "+freeItemRequest.getItemName());
-        orderItem.setPrice(0);
+        OrderItem orderitem = new OrderItem();
+        orderitem.setOrders(orders);
+        orderitem.setCount(freeItemRequest.getCount());
+        orderitem.setItemName("덤) "+freeItemRequest.getItemName());
+        orderitem.setPrice(0);
 
-        return true;
+        int orderitemno = orderItemService.orderitemsave(orderitem).getOrderItemNo();
+
+        return new ResponseEntity(orderitemno, HttpStatus.OK);
     }
 
     @Data
