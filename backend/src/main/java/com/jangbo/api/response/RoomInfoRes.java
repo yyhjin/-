@@ -21,7 +21,7 @@ import lombok.Getter;
 
         public RoomInfoRes(Store store) {
             this.storeSubject=store.getStoreSubject();
-            this.storeIntro = getStoreIntro();
+            this.storeIntro = store.getStoreIntro();
             //this.storeImg=getStoreImg();
         }
 
