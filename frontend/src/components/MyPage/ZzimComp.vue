@@ -84,7 +84,6 @@ export default {
             const params = {
                 storeNo: item.storeNo,
                 storeName: item.storeName,
-                storeJJim: true,
             };
             console.log(params);
             this.router.push({
