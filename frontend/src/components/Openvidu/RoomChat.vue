@@ -1,52 +1,59 @@
 <template>
-    <div style="margin-left: 10px">
+    <div style="margin: auto">
         <!-- chat-bar -->
-        <div ref="content" style="margin-top: 10px">
-            <!-- 채팅 내용 -->
-            <ul style="margin-left: -35px" id="chat-bar">
-                <li v-for="(chat, idx) in state.chats" :key="idx">
-                    <!-- 내가 보낸 채팅인 경우 -->
-                    <div v-if="chat.isMyMessage" style="text-align: right" class="div_chat">
-                        <div style="margin-right: 10px">
-                            <span style="margin-right: 10px">Me</span>
-                            <span>{{ chat.time }}</span>
+        <div ref="content" style="margin-top: 5px">
+            <el-scrollbar height="300px" style="align-items: center">
+                <!-- 채팅 내용 -->
+                <ul style="margin-left: -40px" id="chat-bar">
+                    <li v-for="(chat, idx) in state.chats" :key="idx">
+                        <!-- 내가 보낸 채팅인 경우 -->
+                        <div v-if="chat.isMyMessage" style="text-align: right" class="div_chat">
+                            <el-card shadow="never" style="margin-bottom: 5px">
+                                <div style="margin-right: 10px; margin-top: 10px">
+                                    <span style="margin-right: 10px">Me</span>
+                                    <span>{{ chat.time }}</span>
+                                </div>
+                                <div style="margin-right: 10px; margin-top: -10px">
+                                    <p>
+                                        {{ chat.content }}
+                                    </p>
+                                </div>
+                            </el-card>
                         </div>
-                        <div style="margin-right: 10px">
-                            <p>
-                                {{ chat.content }}
-                            </p>
+                        <!-- 다른 사람이 보낸 채팅인 경우 -->
+                        <div v-else class="div_chat">
+                            <el-card shadow="never" style="margin-bottom: 5px">
+                                <div style="margin-left: 10px; margin-top: 10px">
+                                    <span style="margin-right: 10px">{{ chat.userId }}</span>
+                                    <span>{{ chat.time }}</span>
+                                </div>
+                                <div style="margin-left: 10px">
+                                    <p>
+                                        {{ chat.content }}
+                                    </p>
+                                </div>
+                            </el-card>
                         </div>
-                    </div>
-                    <!-- 다른 사람이 보낸 채팅인 경우 -->
-                    <div v-else class="div_chat">
-                        <div style="margin-left: 10px">
-                            <span style="margin-right: 10px">{{ chat.userId }}</span>
-                            <span>{{ chat.time }}</span>
-                        </div>
-                        <div style="margin-left: 10px">
-                            <p>
-                                {{ chat.content }}
-                            </p>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </el-scrollbar>
             <!-- 채팅내용. -->
 
-            <div>
+            <div style="border: 1px solid; border-radius: 5px">
                 <!-- 메시지 보낼 유저 선택창 -->
                 <div>
-                    <el-select v-model="state.selectedUser" class="m-2" style="width: 120px; margin-bottom: 10px; margin-top: 10px">
+                    <el-select v-model="state.selectedUser" class="m-2" style="width: 120px; margin-bottom: 10px; margin-top: 10px; margin-left: 10px">
                         <el-option value="all">all</el-option>
                         <el-option v-for="(sub, idx) in state.subscribers" :value="sub.stream.connection" :key="idx" :label="JSON.parse(sub.stream.connection.data).clientData.userName">
-                            {{ JSON.parse(sub.stream.connection.data).clientData }}</el-option
+                            {{ JSON.parse(sub.stream.connection.data).clientData.userName }}</el-option
                         >
+                        <!--     <el-option v-for="(sub, idx) in state.subscribers" :value="sub.stream.connection" :key="idx" label="사장님"> 사장님</el-option>-->
                     </el-select>
                 </div>
 
                 <!-- 메시지 작성 -->
                 <div>
-                    <el-input v-model="state.message" :rows="2" type="textarea" @keydown.enter="sendMessage" style="width: 230px; margin-bottom: 10px" />
+                    <el-input v-model="state.message" :rows="2" type="textarea" @keydown.enter="sendMessage" style="width: 210px; margin-bottom: 10px; margin-left: 10px" />
                     <svg
                         @click="sendMessage()"
                         class="h-6 w-6 send-icon cursor-pointer"
@@ -86,9 +93,8 @@
 ul {
     list-style: none;
 }
-.div_chat {
-    border: 2px solid #42413e;
-    border-radius: 5px;
+.el-card__body {
+    padding: 0px !important;
 }
 </style>
 

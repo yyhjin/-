@@ -23,22 +23,22 @@
                         </svg>
                     </div>
 
-                    <el-button color="red" @click="btn_out()" style="float: right; margin-top: 10px; color: white">나가기</el-button>
+                    <el-button color="red" @click="btn_out()" style="float: right; margin-top: 20px; margin-right: 10px; color: white">나가기</el-button>
                 </div>
             </template>
             <!-- 화면 송출 부분. -->
-            <div style="height: 250px">
+            <div style="height: 220px">
                 <user-video :stream-manager="sellerSubs" />
             </div>
         </el-card>
         <!--하단메뉴 -->
         <!-- 호출 -->
-        <el-card shadow="never" style="margin-top: 10px; height: 100px">
-            <div style="text-align: right">
-                <h4 style="display: inline-block; text-align: left; color: #e07c49" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h4>
+        <el-card shadow="never" style="margin-top: 10px; height: 80px">
+            <div style="text-align: center">
+                <h4 style="display: inline-block; text-align: left; color: #e07c49; margin-top: 28px" v-if="this.hochul == true">호출중... 대기 : {{ this.number }}번</h4>
                 <!-- <h3 style="display: inline-block" v-else>호출을 눌러 문의하세요</h3> -->
-                <el-button color="#e07c49" @click="getHocul" v-if="this.hochul == false" style="margin-left: 20px; margin-top: 18px; color: white" round>호출하기 </el-button>
-                <el-button color="#42413e" @click="reHocul" v-else style="margin-left: 20px" round>호출취소 </el-button>
+                <el-button color="#e07c49" @click="getHocul" v-if="this.hochul == false" style="margin-top: 25px; color: white" round>호출하기 </el-button>
+                <el-button color="#42413e" @click="reHocul" v-else style="margin-left: 10px; margin-top: 25px; margin-right: 20px; float: right" round> 호출취소 </el-button>
             </div>
         </el-card>
         <!-- 메뉴판 -->
@@ -183,13 +183,13 @@ export default {
       }
       )
       */
-  },
-  data() {
-    return {
-      OV: undefined,
-      session: undefined,
-      publisher: undefined,
-      subscribers: [],
+    },
+    data() {
+        return {
+            OV: undefined,
+            session: undefined,
+            publisher: undefined,
+            subscribers: [],
 
             //myUserNo: "",
             //오픈비두 필수입력
@@ -397,7 +397,7 @@ export default {
                             publishAudio: true, // Whether you want to start publishing with your audio unmuted or not
                             publishVideo: false, // Whether you want to start publishing with your video enabled or not
                             //resolution: "640x480", // The resolution of your video
-                            resolution: "120x80",
+                            resolution: "160x120",
                             frameRate: 30, // The frame rate of your video
                             insertMode: "PREPEND", // How the video is inserted in the target element 'video-container'
                             mirror: false, // Whether to mirror your local video or not
@@ -467,6 +467,7 @@ export default {
                 this.params,
                 (response) => {
                     console.log(response);
+                    this.open("주문이 완료되었습니다");
                 },
                 (error) => {
                     console.log(error);
@@ -749,6 +750,10 @@ export default {
 };
 </script>
 <style scoped>
+.el-card {
+    --el-card-padding: 5px !important;
+}
+
 .card-header {
     display: flex;
     justify-content: space-between;
