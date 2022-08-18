@@ -2,7 +2,7 @@
   <div>
     <el-card class="box-card">
       <div style="margin-top: -10px">
-        <h5 style="margin-left: 5px; margin-bottom: 10px">현재 비밀번호</h5>
+        <h5 style="margin-left: 5px; margin-bottom: 10px">새로운 비밀번호</h5>
         <el-input
           v-model="olds"
           type="password"
@@ -70,9 +70,9 @@ export default {
         { password: this.olds, passwordUpdate: this.news },
         (response) => {
           if (response.data.response == "success") {
-            this.open1("비밀번호 변경 성공!!");
+            this.open1("비밀번호가 변경되었습니다.");
           } else {
-            this.open2("비밀번호 변경 실패..");
+            this.open2("비밀번호 변경에 실패하였습니다.");
           }
         },
         (error) => {
@@ -98,7 +98,10 @@ export default {
   font-size: 14px;
 }
 
-.box-card {
-  width: 300px;
+@media all and (min-width: 768px) {
+  .box-card {
+    margin: auto;
+    width: 350px;
+  }
 }
 </style>

@@ -60,6 +60,7 @@ const orderStore = {
                 });
             });
         },
+
         SET_OPENLIST: (state, items) => {
             items.forEach((item) => {
                 state.openList.push({

@@ -38,7 +38,7 @@ export default {
             store.commit(`orderStore/REMOVE_ITEM`, value);
         };
 
-        return { openList, storeNo, setSellList, sellList, resellList, reopenlist, Delete };
+        return { storeNo, sellList, openList, setSellList, resellList, reopenlist, Delete };
     },
 
     created() {

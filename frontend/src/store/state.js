@@ -14,4 +14,10 @@ export default {
         gender: "남",
         userType: "구매자",
     },
+
+    SellList: [
+        { name: "사과", count: "1바구니", price: "5000", max: "10" },
+        { name: "포도", count: "1송이", price: "6000", max: "20" },
+        { name: "수박", count: "1개", price: "18000", max: "15" },
+    ],
 };

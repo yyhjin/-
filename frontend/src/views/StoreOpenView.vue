@@ -59,7 +59,7 @@
 
 <script>
 import { useStore } from "vuex";
-import { computed, ref } from "vue";
+import { ref, computed } from "vue";
 import ChoosedItem from "@/components/ChoosedItem.vue";
 import { updateIdx, updateRoom } from "@/api/store";
 import { checkUsed } from "@/api/item";
@@ -74,6 +74,7 @@ export default {
         const store = useStore();
         const intro = ref();
         const subject = ref();
+
         const Item = ref({
             itemNo: "",
             itemName: "",
@@ -81,7 +82,7 @@ export default {
             recent: "",
         });
 
-        const sellList = computed(() => store.state.orderStore.sellList);
+        const sellList = computed(() => store.state.orderStore.openList);
 
         //가게오픈할때 가져가기
         const openList = computed(() => store.state.orderStore.openList);
@@ -96,19 +97,17 @@ export default {
         };
     },
     created() {
-        this.storeNo = 6;
+        this.storeNo = this.$route.params.storeNo;
     },
     mounted() {},
 
     methods: {
-        //아이템 선택
         btn_item(item) {
             this.Item.itemNo = item.itemNo;
             this.Item.itemName = item.itemName;
             this.Item.price = item.price;
             this.Item.recent = item.recent;
         },
-
         cl_ok() {
             console.log(this.intro);
             console.log(this.subject);
@@ -167,7 +166,6 @@ export default {
                 recent: true,
             });
         },
-
         item_delete(file) {
             for (var i = 0; i < this.fileList.length; i++) {
                 if (file.name == this.fileList[i].name) {
@@ -214,7 +212,7 @@ export default {
     display: inline-block;
 }
 .div_intro {
-    margin-top: 30px;
+    margin-top: 50px;
 }
 
 .div_intro h3 {
@@ -224,7 +222,18 @@ export default {
 
 .div_subject h3 {
     text-align: left;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+}
+
+.demo-image__error .image-slot {
+    font-size: 30px;
+}
+.demo-image__error .image-slot .el-icon {
+    font-size: 30px;
+}
+.demo-image__error .el-image {
+    width: 100%;
+    height: 200px;
 }
 
 .div_menu {
