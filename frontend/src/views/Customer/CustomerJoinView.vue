@@ -56,6 +56,7 @@ export default {
             password: "",
             password_double: "",
             same: "숫자,문자를 포함한 8자 이상",
+            nick: "",
             name: "",
             phone_number: "",
             address: "",
@@ -97,11 +98,13 @@ export default {
     },
 
     methods: {
+        //정규식
         pass_check() {
             var passwordRules = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
             console.log(passwordRules.test(this.password));
             return passwordRules.test(this.password);
         },
+        //중복체크
         cl_idCheck() {
             if (this.id) {
                 getId(
@@ -124,8 +127,9 @@ export default {
                 this.open2("아이디를 입력해주세요.");
             }
         },
+        //회원가입
         cl_register() {
-            if (this.id != "" && this.name != "" && this.password != "" && this.nick != "" && this.phone_number != "") {
+            if (this.id != "" && this.name != "" && this.password != "" && this.nick != "" && this.phone_number != "" && this.address) {
                 if (this.same == "사용 가능합니다.") {
                     const params = {
                         customerId: this.id,
@@ -159,6 +163,7 @@ export default {
         cl_cancle() {
             this.$router.push({ name: "selectjoin" });
         },
+        //주소검색창
         execDaumPostcode() {
             new window.daum.Postcode({
                 oncomplete: (data) => {
@@ -199,10 +204,6 @@ export default {
 </script>
 
 <style scoped>
-.adjustC {
-    --el-color-primary: #ff6f61;
-}
-
 .firstDiv {
     text-align: center;
 }

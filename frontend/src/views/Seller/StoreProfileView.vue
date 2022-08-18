@@ -49,8 +49,12 @@
 <script>
 import { StoreDetail, modifyStore, updateImg } from "@/api/store.js";
 import { ElMessage } from "element-plus";
+import { ArrowLeft } from "@element-plus/icons-vue";
 
 export default {
+    setup() {
+        return { ArrowLeft };
+    },
     mounted() {
         StoreDetail(
             this.$route.params.storeNo,

@@ -432,7 +432,7 @@ export default {
         },
         //뒤로가기 만들기
         btn_out() {
-            this.cl_cancleho();
+            //this.cl_cancleho();
             this.leaveSession();
             this.$router.push({ name: "home" });
         },

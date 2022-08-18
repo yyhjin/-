@@ -26,7 +26,7 @@
     <!--------------------- 비밀번호 확인 모달 ------------------------>
     <el-dialog v-model="dialogVisible" title="확인" width="40%">
         <h5 style="margin-left: 5px; margin-top: -10px">비밀번호 입력</h5>
-        <el-input v-model="pass" type="password" placeholder="password" show-password />
+        <el-input v-model="pass" type="password" placeholder="password" show-password @keyup.enter="confirm()" />
         <template #footer>
             <span class="dialog-footer">
                 <el-button round style="background-color: #42413e; color: white" @click="confirm()">확인</el-button>
@@ -64,8 +64,15 @@ export default {
                 type: "error",
             });
         };
+        const open1 = (message) => {
+            ElMessage({
+                showClose: true,
+                message: message,
+                type: "success",
+            });
+        };
 
-        return { password, password_double, same, userNo, userType, userinfo, dialogVisible, pass, userId, open };
+        return { password, password_double, same, userNo, userType, userinfo, dialogVisible, pass, userId, open, open1 };
     },
 
     watch: {},
@@ -124,7 +131,9 @@ export default {
                 this.userNo,
                 params,
                 (response) => {
-                    console.log(response);
+                    response;
+                    //console.log(response);
+                    this.open1("수정 완료");
                 },
                 (error) => {
                     console.log(error);

@@ -81,7 +81,6 @@ export default {
             imgsrc: "",
             img_message: "사진을 등록해주세요.",
             img_valiation: true,
-            img_change: false,
 
             size: "default",
             form: {
@@ -157,41 +156,37 @@ export default {
         },
 
         register() {
-            if (this.img_change == true) {
-                //form데이터의 각 아이템마다 type설정과 append 함. 전체 formdata의 content-type은 multipart/form-data
-                console.log(JSON.stringify(this.form));
-                let formdata = new FormData();
-                formdata.append("storeRegisterPostReq", new Blob([JSON.stringify(this.form)], { type: "application/json" }));
-                formdata.append("file", this.img);
-                storeRegister(
-                    formdata,
-                    //then
-                    (response) => {
-                        response;
-                        //TODO:redirect
-                        console.log("등록성공");
-                        console.log(formdata.entries());
-                        this.open();
-                        this.$router.push(
-                            {
-                                name: "mystore",
-                                params: { id: this.$store.getters["userInfo/isAuthenticated"] },
-                            },
-                            //catch
-                            (error) => {
-                                console.log(error);
-                                this.open2("등록 실패");
-                            }
-                        );
-                    },
-                    //catch
-                    (error) => {
-                        console.log(error);
-                    }
-                );
-            } else {
-                this.open2("사진을 등록해주세요.");
-            }
+            //form데이터의 각 아이템마다 type설정과 append 함. 전체 formdata의 content-type은 multipart/form-data
+            console.log(JSON.stringify(this.form));
+            let formdata = new FormData();
+            formdata.append("storeRegisterPostReq", new Blob([JSON.stringify(this.form)], { type: "application/json" }));
+            formdata.append("file", this.img);
+            storeRegister(
+                formdata,
+                //then
+                (response) => {
+                    response;
+                    //TODO:redirect
+                    console.log("등록성공");
+                    console.log(formdata.entries());
+                    this.open();
+                    this.$router.push(
+                        {
+                            name: "mystore",
+                            params: { id: this.$store.getters["userInfo/isAuthenticated"] },
+                        },
+                        //catch
+                        (error) => {
+                            console.log(error);
+                            this.open2("등록 실패");
+                        }
+                    );
+                },
+                //catch
+                (error) => {
+                    console.log(error);
+                }
+            );
 
             // axios({method:'POST',
             // url:"http://localhost:8080/store",
