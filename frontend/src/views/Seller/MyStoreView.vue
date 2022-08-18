@@ -4,10 +4,10 @@
       <el-radio-button label="true" />
       <el-radio-button label="false" />
     </el-radio-group> -->
-    <el-card class="card-box">
+    <el-card class="box-card">
       <template #header>
         <div class="card-header">
-          <h2>내 상점</h2>
+          <h3>내 상점</h3>
         </div>
       </template>
 
@@ -46,7 +46,7 @@
       <!---------------가게 미등록 -----------                            <el-button type="info" style="width: 200px; margin-left: 75px" @click="routerPush('store_profile', { storeNo: this.shopInfo.storeNo })">수정</el-button>
 --------->
       <div class="mystore_unregistered" v-else>
-        <h3 style="text-align: center">지금 가게를 등록하세요!</h3>
+        <h4 style="text-align: center">지금 가게를 등록하세요!</h4>
         <el-button
           round
           color="#e07c49"

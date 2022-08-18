@@ -72,16 +72,17 @@
             /><br />
             <el-input
               type="text"
-              v-model="detailAddress"
-              id="detailAddress"
-              placeholder="상세 주소"
+              v-model="extraAddress"
+              id="extraAddress"
+              placeholder="참고 항목"
               style="margin-top: 10px"
             />
             <el-input
               type="text"
-              v-model="extraAddress"
-              id="extraAddress"
-              placeholder="참고 항목"
+              v-model="detailAddress"
+              id="detailAddress"
+              placeholder="상세 주소"
+              @keyup.enter="cl_register"
               style="margin-top: 10px"
             />
           </div>
@@ -209,7 +210,7 @@ export default {
             (response) => {
               if (response.data.response == "success") {
                 this.open("회원가입이 완료되었습니다.");
-                this.$router.push({ name: "home" });
+                this.$router.push({ name: "login" });
               } else {
                 this.open2("회원가입에 실패하였습니다.");
               }

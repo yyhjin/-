@@ -1,187 +1,193 @@
 <template>
-  <div class="about" style="margin-top: -10px; maring-bottom: -10px">
-    <h3 style="margin-left: 10px; display: inline-block">
-      {{ this.storeName }}
-    </h3>
-    <div
-      style="
-        width: 25px;
-        weight: 25px;
-        display: inline-block;
-        margin-left: 10px;
-      "
-      @click="cl_JJIM()"
-      v-if="this.jjim == false"
-    >
-      <svg
-        viewBox="0 0 1024 1024"
-        xmlns="http://www.w3.org/2000/svg"
-        data-v-029747aa=""
-      >
-        <path
-          fill="currentColor"
-          d="m512 747.84 228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72L512 747.84zM313.6 924.48a70.4 70.4 0 0 1-102.144-74.24l37.888-220.928L88.96 472.96A70.4 70.4 0 0 1 128 352.896l221.76-32.256 99.2-200.96a70.4 70.4 0 0 1 126.208 0l99.2 200.96 221.824 32.256a70.4 70.4 0 0 1 39.04 120.064L774.72 629.376l37.888 220.928a70.4 70.4 0 0 1-102.144 74.24L512 820.096l-198.4 104.32z"
-        ></path>
-      </svg>
-    </div>
-    <div
-      style="
-        width: 25px;
-        weight: 25px;
-        display: inline-block;
-        margin-left: 10px;
-      "
-      @click="cl_JJIM()"
-      v-else
-    >
-      <svg
-        viewBox="0 0 1024 1024"
-        xmlns="http://www.w3.org/2000/svg"
-        data-v-029747aa=""
-      >
-        <path
-          fill="currentColor"
-          d="M283.84 867.84 512 747.776l228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72z"
-        ></path>
-      </svg>
-    </div>
-    <el-button
-      type="danger"
-      plain
-      @click="btn_out()"
-      style="float: right; margin-top: 20px; margin-right: 10px"
-      >나가기</el-button
-    >
-  </div>
-  <!-- 화면 송출 부분. -->
-  <div style="height: 250px">
-    <user-video :stream-manager="sellerSubs" />
-  </div>
-
-  <!--하단메뉴 -->
-  <!-- 호출 -->
-  <div style="text-align: center; margin-top: 10px">
-    <h3 style="display: inline-block" v-if="this.hochul == true">
-      호출중... 대기 : {{ this.number }}번
-    </h3>
-    <h3 style="display: inline-block" v-else>호출을 눌러 문의하세요</h3>
-    <el-button
-      type="danger"
-      plain
-      @click="getHocul"
-      v-if="this.hochul == false"
-      style="float: right; margin-top: 15px; margin-right: 10px"
-      >호출하기
-    </el-button>
-    <el-button
-      type="success"
-      plain
-      @click="reHocul"
-      v-else
-      style="float: right; margin-top: 15px; margin-right: 10px"
-      >호출취소
-    </el-button>
-  </div>
-  <!-- 메뉴판 -->
-  <div class="scrollbar-flex-content">
-    <div
-      v-for="(menu, idx) in menus"
-      :key="idx"
-      class="scrollbar-demo-item"
-      @click="cl_item(menu)"
-    >
-      <store-menu :menu="menu" />
-    </div>
-  </div>
-  <div>
-    <!-- 장바구니 -->
-    <div class="div_content">
-      <div>
-        <div v-if="this.content == true">
-          <div>
-            <h3 style="margin-left: 10px; display: inline-block">장바구니</h3>
-            <el-button
-              type="danger"
-              plain
-              @click="btn_order()"
-              style="float: right; margin: 20px"
-              >주문하기</el-button
+  <div style="margin: auto">
+    <el-card shadow="never">
+      <template #header>
+        <div class="about" style="margin-top: -10px; maring-bottom: -10px">
+          <h3 style="margin-left: 10px; display: inline-block">
+            {{ this.storeName }}
+          </h3>
+          <div
+            style="
+              width: 25px;
+              weight: 25px;
+              display: inline-block;
+              margin-left: 10px;
+            "
+            @click="cl_JJIM()"
+            v-if="this.jjim == false"
+          >
+            <svg
+              viewBox="0 0 1024 1024"
+              xmlns="http://www.w3.org/2000/svg"
+              data-v-029747aa=""
             >
+              <path
+                fill="currentColor"
+                d="m512 747.84 228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72L512 747.84zM313.6 924.48a70.4 70.4 0 0 1-102.144-74.24l37.888-220.928L88.96 472.96A70.4 70.4 0 0 1 128 352.896l221.76-32.256 99.2-200.96a70.4 70.4 0 0 1 126.208 0l99.2 200.96 221.824 32.256a70.4 70.4 0 0 1 39.04 120.064L774.72 629.376l37.888 220.928a70.4 70.4 0 0 1-102.144 74.24L512 820.096l-198.4 104.32z"
+              ></path>
+            </svg>
           </div>
-          <div>
-            <el-table
-              :data="orderItems"
-              style="width: 90%; margin: auto"
-              max-height="250"
+          <div
+            style="
+              width: 25px;
+              weight: 25px;
+              display: inline-block;
+              margin-left: 10px;
+            "
+            @click="cl_JJIM()"
+            v-else
+          >
+            <svg
+              viewBox="0 0 1024 1024"
+              xmlns="http://www.w3.org/2000/svg"
+              data-v-029747aa=""
             >
-              <el-table-column prop="itemName" label="물품" width="90" />
-              <el-table-column prop="price" label="가격" width="90" />
-              <el-table-column prop="count" label="수량" width="60" />
-              <el-table-column label="삭제" width="60">
-                <template #default="scope">
-                  <el-button
-                    link
-                    type="primary"
-                    size="small"
-                    @click.prevent="deleteRow(scope.$index)"
-                  >
-                    삭제
-                  </el-button>
-                </template>
-              </el-table-column>
-            </el-table>
-            <div
-              style="text-align: right; margin-right: 20px; margin-top: -10px"
-            >
-              <h4>합계 : {{ money }}원</h4>
-            </div>
+              <path
+                fill="currentColor"
+                d="M283.84 867.84 512 747.776l228.16 119.936a6.4 6.4 0 0 0 9.28-6.72l-43.52-254.08 184.512-179.904a6.4 6.4 0 0 0-3.52-10.88l-255.104-37.12L517.76 147.904a6.4 6.4 0 0 0-11.52 0L392.192 379.072l-255.104 37.12a6.4 6.4 0 0 0-3.52 10.88L318.08 606.976l-43.584 254.08a6.4 6.4 0 0 0 9.28 6.72z"
+              ></path>
+            </svg>
           </div>
-          <div>
-            <h4 style="margin-left: 10px; margin-top: -30px">추가하기</h4>
-            <div style="text-align: center">
-              <el-input
-                v-model="this.selected.itemName"
-                placeholder="품목"
-                style="width: 155px"
-              >
-                <template #prepend>품목</template>
-              </el-input>
-              <el-input
-                v-model="this.selected.count"
-                placeholder="수량"
-                style="width: 155px"
-              >
-                <template #prepend>수량</template>
-              </el-input>
-            </div>
-            <div style="text-align: right">
-              <el-button
-                type="danger"
-                :icon="Check"
-                circle
-                @click="btn_add()"
-                style="margin: 10px 20px"
-              />
-            </div>
-          </div>
+          <el-button
+            color="red"
+            @click="btn_out()"
+            style="float: right; margin-top: 10px; color: white"
+            >나가기</el-button
+          >
         </div>
-
-        <div v-else>
-          <room-chat
-            ref="chat"
-            @message="sendMessage"
-            :subscribers="subscribers"
-          ></room-chat>
+      </template>
+      <!-- 화면 송출 부분. -->
+      <div style="height: 250px">
+        <user-video :stream-manager="sellerSubs" />
+      </div>
+    </el-card>
+    <!--하단메뉴 -->
+    <!-- 호출 -->
+    <el-card shadow="never" style="margin-top: 10px; height: 100px">
+      <div style="text-align: right">
+        <h4
+          style="display: inline-block; text-align: left; color: #e07c49"
+          v-if="this.hochul == true"
+        >
+          호출중... 대기 : {{ this.number }}번
+        </h4>
+        <!-- <h3 style="display: inline-block" v-else>호출을 눌러 문의하세요</h3> -->
+        <el-button
+          color="#e07c49"
+          @click="getHocul"
+          v-if="this.hochul == false"
+          style="margin-left: 20px; margin-top: 18px; color: white"
+          round
+          >호출하기
+        </el-button>
+        <el-button
+          color="#42413e"
+          @click="reHocul"
+          v-else
+          style="margin-left: 20px"
+          round
+          >호출취소
+        </el-button>
+      </div>
+    </el-card>
+    <!-- 메뉴판 -->
+    <el-card shadow="never" style="margin-top: 10px">
+      <div class="scrollbar-flex-content">
+        <div
+          v-for="(menu, idx) in menus"
+          :key="idx"
+          class="scrollbar-demo-item"
+          @click="cl_item(menu)"
+        >
+          <store-menu :menu="menu" />
         </div>
       </div>
-    </div>
+    </el-card>
 
-    <div>
-      <el-button type="info" plain @click="btn_jang()" style="margin-left: 5px"
-        >장바구니</el-button
-      >
-      <el-button type="info" plain @click="btn_chat()">채팅</el-button>
-    </div>
+    <!-- 장바구니 -->
+
+    <el-tabs
+      type="border-card"
+      tab-position="top"
+      class="demo-tabs"
+      style="margin-top: 10px"
+    >
+      <el-tab-pane label="장바구니">
+        <div>
+          <el-table
+            :data="orderItems"
+            style="width: 90%; margin: auto"
+            max-height="250"
+          >
+            <el-table-column prop="itemName" label="물품" width="90" />
+            <el-table-column prop="price" label="가격" width="90" />
+            <el-table-column prop="count" label="수량" width="60" />
+            <el-table-column label="삭제" width="60">
+              <template #default="scope">
+                <el-button
+                  link
+                  type="primary"
+                  size="small"
+                  @click.prevent="deleteRow(scope.$index)"
+                  style="font-weight: bold"
+                >
+                  삭제
+                </el-button>
+              </template>
+            </el-table-column>
+          </el-table>
+          <div style="text-align: right; margin-right: 20px; margin-top: -10px">
+            <h4>합계 : {{ money }}원</h4>
+          </div>
+        </div>
+        <div>
+          <h4 style="margin-left: 10px">추가하기</h4>
+          <div style="text-align: center">
+            <el-input
+              v-model="this.selected.itemName"
+              placeholder="품목"
+              style="width: 140px"
+            >
+              <template #prepend>품목</template>
+            </el-input>
+            <el-input
+              v-model="this.selected.count"
+              placeholder="수량"
+              style="width: 140px"
+            >
+              <template #prepend>수량</template>
+            </el-input>
+            <el-button
+              :icon="Plus"
+              circle
+              @click="btn_add()"
+              style="
+                margin: auto;
+                margin-top: 10px;
+                background-color: #42413e;
+                color: white;
+                display: block;
+              "
+            />
+          </div>
+        </div>
+        <el-button
+          round
+          color="#e07c49"
+          @click="btn_preorder()"
+          style="float: right; margin-top: 15px; color: white"
+          >주문하기</el-button
+        >
+      </el-tab-pane>
+      <el-tab-pane label="채팅">
+        <room-chat
+          ref="chat"
+          @message="sendMessage"
+          :subscribers="subscribers"
+        ></room-chat>
+      </el-tab-pane>
+    </el-tabs>
+
     <el-dialog
       v-model="centerDialogVisible"
       title="주문 확인"
@@ -215,9 +221,7 @@
 
       <template #footer>
         <span class="dialog-footer">
-          <el-button type="primary" @click="btn_order" color="#42413e"
-            >주문하기</el-button
-          >
+          <el-button @click="btn_order" color="#42413e">주문하기</el-button>
           <el-button
             @click="centerDialogVisible = false"
             class="btn_cancle"
@@ -236,7 +240,7 @@
 import StoreMenu from "@/components/Room/StoreMenu.vue";
 import UserVideo from "@/components/Openvidu/UserVideo";
 import RoomChat from "@/components/Openvidu/RoomChat.vue";
-import { Check, Star, StarFilled } from "@element-plus/icons-vue";
+import { Plus, Star, StarFilled } from "@element-plus/icons-vue";
 import { makeCall, deleteCall, getCall } from "@/api/call"; //webrtc대체
 import { setJJim } from "@/api/customer";
 import { useStore } from "vuex";
@@ -340,7 +344,8 @@ export default {
     const jjim = ref(false);
     const menus = ref([
       //TODO:dummy삭제
-      // {itemName:"고기",itemNo:"1",price:"1000",recent:"true",},{itemName:"사과",itemNo:"2",price:"3500",recent:"true",},
+      // { itemName: "고기", itemNo: "1", price: "1000", recent: "true" },
+      // { itemName: "사과", itemNo: "2", price: "3500", recent: "true" },
     ]);
     const orderItems = ref([
       //TODO:dummy삭제
@@ -368,10 +373,12 @@ export default {
       ElMessage.error(message);
     };
 
+    const centerDialogVisible = ref(false);
     return {
+      centerDialogVisible,
       clientdata,
       router,
-      Check,
+      Plus,
       Star,
       StarFilled,
       jjim,

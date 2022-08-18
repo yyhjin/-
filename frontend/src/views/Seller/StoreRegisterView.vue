@@ -103,6 +103,7 @@
 // import axios from "axios"
 import { storeRegister } from "@/api/store.js";
 import { ref } from "vue";
+import { ElMessage } from "element-plus";
 
 import SearchName from "@/components/SearchMarket/SearchName.vue";
 import ListInModal from "@/components/SearchMarket/ListInModal.vue";
@@ -131,7 +132,21 @@ export default {
   },
   setup() {
     const dialogVisible = ref(false);
-    return { dialogVisible };
+
+    const open = () => {
+      ElMessage({
+        message: "등록 성공",
+        type: "success",
+      });
+    };
+    const open2 = () => {
+      ElMessage({
+        message: "등록 실패",
+        type: "error",
+      });
+    };
+
+    return { dialogVisible, open, open2 };
   },
   methods: {
     goBack() {
@@ -178,10 +193,18 @@ export default {
           //TODO:redirect
           console.log("등록성공");
           console.log(formdata.entries());
-        },
-        //catch
-        (error) => {
-          console.log(error);
+          this.open();
+          this.$router.push(
+            {
+              name: "mystore",
+              params: { id: this.$store.getters["userInfo/isAuthenticated"] },
+            },
+            //catch
+            (error) => {
+              console.log(error);
+              this.open2();
+            }
+          );
         }
       );
       // axios({method:'POST',
