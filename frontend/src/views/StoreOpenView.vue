@@ -140,7 +140,7 @@ export default {
                             // 오픈버튼 임시로 만들어 둿어요.
                             this.$router.push({
                                 name: "seller_room",
-                                params: { 
+                                params: {
                                     userNo:this.$store.state.userInfo.userNo,
                                     userName: this.$store.state.userInfo.userId,
                                     storeNo: this.storeNo ,

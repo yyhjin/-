@@ -24,19 +24,36 @@
   </nav>
   <div v-if="callQueue.length!=0"><el-alert title="손님이 호출을 기다리고 있어요!" type="error" effect="dark" :closable="false"/></div>
         </div>
-        <div class="main">
+        <div class="main" style="display:flex; margin-bottom:10px;">
             <!--  판매자 화면 송출 페이지. -->
-            <div class="sellervideo">
-                <user-video :stream-manager="mainStreamManager" />
+            <div style="display:flex ;flex-direction:column;height:400px;" >
+                <el-card>
+                    <div class="sellervideo">
+                    <user-video :stream-manager="mainStreamManager" />
+                    </div>
+                    <!-- 채팅 컴포넌트 -->
+                    <div class="information panel"></div>
+                </el-card>
+                
+                
             </div>
-            <!-- 채팅 컴포넌트 -->
-            <room-chat ref="chat" @message="sendMessage" :subscribers="subscribers"></room-chat>
-            <div class="information panel">구경중인 손님 : {{ customers.length }}명 | 호출 대기중 손님: {{ callQueue.length }}명</div>
-        </div>
+                 <RoomChatSeller ref="chat" @message="sendMessage" :subscribers="subscribers"></RoomChatSeller>
+            </div>
+            
+           
+        
         <!-- 입장한 고객들 CONTROL -->
-        <div id="customers" style="width:80%; max-width:800px; margin-top:10px; margin-bottom:10px">
-            <CustomerComp v-for="(sub, idx) in subscribers" :key="idx" :stream-manager="sub" :customerData="customers[idx]" @click="connectCustomer(customers[idx])" />
-        </div>
+         <el-scrollbar height="160px">
+                        <el-card>
+                            <h3 v-if="subscribers.length==0">아직 손님이 없네요..</h3>
+                 <div id="customers" style="width:100%; height:120px;  margin-bottom:10px">
+                <CustomerComp v-for="(sub, idx) in subscribers" :key="idx" :stream-manager="sub" :customerData="customers[idx]" @click="connectCustomer(customers[idx])" />
+             </div>
+            </el-card>
+        </el-scrollbar>
+
+
+       
 
         <!-- <div class="customers">
             <el-card :class="'user '+user.status" v-for="(user,idx) in users" :key="idx" @click="connectUser(idx)">
@@ -46,13 +63,17 @@
         </div> -->
 
         <!-- 상점 버튼 -->
-        <div class="btns">
-            <el-badge :value="newbillcount">
-                <el-button type="primary" style="margin-left: 16px" @click="clickBills()"> 주문서 </el-button>
-            </el-badge>
-            <el-button type="primary" style="margin-left: 16px" @click="clickMenues()"> 메뉴관리 </el-button>
+        <div class="btns" style="margin-top:10px; display:flex; justify-content:space-between" >
+             <div>
+                 <el-badge :value="newbillcount">
+                    <el-button type="primary" size="large" style="margin-left: 16px" @click="clickBills()"> 주문서 </el-button>
+                </el-badge>
+                <el-button type="primary" size="large" style="margin-left: 16px" @click="clickMenues()"> 메뉴관리 </el-button>
 
-            <el-button type="danger" style="margin-left: 16px" @click="nextCall()"> 호출고객연결 </el-button>
+                <el-button type="danger" size="large" style="margin-left: 16px" @click="nextCall()"> 호출고객연결 </el-button>
+            </div>
+            <h4>구경중인 손님 : {{ customers.length }}명 | 호출 대기중 손님: {{ callQueue.length }}명</h4>
+           
         </div>
 
         <!-- 메뉴수정 drawer -->
@@ -66,7 +87,7 @@
         <el-drawer v-model="drawer_bills" title="주문서" size="50%">
             <div>
                 <h3 v-if="bills.length==0">아직 주문이 없네요</h3>
-                <BillComp @openDum="showDum" v-for="bill in bills" :bill="bill" :key="bill.orderNo" />
+                <BillComp @emitDum="showDum(bill.orderNo)" v-for="bill in bills" :bill="bill" :key="bill.orderNo" />
 
                 <!-- <div v-for="bill in bills" :key="bill">s 
                     <BillComp :bill="bill" />
@@ -74,11 +95,10 @@
                 </div> -->
                 <!-- 덤 추가 INNER DRAWER -->
                 <el-drawer v-model="innerDrawer" title="덤 추가하기" :append-to-body="true">
-                    <el-button v-for="item in instoreMenu" :key="item" @click="onboardDum">
-                        {{ item.itemName }}
-                    </el-button>
-
-                    <el-button>덤 확정!</el-button>
+                    <el-card v-for="item in instoreMenu" :key="item" @click="onboardDum(item.itemName)">
+                        <div style="display:flex ;justify-content:space-between"><h2> {{ item.itemName }}</h2> <h2>{{dumArr.filter(element=>item.itemName===element).length}}</h2></div>
+                    </el-card>
+                    <el-button @click="addDum(this.dumOrderNo,this.dumArr)">덤 확정!</el-button>
                 </el-drawer>
             </div>
         </el-drawer>
@@ -87,30 +107,30 @@
 <script>
 /* eslint-disable */
 
-import { ref, watch } from "vue";
+import { ref,computed } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
 import { useStore } from "vuex";
 import { OpenVidu } from "openvidu-browser";
-import { ElMessage } from "element-plus";
+import { ElMessage,ElNotification } from "element-plus";
 import PhoneRinging from "@/assets/PhoneRinging.mp3";
 import servicebell from "@/assets/servicebell.mp3";
 
 //Comps
 import UserVideo from "@/components/Openvidu/UserVideo.vue";
 import CustomerComp from "@/components/Openvidu/CustomerComp.vue";
-import RoomChat from "@/components/Openvidu/RoomChat.vue";
+import RoomChatSeller from "@/components/Openvidu/RoomChatSeller.vue";
 import InstoreMenuComp from "@/components/Room/InstoreMenuComp.vue";
 import BillComp from "@/components/Mystore/BillComp.vue";
 //APIs
-import { sellerOrderList } from "@/api/order.js";
+import { sellerOrderList,pushDum } from "@/api/order.js";
 import { menuList } from "@/api/item.js";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
-// const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
-// const OPENVIDU_SERVER_SECRET = "jangbo602";
-const OPENVIDU_SERVER_URL = "https://localhost:4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+const OPENVIDU_SERVER_SECRET = "jangbo602";
+// const OPENVIDU_SERVER_URL = "https://localhost:4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 //openvidu http port:8081
 //openvidu https port :7602
 
@@ -130,7 +150,7 @@ export default {
         }
     },
     components: {
-        RoomChat,
+        RoomChatSeller,
         UserVideo,
         CustomerComp,
         InstoreMenuComp,
@@ -153,7 +173,7 @@ export default {
         
         //내(판매자) 정보
         const storeNo = route.params.storeNo;
-        const userId = route.params.userName;
+        const userId = computed(() => store.state.userInfo.userId);
         const storeIntro = ref(route.params.storeIntro);
         const storeSubject = ref(route.params.storeSubject);
 
@@ -161,7 +181,7 @@ export default {
         const clientdata = ref({
             //myUserName
             type: route.params.isSeller, //0,1
-            userName: `[판매자]+${route.params.userName}`,
+            userName: `[판매자]${route.params.userName}`,
             userNo: route.params.userNo,
         });
 
@@ -233,11 +253,13 @@ export default {
             //     }
             // });
             this.session.on("signal:makeOrder", (event) => {
-                console.log(JSON.parse(event.data) + "에게서 주문 도착"); //모달 alert 사용하기.
-                ElMessage({
-                    message: `${JSON.parse(event.data)} 님의 주문서 도착!`,
-                    type: "success",
-                });
+                console.log(JSON.parse(event.data) + "님에게서 주문 도착"); //모달 alert 사용하기.
+                ElNotification({
+                    title: '주문 도착',
+                    message: JSON.parse(event.data) + "님에게서 주문 도착",
+                    type: 'success',
+                    })
+                console.log(this.newbillcount)
                 this.newbillcount++;
             });
 
@@ -609,20 +631,51 @@ export default {
         };
 
         /* 덤 */
+        const dumOrderNo =ref()
         const innerDrawer = ref(false);
         const dbMenues = ref([]); //이건 메뉴추가시 사용할 아이템들.
         const dumBoard = ref([]);
-        function onboardDum() {
+        const dumArr = ref([])
+        function onboardDum(item) {
+            this.dumArr.push(item)
             //덤메뉴 클릭시 onboard
         }
         function clearDum() {
+            this.dumArr=[]
             //onboard 덤메뉴 clear
         }
-        function addDum() {
+        function addDum(orderNo,dumArr) {
+            orderNo
+            let body = []
+            let tmp =  {}
+            const countByArray = (arr) => {
+            return arr.reduce((prev, curr) => {
+                prev[curr] = ++prev[curr] || 1;
+                return prev;
+            }, {});
+            };
+            tmp = countByArray(dumArr)
+            var keys=Object.keys(tmp)
+            for(var key of keys){
+                body.push({itemName:key,count:tmp[key]})
+            }
+            for(var dum of body)           
+            pushDum(orderNo,dum,
+            (res)=>{
+                console.log(res)
+            },
+            ()=>{})
+            this.claerDum();
+
+            
             //onboard 덤메뉴 add
         }
-        function showDum() {
+        function showDum(data) {
             innerDrawer.value = true;
+            this.dumOrderNo=data;
+            console.log(this.dumOrderNo)
+            clearDum()
+            
         }
 
         /* 호출스택관리. */
@@ -674,9 +727,6 @@ export default {
         }
 
         return {
-            //components,
-            UserVideo,
-            RoomChat,
             //openvidu
             OV,
             session,
@@ -720,6 +770,11 @@ export default {
             updateMenuSoldout,
             showDum,
             dumBoard,
+            dumOrderNo,
+            dumArr,
+            onboardDum,
+            clearDum,
+            addDum,
             //alarm
             visitNotification,
             visitsound,
@@ -750,6 +805,7 @@ export default {
     width: 160px;
     height: 120px;
     margin: 10px;
+    margin-top: 0;
 }
 .on {
     border-color: red;
@@ -765,8 +821,8 @@ export default {
 }
 
 .sellervideo {
-    width: 400px;
-    height: 300px;
+    width: 468px;
+    height: 352px;
     border: 2px;
     border-style: groove;
     margin-right: 5px;

@@ -45,8 +45,13 @@
         <el-card shadow="never" style="margin-top: 10px">
             <el-scrollbar>
                 <div class="scrollbar-flex-content">
-                    <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" @click="cl_item(menu)">
-                        <store-menu :menu="menu" />
+                    <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" >
+                            <div v-if="!menu.soldout" @click="cl_item(menu)">
+                                {{menu.itemName}}/{{menu.price}}원
+                            </div>
+                            <div v-else style="color:#b7b9bd">{{menu.itemName}}/품절
+                            </div>
+
                     </div>
                 </div>
             </el-scrollbar>
@@ -118,7 +123,7 @@
 <script>
 //storeNo와 storeName  router.params에 넣어서 가지고 들어옴
 
-import StoreMenu from "@/components/Room/StoreMenu.vue";
+// import StoreMenu from "@/components/Room/StoreMenu.vue";
 import UserVideo from "@/components/Openvidu/UserVideo";
 import RoomChat from "@/components/Openvidu/RoomChat.vue";
 import { Plus, Star, StarFilled } from "@element-plus/icons-vue";
@@ -135,10 +140,10 @@ import { OpenVidu } from "openvidu-browser";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-// const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
-// const OPENVIDU_SERVER_SECRET = "jangbo602";
-const OPENVIDU_SERVER_URL = "https://localhost:4443";
-const OPENVIDU_SERVER_SECRET = "MY_SECRET";
+const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":8443";
+const OPENVIDU_SERVER_SECRET = "jangbo602";
+// const OPENVIDU_SERVER_URL = "https://localhost:4443";
+// const OPENVIDU_SERVER_SECRET = "MY_SECRET";
 
 window.onbeforeunload = () => {
     // Gracefully leave session
@@ -154,7 +159,7 @@ export default {
         next();
     },
     components: {
-        StoreMenu,
+        // StoreMenu,
         UserVideo,
         RoomChat,
     },
@@ -273,7 +278,7 @@ export default {
         };
 
         const open = (message) => {
-            ElMessage.error(message);
+            ElMessage.success(message);
         };
 
         const centerDialogVisible = ref(false);

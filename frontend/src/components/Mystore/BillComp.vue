@@ -22,7 +22,7 @@
                     "storeNo": 0
                 } -->
       <h2 class="order_date" style="margin-top: 5px; margin-bottom: 10px">
-        {{ bill.orderDate }}
+        {{ bill.orderDate.substr(0,10) }}
       </h2>
       <h3 class="order_no" style="margin-top: 5px">
         주문번호 : {{ bill.orderNo }}
@@ -51,6 +51,7 @@
         style="margin-top: 5px; margin-bottom: 5px; color: white"
         round
         color="#e07c49"
+        >
         >덤 추가!</el-button
       >
     </div>
@@ -99,7 +100,7 @@
 import { changeOrderState } from "@/api/order.js";
 export default {
   props: ["bill"], //status: 0=결제완료 1=포장완료 2=배달완료 3=취소
-  data() {
+  data() {  
     return {
       data: this.bill,
       isSeller: this.$store.state.userInfo.userType == "판매자",
@@ -113,7 +114,7 @@ export default {
       });
     },
     openDum() {
-      this.$emit("openDum");
+      this.$emit("emitDum",this.bill.orderNo);
     },
   },
 };

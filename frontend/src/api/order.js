@@ -31,6 +31,10 @@ async function isFirstOrder(customerno,success, fail) {
     await api.get(`/firstorder?customerno=${customerno}`)
     .then(success).catch(fail);
 }   
+//덤 추가.
+async function pushDum(orderNo,freeItemRequest,success, fail) {
+    await api.post(`/${orderNo}`,freeItemRequest)
+    .then(success).catch(fail);
+}   
 
-
-export {makeOrder,changeOrderState,customerOrderList,sellerOrderList,isFirstOrder}
+export {makeOrder,changeOrderState,customerOrderList,sellerOrderList,isFirstOrder,pushDum}
