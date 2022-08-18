@@ -51,6 +51,17 @@ public class StoreService {
     }
 
     /**
+     * 상점 -상점 이름 검색
+     * */
+    @Transactional(readOnly = true)
+    public List<Store> findStoreByNameandMarketNo(String storeName,int marketNo){
+
+        List<Store> list = storeRepository.findAllByStoreNameSQL(storeName,marketNo);
+        return list;
+    }
+
+
+    /**
      * 상점 - 상점 정보 조회
      */
     @Transactional(readOnly = true)

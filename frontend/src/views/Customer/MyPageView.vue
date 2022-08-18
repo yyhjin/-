@@ -1,159 +1,249 @@
 <template>
-  <div class=root-div>
-    회원 유형:<el-radio-group v-model="userType" size="small">
-      <el-radio-button label="구매자" />
-      <el-radio-button label="판매자" />
-      
-    </el-radio-group>
-   
-    <h2>{{dummy.name}}#{{$route.params.id}}님의 page</h2>
-<!--------------------- 회원 정보 ------------------------>
-<div class="user_Info">
-   <el-card class="box-card">
-      <template #header>
-        <div class="card-header">
-          <span>회원 정보</span>
-          <!-- 회원정보수정 버튼 -->
-          <span class="button-chgprofile" @click="goProfile">회원 정보 수정</span>
-        </div>
-      </template>
-       
-       <div class="userinfo-brief">
-        <!-- 간략한 회원정보  -->
-        {{dummy.name}}{{dummy.id}}
-       </div>
-    </el-card>
-</div>
-   
-<!--------------------- 찜 목록 ------------------------>
-<div class="user_zzim" v-if="userType=='구매자'">
-  <el-card class="box-card">
-      <template #header>
-        <div class="card-header"> 
-          <span> 찜 목록</span>
-        </div>
-      </template>
-      <div>
-        <!-- zzimcomp -->
-        <div v-if="zzimlist.length==0 ">
-          <div>찜한 가게가 없어용</div>
-        </div>
-        <div v-else>
-          <div v-for="(zzimstore,idx) in zzimlist" :key="idx">
-          <ZzimComp :zzimstore="zzimstore"/>
+  <div class="root-div">
+    <!--------------------- 회원 정보 ------------------------>
+    <div class="user_Info">
+      <el-card class="box-card" shadow="never">
+        <template #header>
+          <div class="card-header">
+            <span>회원 정보</span>
+            <!-- 회원정보수정 버튼 -->
+            <span class="button-chgprofile" @click="goProfile"
+              >회원 정보 수정</span
+            >
+          </div>
+        </template>
+
+        <div style="margin-bottom: 10px">
+          <!-- 간략한 회원정보  -->
+          <el-descriptions>
+            <el-descriptions-item label="아이디">{{
+              this.userinfo.id
+            }}</el-descriptions-item>
+            <el-descriptions-item label="이름">{{
+              this.userinfo.name
+            }}</el-descriptions-item>
+          </el-descriptions>
         </div>
 
-        </div>
-        
-      </div>
+        <el-row>
+          <el-col :span="7"> 비밀번호 </el-col>
+          <el-col :span="5">
+            <span
+              style="font-size: x-small"
+              class="button-chgprofile"
+              @click="dialogVisibleb = true"
+              >변경하기</span
+            >
+          </el-col>
+        </el-row>
       </el-card>
-</div>
-     
-<!--------------------- 구매내역 ------------------------>
-  <div class="user_orders" v-if="userType=='구매자'">
-    <el-card class="box-card">
-      <template #header>
-        <div class="card-header"> 
-          <span>구매 내역</span>
-        </div>
+    </div>
+
+    <!--------------------- 찜 목록 ------------------------>
+
+    <div class="user_zzim" v-if="userType == '구매자'">
+      <el-card class="box-card" shadow="never">
+        <template #header>
+          <div class="card-header">
+            <span> 찜 목록</span>
+          </div>
+        </template>
+        <el-scrollbar height="250px">
+          <div>
+            <!-- zzimcomp -->
+            <div v-if="zzimlist.length == 0" style="text-align: center">
+              <el-empty
+                description="찜한 가게가 없습니다."
+                style="margin-top: -35px"
+              />
+            </div>
+            <div v-else>
+              <div v-for="(zzimstore, idx) in zzimlist" :key="idx">
+                <ZzimComp :zzimstore="zzimstore" />
+              </div>
+            </div>
+          </div>
+        </el-scrollbar>
+      </el-card>
+    </div>
+
+    <!--------------------- 구매내역 ------------------------>
+    <div class="user_orders">
+      <el-card class="box-card" shadow="never">
+        <template #header>
+          <div class="card-header">
+            <span>구매 내역</span>
+          </div>
+        </template>
+        <!-- ordercomp -->
+        <el-scrollbar height="250px">
+          <div
+            v-for="(order, idx) in orderList"
+            :key="idx"
+            @click="dialogVisible = true"
+          >
+            <OrderComp :order="order" />
+          </div>
+        </el-scrollbar>
+      </el-card>
+    </div>
+
+    <!--------------------- 구매내역/ ------------------------>
+    <!--------------------- 비밀번호 확인 모달 ------------------------>
+    <el-dialog v-model="dialogVisibleb" title="확인" width="80%">
+      <h5 style="margin-left: 5px; margin-top: -10px">비밀번호 재입력</h5>
+      <el-input
+        v-model="pass"
+        type="password"
+        placeholder="password"
+        show-password
+      />
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button
+            round
+            style="background-color: #42413e; color: white"
+            @click="confirm()"
+            >확인</el-button
+          >
+        </span>
       </template>
-      <!-- ordercomp -->
-      <div v-for="(dummy,idx) in dummyorder" :key="idx">
-        <OrderComp :order="dummy"/>
-      </div>
-    </el-card>
-  </div> 
-  <!--------------------- 구매내역/ ------------------------>
-    
-
-
-</div>
+    </el-dialog>
+  </div>
 </template>
 
-
 <script>
-import OrderComp from '@/components/MyPage/OrderComp.vue';
-import ZzimComp from  '@/components/MyPage/ZzimComp.vue'
+import OrderComp from "@/components/MyPage/OrderComp.vue";
+import ZzimComp from "@/components/MyPage/ZzimComp.vue";
+import { loginCustomer } from "@/api/customer";
+import { getCustomer, getJJim } from "@/api/customer.js";
+import { useStore } from "vuex";
+import { computed, reactive, ref } from "vue";
+import { ElMessage } from "element-plus";
 
 export default {
-    components: { OrderComp, ZzimComp },
-    
-  data(){
-    return{
-      // dummy data from vuex
-      dummy : this.$store.state.userinfo,
+  components: { OrderComp, ZzimComp },
+  setup() {
+    const store = useStore();
+    const pass = ref();
+    const userNo = computed(() => store.state.userInfo.userNo);
+    const userinfo = reactive({
+      id: "",
+      name: "",
+    });
+    const dialogVisibleb = ref(false);
+    const handleClose = (done) => {
+      done();
+    };
 
-      userType:this.$store.state.userinfo.userType,
+    const orderList = computed(() => store.state.orderStore.orderList);
+    const getOrder = (no) => {
+      store.dispatch(`orderStore/getOrder`, no);
+    };
 
-      zzimlist:[],
-      dummyorder: [{
-                order_no: 1,
-                order_items: [
-                    { item_no: 1, item_name: "사과", count: 3, orderprice: 2000 },
-                    { item_no: 2, item_name: "포도", count: 2, orderprice: 3000 },
-                    { item_no: 3, item_name: "수박", count: 1, orderprice: 10000 },
-                    { item_no: 4, item_name: "샤인머스켓", count: 1, orderprice: 20000 }
-                ],
-                orderdate: "20220302",
-                status: 1,
-                store: { store_no: 1, store_name: "재승이네 청과", store_img: null }
-            },
-            {
-                order_no: 1,
-                order_items: [
-                    { item_no: 1, item_name: "사과", count: 3, orderprice: 2000 },
-                    { item_no: 2, item_name: "포도", count: 2, orderprice: 3000 },
-                    { item_no: 3, item_name: "수박", count: 1, orderprice: 10000 },
-                    { item_no: 4, item_name: "샤인머스켓", count: 1, orderprice: 20000 }
-                ],
-                orderdate: "20220302",
-                status: 1,
-                store: { store_no: 1, store_name: "재승이네 청과", store_img: null }
-            },
-            {
-                order_no: 1,
-                order_items: [
-                    { item_no: 1, item_name: "사과", count: 3, orderprice: 2000 },
-                    { item_no: 2, item_name: "포도", count: 2, orderprice: 3000 },
-                    { item_no: 3, item_name: "수박", count: 1, orderprice: 10000 },
-                    { item_no: 4, item_name: "샤인머스켓", count: 1, orderprice: 20000 }
-                ],
-                orderdate: "20220302",
-                status: 1,
-                store: { store_no: 1, store_name: "재승이네 청과", store_img: null }
-            }
-            ]
-    }
+    const open = (message) => {
+      ElMessage({
+        showClose: true,
+        message: message,
+        type: "error",
+      });
+    };
+
+    return {
+      userNo,
+      userinfo,
+      orderList,
+      getOrder,
+      dialogVisibleb,
+      handleClose,
+      pass,
+      open,
+    };
   },
-    methods: {
-        goProfile() {
-            this.$router.push({
-                name: "profile",
-                // params: { user:this.dummy }
-            });
-        },
-    },
-}
 
+  data() {
+    return {
+      // dummy data from vuex
+      userType: this.$store.state.userinfo.userType,
+      zzimlist: [],
+    };
+  },
+  created() {
+    getCustomer(
+      this.userNo,
+      (response) => {
+        console.log(response);
+        console.log(this.userNo);
+        this.userinfo.id = response.data.customerId;
+        this.userinfo.name = response.data.customerName;
+      },
+      (error) => {
+        console.log(error);
+      }
+    ),
+      getJJim(
+        this.userNo,
+        (response) => {
+          console.log(response.data);
+          response.data.forEach((store) => {
+            this.zzimlist.push({
+              storeNo: store.storeNo,
+              storeName: store.storeName,
+              storeIdx: store.storeIdx,
+            });
+          });
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    //this.getOrder(1);
+  },
+  methods: {
+    confirm() {
+      loginCustomer(
+        { username: this.userinfo.id, password: this.pass },
+        (response) => {
+          if (response.data.response == "success") {
+            this.goPass();
+          } else {
+            this.open("비밀번호가 다릅니다.");
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    },
+    goPass() {
+      this.$router.push({
+        name: "CustomerPass",
+      });
+    },
+    goProfile() {
+      this.$router.push({
+        name: "profile",
+        // params: { user:this.dummy }
+      });
+    },
+  },
+};
 </script>
 <style scoped>
-.root-div{
-  /* width 주고,중앙 정렬. */
-  margin-left:auto; 
-  margin-right:auto;
-  width:340px;
-  
+.dialog-footer button:first-child {
+  margin-right: 10px;
 }
+
 .card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-
 }
-.button-chgprofile{
-  font-size:x-small;
+.button-chgprofile {
+  font-size: x-small;
   text-decoration: underline;
-  
 }
-
+.box-card {
+  margin-bottom: 10px;
+}
 </style>

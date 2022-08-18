@@ -1,55 +1,100 @@
 <template>
-    <div class="Div1">
-        <div class="searchMenu">
-            <el-select v-model="searchDo" filterable placeholder="시/도" style="margin-top: 60px">
-                <el-option v-for="item in DoList" :key="item.value" :label="item.text" :value="item.value" />
-            </el-select>
+  <div class="Div1">
+    <div class="searchMenu">
+      <el-select
+        v-model="searchDo"
+        filterable
+        placeholder="시/도"
+        style="width: 200px"
+      >
+        <el-option
+          v-for="item in DoList"
+          :key="item.value"
+          :label="item.text"
+          :value="item"
+        />
+      </el-select>
 
-            <el-select v-model="searchGu" filterable placeholder="구/군" style="margin: 30px 0px">
-                <el-option v-for="item in GuList" :key="item.value" :label="item.text" :value="item.value" />
-            </el-select>
-        </div>
+      <el-select
+        v-model="searchGu"
+        filterable
+        placeholder="구/군"
+        style="margin: 20px 0px; width: 200px"
+      >
+        <el-option
+          v-for="item in GuList"
+          :key="item.value"
+          :label="item.text"
+          :value="item.text"
+        />
+      </el-select>
     </div>
+  </div>
 </template>
 
 <script>
-import { computed, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { useStore } from "vuex";
 
 export default {
-    name: "SearchAddress",
-    setup() {
-        const store = useStore();
-        const searchDo = ref();
-        const searchGu = ref();
-        const setDo = () => store.commit("marketStore/getSido");
+  name: "SearchAddress",
+  setup() {
+    const store = useStore();
+    const searchDo = ref();
+    const searchGu = ref();
 
-        const marketList = computed(() => store.state.marketStore.markets);
-        const DoList = computed(() => store.state.marketStore.sidos);
-        const GuList = computed(() => store.state.marketStore.guguns);
+    const setDo = onMounted(() => store.dispatch("marketStore/getSido"));
 
-        const reDo = () => store.commit("marketStore/CLEAR_SIDO_LIST");
-        const reGu = () => store.commit("marketStore/CLEAR_GUGUN_LIST");
+    const marketList = computed(() => store.state.marketStore.markets);
+    const DoList = computed(() => store.state.marketStore.sidos);
+    const GuList = computed(() => store.state.marketStore.guguns);
 
-        const setGuList = () => store.dispatch("marketStore/getGugun");
-        const getMarketList = () => store.dispatch("marketStore/getMarketList");
+    const reDo = () => store.commit("marketStore/CLEAR_SIDO_LIST");
+    const reGu = () => store.commit("marketStore/CLEAR_GUGUN_LIST");
+    const reMarket = () => store.commit("marketStore/CLEAR_MARKET_LIST");
 
-        return { setDo, DoList, searchDo, searchGu, reDo, reGu, setGuList, GuList, marketList, getMarketList };
+    const setGuList = () => {
+      store.dispatch(`marketStore/getGugun`, searchDo.value);
+    };
+
+    const getMarketList = () =>
+      store.dispatch(
+        `marketStore/getMarketList`,
+        searchDo.value.text + " " + searchGu.value
+      );
+
+    return {
+      setDo,
+      DoList,
+      searchDo,
+      searchGu,
+      reDo,
+      reGu,
+      reMarket,
+      setGuList,
+      GuList,
+      marketList,
+      getMarketList,
+    };
+  },
+  created() {
+    this.reDo;
+    this.reMarket;
+    this.setDo;
+  },
+
+  watch: {
+    searchDo: function () {
+      //console.log("도코드 " + this.searchDo);
+      this.searchGu = "";
+      this.setGuList();
     },
 
-    watch: {
-        searchDo: function () {
-            this.reDo;
-            console.log(this.searchDo);
-            this.setGuList(this.searchDo);
-        },
-
-        searchGu: function () {
-            this.reGu;
-            console.log(this.searchDo + " " + this.searchGu);
-            this.getMarketList(this.searchDo, this.searchGu);
-        },
+    searchGu: function () {
+      console.log(this.searchDo.text + " " + this.searchGu);
+      this.getMarketList();
     },
+  },
 };
 </script>
 

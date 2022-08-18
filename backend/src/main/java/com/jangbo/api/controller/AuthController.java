@@ -76,7 +76,7 @@ public class AuthController {
             res.setHeader("Set-Cookie",accessToken.toString());
             res.addHeader("Set-Cookie",refreshToken.toString());
 //            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
-            res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io:7602");
+            res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io");
             return new ResponseSimple("success", "로그인에 성공했습니다.", customer.getCustomerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "로그인에 실패했습니다.", e.getMessage());
@@ -99,7 +99,7 @@ public class AuthController {
             res.setHeader("Set-Cookie",accessToken.toString());
             res.addHeader("Set-Cookie",refreshToken.toString());
 //            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
-            res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io:7602");
+            res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io");
             return new ResponseSimple("success", "로그인에 성공했습니다.", seller.getSellerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "로그인에 실패했습니다.", e.getMessage());
@@ -166,7 +166,7 @@ public class AuthController {
         res.setHeader("Set-Cookie",accessToken.toString());
         res.addHeader("Set-Cookie",refreshToken.toString());
 //        res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
-        res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io:7602");
+        res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io");
         return new ResponseSimple("success","로그아웃 되었습니다.",null);
     }
 
@@ -186,7 +186,7 @@ public class AuthController {
             ResponseCookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token, 0);
             res.setHeader("Set-Cookie",accessToken.toString());
 //            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
-            res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io:7602");
+            res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io");
             return new ResponseSimple("success", "accessToken 재발급에 성공했습니다.", customer.getCustomerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "accessToken 재발급에 실패했습니다.", null);
@@ -209,7 +209,7 @@ public class AuthController {
             ResponseCookie accessToken = cookieUtil.createCookie(JwtUtil.ACCESS_TOKEN_NAME, token, 0);
             res.setHeader("Set-Cookie",accessToken.toString());
 //            res.setHeader("Access-Control-Allow-Origin", "http://localhost:7602");
-            res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io:7602");
+            res.setHeader("Access-Control-Allow-Origin", "https://i7a602.p.ssafy.io");
             return new ResponseSimple("success", "accessToken 재발급에 성공했습니다.", seller.getSellerNo());
         } catch (Exception e) {
             return new ResponseSimple("error", "accessToken 재발급에 실패했습니다.", null);
