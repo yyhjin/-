@@ -1,38 +1,39 @@
 <template>
-    <div class="div_div">
-        <div>
-            <el-page-header :icon="ArrowLeft" content="가게 오픈" @back="this.$router.go(-1)" />
+    <div class="div_root">
+        <div style="margin: 30px">
+            <el-page-header :icon="ArrowLeft" content="가게 정보 관리" @back="this.$router.go(-1)" />
         </div>
-
-        <div class="div_big">
-            <div class="div_intro">
-                <h2>방 제목 :</h2>
-                <el-input v-model="this.intro" :rows="1" type="textarea" placeholder="제목을 적어주세요." class="input_intro" />
-            </div>
-
-            <div class="div_subject">
-                <h2>소개 문구 :</h2>
-                <el-input v-model="this.subject" :rows="2" type="textarea" placeholder="소개를 적어주세요." class="input_subject" />
-            </div>
-
-            <div class="div_menu">
-                <div>
-                    <h2>판매 목록 :</h2>
-                    <el-button class="btn_menu" @click="dialogVisible = true">메뉴 추가</el-button>
+        <el-card class="box-card" style="margin-top: 50px">
+            <div class="div_big">
+                <div class="div_intro" style="margin-top: 30px">
+                    <h3>방 제목 :</h3>
+                    <el-input v-model="this.intro" :rows="1" type="textarea" placeholder="제목을 적어주세요." class="input_intro" />
                 </div>
 
-                <div style="display: inline-block">
-                    <choosed-item></choosed-item>
+                <div class="div_subject" style="margin-top: 50px">
+                    <h3>소개 문구 :</h3>
+                    <el-input v-model="this.subject" :rows="2" type="textarea" placeholder="소개를 적어주세요." class="input_subject" />
+                </div>
+
+                <div class="div_menu" style="margin-top: 80px">
+                    <div>
+                        <h3>판매 목록 :</h3>
+                        <el-button class="btn_menu" @click="dialogVisible = true" style="background-color: #42413e; margin-top: 7px">수정</el-button>
+                    </div>
+
+                    <div style="display: inline-block">
+                        <choosed-item></choosed-item>
+                    </div>
+                </div>
+
+                <div style="width: 200px; margin: auto">
+                    <el-button color="#42413e" class="btn_ok" @click="cl_ok()" style="background-color: #42413e" size="large">가게 오픈</el-button>
                 </div>
             </div>
-
-            <div style="width: 200px; margin: auto">
-                <el-button color="#FF6F61" class="btn_ok" @click="cl_add" style="">가게 오픈</el-button>
-            </div>
-        </div>
+        </el-card>
     </div>
     <el-dialog v-model="dialogVisible" title="판매 목록 수정" width="70%">
-        <el-card class="box-card">
+        <el-card class="box-card1">
             <template #header>
                 <el-scrollbar>
                     <div class="scrollbar-flex-content">
@@ -44,7 +45,7 @@
             </template>
             <div style="text-align: center">
                 <el-input v-model="Item.itemName" placeholder="품목 / 수량" style="width: 100px; margin-right: 50px" />
-                <el-input v-model="Item.price" placeholder="가격" style="width: 100px" />
+                <el-input v-model="Item.price" placeholder="가격" style="width: 100px; margin-right: 50px" />
                 <el-button style="color: black !important" @click="cl_add(Item)">추가</el-button>
             </div>
         </el-card>
@@ -54,7 +55,6 @@
             </div>
         </el-card>
     </el-dialog>
-    <el-button style="color: black !important" @click="cl_ok()">확인</el-button>
 </template>
 
 <script>
@@ -62,6 +62,8 @@ import { useStore } from "vuex";
 import { computed, ref } from "vue";
 import ChoosedItem from "@/components/ChoosedItem.vue";
 import { updateIdx, updateRoom } from "@/api/store";
+import { checkUsed } from "@/api/item";
+import { ArrowLeft } from "@element-plus/icons-vue";
 
 export default {
     name: "StoreOpenView",
@@ -86,7 +88,7 @@ export default {
 
         const dialogVisible = ref(false);
 
-        return { dialogVisible, intro, subject, sellList, openList, Item };
+        return { ArrowLeft, dialogVisible, intro, subject, sellList, openList, Item };
     },
     data() {
         return {
@@ -94,7 +96,7 @@ export default {
         };
     },
     created() {
-        this.storeNo = this.$route.params.storeNo;
+        this.storeNo = 6;
     },
     mounted() {},
 
@@ -108,34 +110,53 @@ export default {
         },
 
         cl_ok() {
-            console.log(this.fileList);
-
-            updateRoom(
-                this.storeNo,
-                { storeIntro: this.intro, storeNo: this.storeNo, storeSubject: this.subject },
-                (res) => {
-                    console.log(res);
-                },
-                (err) => {
-                    console.log(err);
-                }
-            );
+            console.log(this.intro);
+            console.log(this.subject);
 
             updateIdx(
                 this.storeNo,
                 (res) => {
-                    console.log(res);
+                    res;
+                    //console.log(res);
+                    const params = {
+                        storeIntro: this.intro,
+                        storeNo: this.storeNo,
+                        storeSubject: this.subject,
+                    };
+                    console.log(params);
+
+                    updateRoom(
+                        this.storeNo,
+                        params,
+                        (res) => {
+                            console.log(res);
+                            // 오픈버튼 임시로 만들어 둿어요.
+                            this.$router.push({
+                                name: "seller_room",
+                                params: { storeNo: this.storeNo },
+                            });
+                        },
+                        (err) => {
+                            console.log(err);
+                        }
+                    );
+                    for (var i = 0; i < this.openList.length; i++) {
+                        checkUsed(
+                            this.openList[i].itemNo,
+                            { recent: true },
+                            (res) => {
+                                console.log(res);
+                            },
+                            (err) => {
+                                console.log(err);
+                            }
+                        );
+                    }
                 },
                 (err) => {
                     console.log(err);
                 }
             );
-
-            // 오픈버튼 임시로 만들어 둿어요.
-            // this.$router.push({
-            //     name: "seller_room",
-            //     params: { storeNo: 29 },
-            // });
         },
         // openlist에 추가
         cl_add(item) {
@@ -159,6 +180,10 @@ export default {
 </script>
 
 <style scoped>
+.box-card {
+    width: 650px;
+    margin: auto;
+}
 .scrollbar-flex-content {
     display: flex;
 }
@@ -172,11 +197,15 @@ export default {
     margin: 10px;
     text-align: center;
     border-radius: 4px;
-    background: var(--el-color-danger-light-9);
+    background: rgba(66, 65, 62, 40%);
     color: var(--el-color-danger);
 }
 
-.div_div {
+.box-card1 {
+    width: 530px;
+}
+
+.div_root {
     text-align: center;
 }
 
@@ -188,12 +217,12 @@ export default {
     margin-top: 30px;
 }
 
-.div_intro h2 {
+.div_intro h3 {
     text-align: left;
     margin-bottom: 20px;
 }
 
-.div_subject h2 {
+.div_subject h3 {
     text-align: left;
     margin-bottom: 20px;
 }
@@ -202,7 +231,7 @@ export default {
     margin-top: 30px;
 }
 
-.div_menu h2 {
+.div_menu h3 {
     text-align: left;
     margin-bottom: 40px;
     float: left;

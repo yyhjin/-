@@ -4,9 +4,9 @@
             <el-table-column type="index" width="80" />
             <el-table-column prop="itemName" label="품목/수량" width="170" />
             <el-table-column prop="price" label="금액" width="140" />
-            <el-table-column>
+            <el-table-column label="삭제">
                 <template v-slot="scope">
-                    <el-button color="#FF6F61" round @click="resellList(scope.$index)">삭제</el-button>
+                    <el-button style="color: black !important; border: 0px" circle :icon="Delete" @click="resellList(scope.$index)"> </el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -16,6 +16,7 @@
 <script>
 import { useStore } from "vuex";
 import { computed } from "vue";
+import { Delete } from "@element-plus/icons-vue";
 
 export default {
     name: "ChoosedItem",
@@ -37,7 +38,7 @@ export default {
             store.commit(`orderStore/REMOVE_ITEM`, value);
         };
 
-        return { openList, storeNo, setSellList, sellList, resellList, reopenlist };
+        return { openList, storeNo, setSellList, sellList, resellList, reopenlist, Delete };
     },
 
     created() {
