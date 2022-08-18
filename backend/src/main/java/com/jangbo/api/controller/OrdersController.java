@@ -5,14 +5,18 @@ import com.jangbo.api.request.OrderStateEditReq;
 import com.jangbo.api.service.*;
 import com.jangbo.db.dto.OrdersDto;
 import com.jangbo.db.entity.*;
+import com.jangbo.db.repository.OrdersRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Api(value = "주문 api", tags={"주문"})
@@ -30,6 +34,9 @@ public class OrdersController {
     StoreService storeService;
     @Autowired
     ItemService itemService;
+
+    @Autowired
+    OrdersRepository ordersRepository;
 
     @ApiOperation(value = "주문목록 조회(소비자)" , notes="소비자번호로 해당 소비자의 주문목록을 조회한다.",httpMethod = "GET")
     @GetMapping("/customer")
@@ -74,7 +81,6 @@ public class OrdersController {
         return new ResponseEntity(result, HttpStatus.OK);
     }
 
-
     @ApiOperation(value = "주문" , notes="주문서를 생성한다.",httpMethod = "POST")
     @PostMapping("/{customer_no}/{store_no}")
     @Transactional
@@ -89,10 +95,9 @@ public class OrdersController {
 
         Orders createorder = new Orders();
         createorder.setCustomer(customer);
-        //createorder.setOrderItems(order.getOrderItems());
         createorder.setMarketNo(marketno);
         createorder.setStoreNo(storeNo);
-        createorder.setStatus("ORDER");
+        createorder.setStatus("0");
 
         Integer orderno = ordersService.ordersave(createorder).getOrderNo();
 
@@ -107,14 +112,38 @@ public class OrdersController {
             orderitem.setItemName(item.getItemName());
             orderitem.setPrice(item.getPrice() * body.getProducts().get(i).getCount());
 
-
-            Integer orderitemno = orderItemService.orderitemsave(orderitem).getOrderItemNo();
+            orderItemService.orderitemsave(orderitem).getOrderItemNo();
         }
 
         return new ResponseEntity(orderno, HttpStatus.OK);
     }
 
 
+    @ApiOperation(value = "덤 추가", notes = "기존 주문서에 덤을 추가한다.", httpMethod = "POST")
+    @PostMapping("/{order_no}")
+    @Transactional
+    public ResponseEntity<Integer> freeItem(
+            @PathVariable("order_no") Integer orderNo,
+            @RequestBody @Valid FreeItemRequest freeItemRequest
+    ) {
+        Orders orders = ordersRepository.findOrdersByOrderNo(orderNo);
 
+        OrderItem orderitem = new OrderItem();
+        orderitem.setOrders(orders);
+        orderitem.setCount(freeItemRequest.getCount());
+        orderitem.setItemName("덤) "+freeItemRequest.getItemName());
+        orderitem.setPrice(0);
+
+        int orderitemno = orderItemService.orderitemsave(orderitem).getOrderItemNo();
+
+        return new ResponseEntity(orderitemno, HttpStatus.OK);
+    }
+
+    @Data
+    @AllArgsConstructor
+    static class FreeItemRequest {
+        private Integer count;
+        private String itemName;
+    }
 
 }

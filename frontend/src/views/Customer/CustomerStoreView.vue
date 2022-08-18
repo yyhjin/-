@@ -143,6 +143,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":4443";
 const OPENVIDU_SERVER_SECRET = "jangbo602";
 
+
 window.onbeforeunload = () => {
     // Gracefully leave session
     if (this.session) {

@@ -27,11 +27,8 @@ import java.util.List;
 
 public class StoreController {
 
-
     private final StoreService storeService;
-
     private final FileService fileService;
-
 
     //    /*상점 전체 목록 조회*/
     @GetMapping
@@ -57,8 +54,6 @@ public class StoreController {
         return new ResponseEntity<>(storeList, HttpStatus.OK);
     }
 
-
-
     /* 상점 정보 조회*/
     @GetMapping("/{storeNo}")
     @ApiOperation(value = "상점 정보 조회 api", notes = "상점번호로 정보조회(방정보 하나하나 )", httpMethod = "GET")
@@ -75,15 +70,17 @@ public class StoreController {
         return new ResponseEntity<>(store, HttpStatus.OK);
     }
 
-    /*상점 등록 및 프로필 사진*/
+    /* 상점 등록 및 프로필 사진 */
     @PostMapping
     @ApiOperation(value = "상점 등록 api", notes = "상점등록", httpMethod = "POST")
     public ResponseEntity<Integer> save(@RequestPart(value = "storeRegisterPostReq") StoreRegisterPostReq store,
                                         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
 
-        if (file.isEmpty()) { //입력안하면 기본사진
+        if (file==null) { //입력안하면 기본사진
+            System.out.println("널일때"+file);
             store.setStoreImg("default.png");
         } else {
+            System.out.println("여기로 들어온다.");
             String fileName = fileService.uploadImg(store, file); //입력하면 업로드하러 넘어감
             store.setStoreImg(fileName); //변환된 파일명만 디비에 저장
         }
@@ -91,7 +88,7 @@ public class StoreController {
         return new ResponseEntity<>(savedStoreNo, HttpStatus.CREATED);
     }
 
-    /*사진 불러오기*/
+    /* 사진 불러오기 */
     @GetMapping("/image/{storeNo}")
     @ApiOperation(value = "프로필 사진 불러오기 api", notes = "상점사진 불러오기", httpMethod = "GET")
     public ResponseEntity<String> findImgUrl(@PathVariable("storeNo") Integer storeNo) {
@@ -100,7 +97,7 @@ public class StoreController {
         return new ResponseEntity<>(imgUrl, HttpStatus.OK);
     }
 
-    /*사진 수정*/
+    /* 사진 수정 */
     @PostMapping("/image")
     @ApiOperation(value = "프로필 사진 수정 api", notes = "상점사진 수정하기", httpMethod = "POST")
     public ResponseEntity<String> updateImg(@RequestParam(value = "storeNo") Integer storeNo, @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
@@ -108,7 +105,7 @@ public class StoreController {
         return new ResponseEntity<>("수정완료", HttpStatus.OK);
     }
 
-    /*사진 삭제*/
+    /* 사진 삭제 */
     @DeleteMapping("/image/{storeNo}")
     @ApiOperation(value = "사진 삭제 api", notes = "상점번호로 사진 삭제", httpMethod = "DELETE")
     public ResponseEntity<Integer> deleteImg(@PathVariable("storeNo") Integer storeNo) {
@@ -126,7 +123,7 @@ public class StoreController {
         return new ResponseEntity<>(updatedStoreNo, HttpStatus.NO_CONTENT);
     }
 
-    /*상점 삭제*/
+    /* 상점 삭제 */
     @DeleteMapping("/{storeNo}")
     @ApiOperation(value = "상점 정보 삭제 api", notes = "상점번호로 정보삭제", httpMethod = "DELETE")
     public ResponseEntity<Integer> delete(@PathVariable("storeNo") Integer storeNo) {

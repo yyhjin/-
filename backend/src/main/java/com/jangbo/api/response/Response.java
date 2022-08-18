@@ -17,7 +17,6 @@ public class Response {
     @Getter
     @Builder
     private static class Body {
-
         private int state;
         private String result;
         private String massage;

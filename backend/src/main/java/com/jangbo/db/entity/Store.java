@@ -37,12 +37,12 @@ public class Store {
     private String storeImg; //경로 저장
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JsonIgnore
     @JoinColumn(name = "market_no")
     private Market market;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.DETACH)
     @JsonIgnore
     @JoinColumn(name = "seller_no")
     private Seller seller;
@@ -53,7 +53,7 @@ public class Store {
     private String storeIntro;
 
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-    private boolean storeIdx = true;
+    private boolean storeIdx = false;
 
     @Builder
     public Store(Integer storeNo, String storeName, String storeCategory, String storePhone, String storeAddr, String storeImg, Seller seller, Market market, String storeSubject, String storeIntro) {

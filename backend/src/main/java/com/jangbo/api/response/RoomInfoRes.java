@@ -15,14 +15,9 @@ import lombok.Getter;
         @ApiModelProperty(name = "방소개", example = "생선이 아주 쌉니다 들어오세요 ")
         String storeIntro;
 
-//        @ApiModelProperty(name = "이미지", example = "넣지않으면 프로필이미지가 들어갑니다")
-//        String storeImg;
-
-
         public RoomInfoRes(Store store) {
             this.storeSubject=store.getStoreSubject();
-            this.storeIntro = getStoreIntro();
-            //this.storeImg=getStoreImg();
+            this.storeIntro = store.getStoreIntro();
         }
 
     }

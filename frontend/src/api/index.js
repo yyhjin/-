@@ -6,7 +6,7 @@ axios.defaults.headers.post["Access-Control-Allow-Origin"] = "*";
 function CustomerInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/customer",
-        // baseURL: "https://localhost:8080/be/customer",
+        
         headers: {
             "content-type": "application/json",
         },
@@ -18,7 +18,6 @@ function CustomerInstance() {
 function SellerInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/seller",
-        // baseURL: "https://localhost:8080/be/seller",
         header: {
             "content-type": "application/json",
         },
@@ -30,7 +29,6 @@ function SellerInstance() {
 function MarketInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be",
-        // baseURL: "https://localhost:8080/be",
         headers: {
             "Content-type": "application/json",
         },
@@ -42,7 +40,6 @@ function MarketInstance() {
 function StoreInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/store",
-        // baseURL: "https://localhost:8080/be/store",
         headers: {
             "Content-type": "application/json",
         },
@@ -53,7 +50,6 @@ function StoreInstance() {
 function StoreRegisterInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/store",
-        // baseURL: "https://localhost:8080/be/store",
         headers: {
             "Content-type": "multipart/form-data",
         },
@@ -64,7 +60,6 @@ function StoreRegisterInstance() {
 function ItemInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/item",
-        // baseURL: "https://localhost:8080/be/item",
         headers: {
             "Content-type": "application/json",
         },
@@ -75,7 +70,6 @@ function ItemInstance() {
 function OrderInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/order",
-        // baseURL: "https://localhost:8080/be/order",
         headers: {
             "Content-type": "application/json",
         },
@@ -87,7 +81,6 @@ function OrderInstance() {
 function CallInstance() {
     const instance = axios.create({
         baseURL: "https://i7a602.p.ssafy.io:8080/be/",
-        // baseURL: "https://localhost:8080/be/",
         headers: {
             "content-type": "application/json",
         },

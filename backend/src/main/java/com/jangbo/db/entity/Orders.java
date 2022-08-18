@@ -25,7 +25,7 @@ public class Orders {
     @Temporal(TemporalType.TIMESTAMP)
     @Column(columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP")
     @CreationTimestamp
-    private Date orderDate; //안되면 이거부터 수정하기
+    private Date orderDate;
 
     private Integer marketNo;
 
@@ -35,7 +35,7 @@ public class Orders {
     @Column(length = 10)
     private String status;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY ,cascade = CascadeType.DETACH)
     @JoinColumn(name = "customer_no")
     private Customer customer;
 

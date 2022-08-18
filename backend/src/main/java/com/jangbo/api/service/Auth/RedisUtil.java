@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 public class RedisUtil {
 
     private final StringRedisTemplate stringRedisTemplate;
-
     private final RedisTemplate<String, Object> redisBlackListTemplate;
 
 

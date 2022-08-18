@@ -48,10 +48,6 @@ public class Market {
     private Gugun gugun;
 
 
-//    public Market() {
-//
-//    }
-//
     public Market(String marketName, String marketAddr, Float lat, Float lng) {
         this.marketName = marketName;
         this.marketAddr = marketAddr;

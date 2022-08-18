@@ -21,7 +21,7 @@ public class OrderItem {
 
     private String itemName;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY, cascade = CascadeType.DETACH)
     @JoinColumn(name = "order_no")
     private Orders orders;
 

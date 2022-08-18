@@ -11,9 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class SellerService {
     private final SellerRepository sellerRepository;
-
-
-
     public Seller findOne(Integer sellerNo) {
         return sellerRepository.findOne(sellerNo);
     }

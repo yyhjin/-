@@ -23,12 +23,6 @@ public class Gugun {
     @Column(length = 150)
     private String sidoGugun;
 
-    //@Id
-//    @Column(length = 75)
-//    @NotBlank
-//    private String sidoName;
-
-    //@Id
     @Column(length = 75)
     @NotBlank
     private String gugunName;
@@ -36,8 +30,5 @@ public class Gugun {
     @Column(length = 20)
     @NotBlank
     private String gugunCode;
-
-//    @OneToMany(mappedBy = "gugun")
-//    private List<Market> markets = new ArrayList<>();
 
 }
