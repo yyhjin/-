@@ -35,7 +35,7 @@ public class Orders {
     @Column(length = 10)
     private String status;
 
-    @ManyToOne(fetch = LAZY)
+    @ManyToOne(fetch = LAZY ,cascade = CascadeType.DETACH)
     @JoinColumn(name = "customer_no")
     private Customer customer;
 

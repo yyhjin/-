@@ -81,9 +81,11 @@ public class StoreController {
     public ResponseEntity<Integer> save(@RequestPart(value = "storeRegisterPostReq") StoreRegisterPostReq store,
                                         @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
 
-        if (file.isEmpty()) { //입력안하면 기본사진
+        if (file==null) { //입력안하면 기본사진
+            System.out.println("널일때"+file);
             store.setStoreImg("default.png");
         } else {
+            System.out.println("여기로 들어온다.");
             String fileName = fileService.uploadImg(store, file); //입력하면 업로드하러 넘어감
             store.setStoreImg(fileName); //변환된 파일명만 디비에 저장
         }

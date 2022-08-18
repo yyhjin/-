@@ -37,12 +37,12 @@ public class Store {
     private String storeImg; //경로 저장
 
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.DETACH)
     @JsonIgnore
     @JoinColumn(name = "market_no")
     private Market market;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.DETACH)
     @JsonIgnore
     @JoinColumn(name = "seller_no")
     private Seller seller;
