@@ -68,10 +68,10 @@
 // import axios from "axios"
 import { storeRegister } from "@/api/store.js";
 import { ref } from "vue";
+import { ElMessage } from "element-plus";
 
 import SearchName from "@/components/SearchMarket/SearchName.vue";
 import ListInModal from "@/components/SearchMarket/ListInModal.vue";
-import { ElMessage } from "element-plus";
 
 export default {
     components: { SearchName, ListInModal },
@@ -111,14 +111,21 @@ export default {
     },
     setup() {
         const dialogVisible = ref(false);
-        const open = (message) => {
+
+        const open = () => {
             ElMessage({
-                showClose: true,
+                message: "등록 성공",
+                type: "success",
+            });
+        };
+        const open2 = (message) => {
+            ElMessage({
                 message: message,
                 type: "error",
             });
         };
-        return { dialogVisible, open };
+
+        return { dialogVisible, open, open2 };
     },
     methods: {
         goBack() {
@@ -143,21 +150,19 @@ export default {
             if (this.img_validation == true) {
                 this.img_message = `등록 가능한 사진입니다!`;
                 this.img = file[0];
+                this.img_change = true;
                 //미리보기 띄우기위해.
                 this.imgsrc = URL.createObjectURL(this.img);
-                this.img_change = true;
             }
         },
 
         register() {
-            if (this.img_change == false) {
+            if (this.img_change == true) {
                 //form데이터의 각 아이템마다 type설정과 append 함. 전체 formdata의 content-type은 multipart/form-data
                 console.log(JSON.stringify(this.form));
                 let formdata = new FormData();
                 formdata.append("storeRegisterPostReq", new Blob([JSON.stringify(this.form)], { type: "application/json" }));
                 formdata.append("file", this.img);
-                console.log(formdata.entries());
-
                 storeRegister(
                     formdata,
                     //then
@@ -165,13 +170,29 @@ export default {
                         response;
                         //TODO:redirect
                         console.log("등록성공");
+                        console.log(formdata.entries());
+                        this.open();
+                        this.$router.push(
+                            {
+                                name: "mystore",
+                                params: { id: this.$store.getters["userInfo/isAuthenticated"] },
+                            },
+                            //catch
+                            (error) => {
+                                console.log(error);
+                                this.open2("등록 실패");
+                            }
+                        );
                     },
                     //catch
                     (error) => {
                         console.log(error);
                     }
                 );
+            } else {
+                this.open2("사진을 등록해주세요.");
             }
+
             // axios({method:'POST',
             // url:"http://localhost:8080/store",
             // headers:{

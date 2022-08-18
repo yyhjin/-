@@ -67,41 +67,9 @@
           <el-input
             placeholder="연락처"
             v-model="phone_number"
+            @keyup.enter="cl_register"
             class="input_phone"
           />
-          <h5 style="float: left">가게 주소</h5>
-          <div class="searchAddress">
-            <el-button
-              round
-              color="#e07c49"
-              @click="execDaumPostcode()"
-              size="small"
-              class="btn_address"
-              >주소 검색</el-button
-            ><br />
-            <!--<el-input type="text" v-model="postcode" placeholder="우편번호"/>-->
-            <el-input
-              type="text"
-              v-model="address"
-              id="address"
-              placeholder="기본 주소"
-              style="margin-top: 10px"
-            /><br />
-            <el-input
-              type="text"
-              v-model="detailAddress"
-              id="detailAddress"
-              placeholder="상세 주소"
-              style="margin-top: 10px"
-            />
-            <el-input
-              type="text"
-              v-model="extraAddress"
-              id="extraAddress"
-              placeholder="참고 항목"
-              style="margin-top: 10px"
-            />
-          </div>
         </div>
 
         <div>
@@ -139,9 +107,6 @@ export default {
       same: "숫자,문자를 포함한 8자 이상",
       name: "",
       phone_number: "",
-      address: "",
-      detailAddress: "",
-      extraAddress: "",
     };
   },
   setup() {
@@ -262,10 +227,10 @@ export default {
     },
     cl_register() {
       if (
+        this.seller_number != "" &&
         this.id != "" &&
         this.name != "" &&
         this.password != "" &&
-        this.nick != "" &&
         this.phone_number != ""
       ) {
         if (this.same == "사용 가능합니다.") {
@@ -282,7 +247,7 @@ export default {
             (response) => {
               if (response.data.response == "success") {
                 this.open("회원가입이 완료되었습니다.");
-                this.$router.push({ name: "home" });
+                this.$router.push({ name: "login" });
               } else {
                 console.log(response);
                 this.open2("회원가입에 실패하였습니다.");
