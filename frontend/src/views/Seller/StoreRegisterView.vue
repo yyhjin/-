@@ -59,17 +59,31 @@
         <el-form-item label="전화번호">
           <el-input v-model="form.storePhone" />
         </el-form-item>
-        <el-form-item label="시장">
-          <el-button @click="search()" color="#e07c49" round>
-            시장 검색
-          </el-button>
-          <el-input v-model="form.marketNo" />
-        </el-form-item>
-        <el-form-item label="상세위치">
-          <el-input v-model="form.storeAddr" />
-        </el-form-item>
 
-        <div style="text-align: center">
+        <el-form-item label="시장">
+          <div style="width: 100%">
+            <el-button
+              @click="search()"
+              color="#e07c49"
+              round
+              size="small"
+              style="float: right; color: white; margin-bottom: 10px"
+            >
+              시장 검색
+            </el-button>
+          </div>
+          <el-input v-model="form.marketName" disabled />
+          <el-input
+            v-model="form.storeAddr"
+            placeholder="상세 위치를 입력해주세요"
+            style="margin-top: 10px"
+          />
+        </el-form-item>
+        <!-- <el-form-item label="시장 상세 위치">
+          <el-input v-model="form.storeAddr" />
+        </el-form-item> -->
+
+        <div style="text-align: center; margin-top: 30px">
           <el-button @click="register()" color="#42413e" round>
             등록
           </el-button>
@@ -80,10 +94,8 @@
   </div>
 
   <el-dialog v-model="dialogVisible" title="시장 검색" width="90%">
-    <!-- <el-descriptions :column="1" border> -->
     <search-name></search-name>
-    <search-list></search-list>
-    <!-- </el-descriptions> -->
+    <list-in-modal @market_register="marketReceive"></list-in-modal>
   </el-dialog>
 </template>
 
@@ -91,11 +103,12 @@
 // import axios from "axios"
 import { storeRegister } from "@/api/store.js";
 import { ref } from "vue";
+
 import SearchName from "@/components/SearchMarket/SearchName.vue";
-import SearchList from "@/components/SearchMarket/SearchList.vue";
+import ListInModal from "@/components/SearchMarket/ListInModal.vue";
 
 export default {
-  components: { SearchName, SearchList },
+  components: { SearchName, ListInModal },
   data() {
     return {
       img: "",
@@ -105,6 +118,7 @@ export default {
 
       size: "default",
       form: {
+        marketName: "", //시장이름
         marketNo: "", //시장번호
         sellerNo: this.$store.state.userInfo.userNo,
         storeAddr: "", //상세위치
@@ -186,6 +200,11 @@ export default {
     },
     search() {
       this.dialogVisible = true;
+    },
+    marketReceive(market) {
+      this.form.marketName = market.name;
+      this.form.marketNo = market.no;
+      this.dialogVisible = false;
     },
   },
 };

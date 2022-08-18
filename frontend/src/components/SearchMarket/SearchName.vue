@@ -1,17 +1,25 @@
 <template>
-  <div class="Div1">
+  <div>
     <el-input
       placeholder="시장 이름 검색"
       v-model="market_name"
       class="input_name"
-      style="margin-top: 30px; width: 190px"
-    /><br />
+      style="margin: auto; width: 200px; display: block"
+    />
+  </div>
+
+  <div>
     <el-button
       color="#42413e"
       round
       class="btn_name"
       @click="cl_name"
-      style="margin-top: 30px; margin-bottom: 10px"
+      style="
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 10px;
+        display: block;
+      "
       >시장 검색</el-button
     >
   </div>

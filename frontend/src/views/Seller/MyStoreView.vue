@@ -7,7 +7,7 @@
     <el-card class="card-box">
       <template #header>
         <div class="card-header">
-          <h1>내 상점</h1>
+          <h2>내 상점</h2>
         </div>
       </template>
 
@@ -46,16 +46,18 @@
       <!---------------가게 미등록 -----------                            <el-button type="info" style="width: 200px; margin-left: 75px" @click="routerPush('store_profile', { storeNo: this.shopInfo.storeNo })">수정</el-button>
 --------->
       <div class="mystore_unregistered" v-else>
-        <h3 style="text-align: center">
-          지금 가게를 등록하세요!
-          <el-button size="small" plain @click="routerPush('store_register')"
-            >등록하러가기</el-button
-          >
-        </h3>
+        <h3 style="text-align: center">지금 가게를 등록하세요!</h3>
+        <el-button
+          round
+          color="#e07c49"
+          @click="routerPush('store_register')"
+          style="color: white"
+          >등록하기</el-button
+        >
       </div>
     </el-card>
     <div v-if="isRegistered">
-      <el-card class="div_card" @click="routerPush('openStore')">
+      <el-card class="div_card" @click="cl_open()">
         <h2>가게 오픈</h2>
       </el-card>
       <el-card
@@ -103,10 +105,23 @@ seller id(from vuex)
 import { getStoreBySellerNo, getIMG } from "@/api/store.js";
 import { menuList } from "@/api/item.js";
 import { sellerOrderList } from "@/api/order.js";
+import { computed } from "vue";
+import { useStore } from "vuex";
+
 // import MyStoreBtnComp from '@/components/Mystore/MyStoreBtnComp.vue'
 export default {
   mounted() {
     this.loadData(this.$store.state.userInfo.userNo);
+  },
+  setup() {
+    const store = useStore();
+    const storeNo = computed(() => store.state.orderStore.storeNo);
+
+    const setStoreNo = (no) => {
+      store.commit(`orderStore/SET_STORENO`, no);
+    };
+
+    return { storeNo, setStoreNo };
   },
 
   // components:{ MyStoreBtnComp },
@@ -120,8 +135,12 @@ export default {
       img: "",
     };
   },
-  created() {},
   methods: {
+    cl_open() {
+      this.setStoreNo(this.shopInfo.storeNo);
+      console.log(this.storeNo);
+      this.routerPush("openStore", { storeNo: this.shopInfo.storeNo });
+    },
     routerPush(to, params) {
       console.log(params);
       this.$router.push({
@@ -230,5 +249,12 @@ export default {
   width: 500px;
   margin: auto;
   margin-bottom: 20px;
+}
+
+@media all and (min-width: 768px) {
+  .box-card {
+    margin: auto;
+    width: 350px;
+  }
 }
 </style>
