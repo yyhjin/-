@@ -73,4 +73,5 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+        bootJar{mainClassName ='com.jangbo.BackendApplication'}
 
