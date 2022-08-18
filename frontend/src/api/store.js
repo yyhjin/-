@@ -48,4 +48,13 @@ async function updateImg(storeNo, formdata, success, fail) {
     await api_register.post(`/image?storeNo=${storeNo}`, formdata).then(success).catch(fail);
 }
 
-export { StoreInMarketList, StoreDetail, StoreRoomDetail, marketByName, storeRegister, getStoreBySellerNo, modifyStore, getIMG, searchName, updateImg };
+//store_idx 변경
+async function updateIdx(storeNo, success, fail) {
+    await api.post(`/room/${storeNo}`).then(success).catch(fail);
+}
+//방정보수정
+async function updateRoom(storeNo, params, success, fail) {
+    await api.patch(`/room/${storeNo}`, params).then(success).catch(fail);
+}
+
+export { StoreInMarketList, StoreDetail, StoreRoomDetail, marketByName, storeRegister, getStoreBySellerNo, modifyStore, getIMG, searchName, updateImg, updateIdx, updateRoom };
