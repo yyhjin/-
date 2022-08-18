@@ -45,8 +45,13 @@
         <el-card shadow="never" style="margin-top: 10px">
             <el-scrollbar>
                 <div class="scrollbar-flex-content">
-                    <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" @click="cl_item(menu)">
-                        <store-menu :menu="menu" />
+                    <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" >
+                            <div v-if="!menu.soldout" @click="cl_item(menu)">
+                                {{menu.itemName}}/{{menu.price}}원
+                            </div>
+                            <div v-else style="color:#b7b9bd">{{menu.itemName}}/품절
+                            </div>
+
                     </div>
                 </div>
             </el-scrollbar>
@@ -118,7 +123,7 @@
 <script>
 //storeNo와 storeName  router.params에 넣어서 가지고 들어옴
 
-import StoreMenu from "@/components/Room/StoreMenu.vue";
+// import StoreMenu from "@/components/Room/StoreMenu.vue";
 import UserVideo from "@/components/Openvidu/UserVideo";
 import RoomChat from "@/components/Openvidu/RoomChat.vue";
 import { Plus, Star, StarFilled } from "@element-plus/icons-vue";
@@ -153,7 +158,7 @@ export default {
         next();
     },
     components: {
-        StoreMenu,
+        // StoreMenu,
         UserVideo,
         RoomChat,
     },
@@ -245,14 +250,10 @@ export default {
         //찜 버튼용
         const jjim = ref(false);
         const menus = ref([
-            //TODO:dummy삭제
-            // { itemName: "고기", itemNo: "1", price: "1000", recent: "true" },
-            // { itemName: "사과", itemNo: "2", price: "3500", recent: "true" },
+
         ]);
         const orderItems = ref([
-            //TODO:dummy삭제
-            // { itemName: "꽁치", itemNo: "3", count: "1", price: "5000" },
-            // { itemName: "삼겹살", itemNo: "4", count: "1", price: "10000" },
+
         ]);
 
         const selected = ref({
@@ -272,7 +273,7 @@ export default {
         };
 
         const open = (message) => {
-            ElMessage.error(message);
+            ElMessage.success(message);
         };
 
         const centerDialogVisible = ref(false);
