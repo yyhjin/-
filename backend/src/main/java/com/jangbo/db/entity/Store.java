@@ -53,7 +53,7 @@ public class Store {
     private String storeIntro;
 
     @Column(nullable = false, columnDefinition = "TINYINT", length = 1)
-    private boolean storeIdx = true;
+    private boolean storeIdx = false;
 
     @Builder
     public Store(Integer storeNo, String storeName, String storeCategory, String storePhone, String storeAddr, String storeImg, Seller seller, Market market, String storeSubject, String storeIntro) {
