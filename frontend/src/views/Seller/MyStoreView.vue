@@ -55,7 +55,7 @@
       </div>
     </el-card>
     <div v-if="isRegistered">
-      <el-card class="div_card" @click="routerPush('openStore')">
+      <el-card class="div_card" @click="routerPush('openStore',{storeNo: this.shopInfo.storeNo})">
         <h2>가게 오픈</h2>
       </el-card>
       <el-card

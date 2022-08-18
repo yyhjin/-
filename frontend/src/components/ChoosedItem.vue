@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-table :data="SellList" height="280" style="width: 100%">
+        <el-table :data="sellList" height="280" style="width: 100%">
             <el-table-column type="index" />
             <el-table-column prop="name" label="품목" width="120" />
             <el-table-column prop="count" label="단위" width="120" />
@@ -18,6 +18,7 @@
 import { useStore } from "vuex";
 
 export default {
+    props:[`sellList`],
     name: "ChoosedItem",
     setup() {
         const store = useStore();

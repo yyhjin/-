@@ -11,11 +11,12 @@
                 <h1>가게오픈 {{ this.$route.params.seller_id }}</h1>
             </div>
             <div class="div_intro">
-                <h2>소개 문구 :</h2>
+                <h2>소개 문구</h2>
                 <el-input v-model="introduce" :rows="3" type="textarea" placeholder="소개를 적어주세요." class="input_intro" v-if="!isModalViewed" />
             </div>
             <div class="div_img" v-if="!isModalViewed">
-                <h2>소개 이미지 :</h2>
+                <h2 style="margin-bottom:5px ;margin-top:25px;">소개 이미지</h2>
+                <div style="font-size:12px; margin-bottom:5px;">오늘의 가게 모습을 보여주세요!</div>
                 <div>
                     <el-upload action="#" list-type="picture-card" :auto-upload="false" v-model:file-list="fileList">
                         <h3>추가</h3>
@@ -37,13 +38,14 @@
                     </el-upload>
                 </div>
             </div>
-            <div class="div_menu">
-                <div>
-                    <h2>판매 목록 :</h2>
+            <div class="div_menu" style="margin-top:10px;">
+                <div >
+                    <!--  -->
+                    <h2 style="margin-bottom:5px;"> 판매 목록 :</h2>
                     <el-button color="#FF6F61" round class="btn_menu" @click="isModalViewed = true">메뉴 추가</el-button>
                 </div>
                 <div style="display: inline-block">
-                    <choosed-item v-if="!isModalViewed"></choosed-item>
+                    <choosed-item :sellList="dbMenu" v-if="!isModalViewed"></choosed-item>
                 </div>
             </div>
 
@@ -60,8 +62,9 @@ import { ref } from "vue";
 import Content from "@/components/Content.vue";
 import ModalView from "@/components/ModalView.vue";
 import ChoosedItem from "@/components/ChoosedItem.vue";
-
+import {menuList} from "@/api/item.js"
 export default {
+    
     name: "StoreOpenView",
     components: {
         Content,
@@ -70,30 +73,48 @@ export default {
     },
     setup() {
         const store = useStore();
-        const SellList = store.getters["root/getSellList"];
-
         const disabled = ref(false);
 
-        return { SellList, disabled };
+        return { disabled, store};
     },
     data() {
         return {
             introduce: "",
             isModalViewed: false,
             fileList: [],
+            instoreMenu:[],
+            dbMenu:[],
+            storeNo:this.$route.params.storeNo
         };
     },
 
-    mounted() {},
+    mounted() {
+        this.loadMenuList();
+    },
 
     methods: {
+        loadMenuList(){
+            menuList(this.storeNo, //
+            (res)=>{
+                this.dbMenu=res.data
+                for(var menu of this.dbMenu){
+                    if(menu.recent){
+                        this.instoreMenu.push(menu) //recent만 넣기.
+                    }
+                }
+            })
+        },
         cl_ok() {
-            console.log(this.fileList);
-
             // 오픈버튼 임시로 만들어 둿어요.
             this.$router.push({
                 name: "seller_room",
-                params: { storeNo: 29 },
+                params: { storeNo: this.storeNo ,
+                            userNo:this.$store.state.userInfo.userNo,
+                            userName:this.$store.state.userInfo.userId,
+                            isSeller:1,//0,1
+                            // storeName:"",
+                            //webrtc 갖고 들어갈 메뉴.
+                            instoreMenu: this.instoreMenu.map((obj)=>({...obj,soldout:false}))},//
             });
         },
         cl_add() {

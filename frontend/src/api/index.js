@@ -34,6 +34,7 @@ function MarketInstance() {
         headers: {
             "Content-type": "application/json",
         },
+        withCredentials: true
     });
     return instance;
 }
@@ -45,6 +46,7 @@ function StoreInstance() {
         headers: {
             "Content-type": "application/json",
         },
+        withCredentials: true
     });
     return instance;
 }
@@ -55,6 +57,7 @@ function StoreRegisterInstance() {
         headers: {
             "Content-type": "multipart/form-data",
         },
+        withCredentials: true
     });
     return instance;
 }
@@ -65,6 +68,7 @@ function ItemInstance() {
         headers: {
             "Content-type": "application/json",
         },
+        withCredentials: true
     });
     return instance;
 }
@@ -75,6 +79,7 @@ function OrderInstance() {
         headers: {
             "Content-type": "application/json",
         },
+        withCredentials: true
     });
     return instance;
 }
@@ -86,6 +91,7 @@ function CallInstance() {
         headers: {
             "content-type": "application/json",
         },
+        withCredentials: true
     });
     return instance;
 }
