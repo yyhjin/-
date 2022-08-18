@@ -3,6 +3,7 @@
     <el-input
       placeholder="시장 이름 검색"
       v-model="market_name"
+      @keyup.enter="cl_name"
       class="input_name"
       style="margin: auto; width: 200px; display: block"
     />
