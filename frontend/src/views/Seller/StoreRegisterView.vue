@@ -159,7 +159,7 @@ export default {
 
         register() {
             //form데이터의 각 아이템마다 type설정과 append 함. 전체 formdata의 content-type은 multipart/form-data
-            console.log(JSON.stringify(this.form));
+            //console.log(JSON.stringify(this.form));
             let formdata = new FormData();
             formdata.append("storeRegisterPostReq", new Blob([JSON.stringify(this.form)], { type: "application/json" }));
             formdata.append("file", this.img);
@@ -169,8 +169,8 @@ export default {
                 (response) => {
                     response;
                     //TODO:redirect
-                    console.log("등록성공");
-                    console.log(formdata.entries());
+                    //console.log("등록성공");
+                    //console.log(formdata.entries());
                     this.open();
                     this.$router.push(
                         {

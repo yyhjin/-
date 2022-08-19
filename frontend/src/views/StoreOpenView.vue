@@ -117,9 +117,6 @@ export default {
             this.Item.recent = item.recent;
         },
         cl_ok() {
-            console.log(this.intro);
-            console.log(this.subject);
-
             updateIdx(
                 this.storeNo,
                 (res) => {
@@ -130,26 +127,24 @@ export default {
                         storeNo: this.storeNo,
                         storeSubject: this.subject,
                     };
-                    console.log(params);
-
                     updateRoom(
                         this.storeNo,
                         params,
                         (res) => {
-                            console.log(res);
+                            res;
                             // 오픈버튼 임시로 만들어 둿어요.
                             this.$router.push({
                                 name: "seller_room",
                                 params: {
-                                    userNo:this.$store.state.userInfo.userNo,
+                                    userNo: this.$store.state.userInfo.userNo,
                                     userName: this.$store.state.userInfo.userId,
-                                    storeNo: this.storeNo ,
-                                    storeName:"",
+                                    storeNo: this.storeNo,
+                                    storeName: "",
                                     storeIntro: this.intro,
-                                    storeSubject:this.subject,
-                                    instoreMenu:JSON.stringify(this.openList),
-                                    isSeller:0,
-                                    },
+                                    storeSubject: this.subject,
+                                    instoreMenu: JSON.stringify(this.openList),
+                                    isSeller: 0,
+                                },
                             });
                         },
                         (err) => {

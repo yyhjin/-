@@ -1,5 +1,5 @@
-import { getOrderList } from "@/api/customer";
 import { getItemList } from "@/api/item";
+import { customerOrderList } from "@/api/order";
 
 const orderStore = {
     namespaced: true,
@@ -126,7 +126,7 @@ const orderStore = {
         getOrder: ({ commit }, no) => {
             //commit("CLEAR_ORDERLIST");
             console.log(no);
-            getOrderList(
+            customerOrderList(
                 no,
                 (response) => {
                     console.log(response);

@@ -1,59 +1,48 @@
 <template>
     <div class="root_div">
         <div class="header">
-            <nav
-    class="nav_room"
-    v-if="$route.path.substring(0, 5) == '/room'"
-    style="display: flex; justify-content: space-between"
-  >
-    <h2 style="margin-top:0;">{{storeIntro}}</h2>
-    <span>
-    <!-- TODO:문 닫을때 close 처리 해줘야해요. -->
-      <el-button
-        type="danger"
-        size="large"
-        @click="
-        $router.push({
-            name: 'mystore',
-            params: { id: $store.getters['userInfo/isAuthenticated'] },
-        })
-        "
-        >닫기</el-button
-        >
-    </span>
-  </nav>
-  <div v-if="callQueue.length!=0"><el-alert title="손님이 호출을 기다리고 있어요!" type="error" effect="dark" :closable="false"/></div>
+            <nav class="nav_room" v-if="$route.path.substring(0, 5) == '/room'" style="display: flex; justify-content: space-between">
+                <h2 style="margin-top: 0">{{ storeIntro }}</h2>
+                <span>
+                    <!-- TODO:문 닫을때 close 처리 해줘야해요. -->
+                    <el-button
+                        type="danger"
+                        size="large"
+                        @click="
+                            $router.push({
+                                name: 'mystore',
+                                params: { id: $store.getters['userInfo/isAuthenticated'] },
+                            })
+                        "
+                        >닫기</el-button
+                    >
+                </span>
+            </nav>
+            <div v-if="callQueue.length != 0"><el-alert title="손님이 호출을 기다리고 있어요!" type="error" effect="dark" :closable="false" /></div>
         </div>
-        <div class="main" style="display:flex; margin-bottom:10px;">
+        <div class="main" style="display: flex; margin-bottom: 10px">
             <!--  판매자 화면 송출 페이지. -->
-            <div style="display:flex ;flex-direction:column;height:400px;" >
+            <div style="display: flex; flex-direction: column; height: 400px">
                 <el-card>
                     <div class="sellervideo">
-                    <user-video :stream-manager="mainStreamManager" />
+                        <user-video :stream-manager="mainStreamManager" />
                     </div>
                     <!-- 채팅 컴포넌트 -->
                     <div class="information panel"></div>
                 </el-card>
-                
-                
             </div>
-                 <RoomChatSeller ref="chat" @message="sendMessage" :subscribers="subscribers"></RoomChatSeller>
-            </div>
-            
-           
-        
+            <RoomChatSeller ref="chat" @message="sendMessage" :subscribers="subscribers"></RoomChatSeller>
+        </div>
+
         <!-- 입장한 고객들 CONTROL -->
-         <el-scrollbar height="160px">
-                        <el-card>
-                            <h3 v-if="subscribers.length==0">아직 손님이 없네요..</h3>
-                 <div id="customers" style="width:100%; height:120px;  margin-bottom:10px">
-                <CustomerComp v-for="(sub, idx) in subscribers" :key="idx" :stream-manager="sub" :customerData="customers[idx]" @click="connectCustomer(customers[idx])" />
-             </div>
+        <el-scrollbar height="160px">
+            <el-card>
+                <h3 v-if="subscribers.length == 0">아직 손님이 없네요..</h3>
+                <div id="customers" style="width: 100%; height: 120px; margin-bottom: 10px">
+                    <CustomerComp v-for="(sub, idx) in subscribers" :key="idx" :stream-manager="sub" :customerData="customers[idx]" @click="connectCustomer(customers[idx])" />
+                </div>
             </el-card>
         </el-scrollbar>
-
-
-       
 
         <!-- <div class="customers">
             <el-card :class="'user '+user.status" v-for="(user,idx) in users" :key="idx" @click="connectUser(idx)">
@@ -63,9 +52,9 @@
         </div> -->
 
         <!-- 상점 버튼 -->
-        <div class="btns" style="margin-top:10px; display:flex; justify-content:space-between" >
-             <div>
-                 <el-badge :value="newbillcount">
+        <div class="btns" style="margin-top: 10px; display: flex; justify-content: space-between">
+            <div>
+                <el-badge :value="newbillcount">
                     <el-button type="primary" size="large" style="margin-left: 16px" @click="clickBills()"> 주문서 </el-button>
                 </el-badge>
                 <el-button type="primary" size="large" style="margin-left: 16px" @click="clickMenues()"> 메뉴관리 </el-button>
@@ -73,7 +62,6 @@
                 <el-button type="danger" size="large" style="margin-left: 16px" @click="nextCall()"> 호출고객연결 </el-button>
             </div>
             <h4>구경중인 손님 : {{ customers.length }}명 | 호출 대기중 손님: {{ callQueue.length }}명</h4>
-           
         </div>
 
         <!-- 메뉴수정 drawer -->
@@ -86,7 +74,7 @@
         <!-- 주문서 drawer -->
         <el-drawer v-model="drawer_bills" title="주문서" size="50%">
             <div>
-                <h3 v-if="bills.length==0">아직 주문이 없네요</h3>
+                <h3 v-if="bills.length == 0">아직 주문이 없네요</h3>
                 <BillComp @emitDum="showDum(bill.orderNo)" v-for="bill in bills" :bill="bill" :key="bill.orderNo" />
 
                 <!-- <div v-for="bill in bills" :key="bill">s 
@@ -96,9 +84,12 @@
                 <!-- 덤 추가 INNER DRAWER -->
                 <el-drawer v-model="innerDrawer" title="덤 추가하기" :append-to-body="true">
                     <el-card v-for="item in instoreMenu" :key="item" @click="onboardDum(item.itemName)">
-                        <div style="display:flex ;justify-content:space-between"><h2> {{ item.itemName }}</h2> <h2>{{dumArr.filter(element=>item.itemName===element).length}}</h2></div>
+                        <div style="display: flex; justify-content: space-between">
+                            <h2>{{ item.itemName }}</h2>
+                            <h2>{{ dumArr.filter((element) => item.itemName === element).length }}</h2>
+                        </div>
                     </el-card>
-                    <el-button @click="addDum(this.dumOrderNo,this.dumArr)" >덤 확정!</el-button>
+                    <el-button @click="addDum(this.dumOrderNo, this.dumArr)">덤 확정!</el-button>
                     <el-button @click="clearDum">덤 목록 비우기!</el-button>
                 </el-drawer>
             </div>
@@ -108,12 +99,13 @@
 <script>
 /* eslint-disable */
 
-import { ref,computed } from "vue";
+import { ref, computed } from "vue";
 import axios from "axios";
 import { useRoute } from "vue-router";
+import { updateIdx } from "@/api/store";
 import { useStore } from "vuex";
 import { OpenVidu } from "openvidu-browser";
-import { ElMessage,ElNotification } from "element-plus";
+import { ElMessage, ElNotification } from "element-plus";
 import PhoneRinging from "@/assets/PhoneRinging.mp3";
 import servicebell from "@/assets/servicebell.mp3";
 
@@ -124,13 +116,12 @@ import RoomChatSeller from "@/components/Openvidu/RoomChatSeller.vue";
 import InstoreMenuComp from "@/components/Room/InstoreMenuComp.vue";
 import BillComp from "@/components/Mystore/BillComp.vue";
 //APIs
-import { sellerOrderList,pushDum } from "@/api/order.js";
+import { sellerOrderList, pushDum } from "@/api/order.js";
 import { menuList } from "@/api/item.js";
 
 axios.defaults.headers.post["Content-Type"] = "application/json";
 const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":4443";
 const OPENVIDU_SERVER_SECRET = "jangbo602";
-
 
 export default {
     //메뉴변경시 소비자들에게 push.
@@ -168,7 +159,7 @@ export default {
         const mainStreamManager = ref(undefined);
         const publisher = ref(undefined);
         const subscribers = ref([]);
-        
+
         //내(판매자) 정보
         const storeNo = route.params.storeNo;
         const userId = computed(() => store.state.userInfo.userId);
@@ -207,8 +198,8 @@ export default {
 
                 //입장손님 정보 push
                 const tmp = JSON.parse(subscriber.stream.connection.data).clientData;
-                console.log("################################################customers 체크");
-                console.log(subscriber.stream.connection.connectionId);
+                //console.log("################################################customers 체크");
+                //console.log(subscriber.stream.connection.connectionId);
                 const customer = {
                     customerNo: tmp.userNo,
                     customerName: tmp.userName,
@@ -219,7 +210,7 @@ export default {
                     isCalling: false,
                 };
                 this.customers.push(customer);
-                console.log(customer);
+                //console.log(customer);
 
                 console.log("고객입장~");
                 this.visitNotification(); //입장사운드 재생.
@@ -254,11 +245,11 @@ export default {
             this.session.on("signal:makeOrder", (event) => {
                 console.log(JSON.parse(event.data) + "님에게서 주문 도착"); //모달 alert 사용하기.
                 ElNotification({
-                    title: '주문 도착',
+                    title: "주문 도착",
                     message: JSON.parse(event.data) + "님에게서 주문 도착",
-                    type: 'success',
-                    })
-                console.log(this.newbillcount)
+                    type: "success",
+                });
+                console.log(this.newbillcount);
                 this.newbillcount++;
             });
 
@@ -284,18 +275,20 @@ export default {
             this.session.on("signal:delete-call", (event) => {
                 const param = event.data;
                 this.callNotificationStop();
-                console.log(param + "님이 호출을 취소했습니다.");{ //모달 alert 사용하기.
-                ElMessage({
-                    message: `고객이 호출을 취소했습니다.`,
-                });
-                for (var i = 0; i < this.callQueue.length; i++) 
-                    if (this.callQueue[i].connectionId == param) {
-                        //i번째를 큐에서 제거.
-                        this.callQueue.splice(i, 1);
-                        console.log(`${this.customers[i].connectionId} 호출 큐에서 삭제되었습니다..`);
-                        this.broadcastCallCount();
-                        break;
-                    }
+                console.log(param + "님이 호출을 취소했습니다.");
+                {
+                    //모달 alert 사용하기.
+                    ElMessage({
+                        message: `고객이 호출을 취소했습니다.`,
+                    });
+                    for (var i = 0; i < this.callQueue.length; i++)
+                        if (this.callQueue[i].connectionId == param) {
+                            //i번째를 큐에서 제거.
+                            this.callQueue.splice(i, 1);
+                            console.log(`${this.customers[i].connectionId} 호출 큐에서 삭제되었습니다..`);
+                            this.broadcastCallCount();
+                            break;
+                        }
                 }
                 //해당 손님의 iscalling:false
                 for (var i = 0; i < this.customers.length; i++) {
@@ -305,7 +298,7 @@ export default {
                 }
             });
             this.session.on("signal:public-chat", (event) => {
-                console.log(JSON.parse(event.data).sender);
+                //console.log(JSON.parse(event.data).sender);
                 this.$refs.chat.addMessage(event.data, JSON.parse(event.data).sender === this.userId, false);
             });
 
@@ -352,6 +345,20 @@ export default {
             window.addEventListener("beforeunload", this.leaveSession);
         };
 
+        function changeIDX() {
+            console.log(storeNo);
+            updateIdx(
+                storeNo,
+                (res) => {
+                    res;
+                    console.log(res);
+                },
+                (err) => {
+                    console.log(err);
+                }
+            );
+        }
+
         function leaveSession() {
             // --- Leave the session by calling 'disconnect' method over the Session object ---
             if (this.session) this.session.disconnect();
@@ -361,6 +368,7 @@ export default {
             this.publisher = undefined;
             this.subscribers = [];
             this.OV = undefined;
+            this.updateIdx();
 
             window.removeEventListener("beforeunload", this.leaveSession);
         }
@@ -444,7 +452,7 @@ export default {
         //호출 연결.
         function connectCustomer(customer) {
             console.log(customer.connectionId);
-            this.callNotificationStop();//연결시 호출소리 해제.
+            this.callNotificationStop(); //연결시 호출소리 해제.
             this.session
                 .signal({
                     type: "linkCall",
@@ -629,56 +637,58 @@ export default {
         };
 
         /* 덤 */
-        const dumOrderNo =ref()
+        const dumOrderNo = ref();
         const innerDrawer = ref(false);
         const dbMenues = ref([]); //이건 메뉴추가시 사용할 아이템들.
         const dumBoard = ref([]);
-        const dumArr = ref([])
+        const dumArr = ref([]);
         function onboardDum(item) {
-            this.dumArr.push(item)
+            this.dumArr.push(item);
             //덤메뉴 클릭시 onboard
         }
         function clearDum() {
-            while(dumArr.value.length>0){
-                dumArr.value.pop()
+            while (dumArr.value.length > 0) {
+                dumArr.value.pop();
             }
-            
+
             //onboard 덤메뉴 clear
         }
-        function addDum(orderNo,dumArr) {
-            let body = []
-            let tmp =  {}
+        function addDum(orderNo, dumArr) {
+            let body = [];
+            let tmp = {};
             const countByArray = (arr) => {
-            return arr.reduce((prev, curr) => {
-                prev[curr] = ++prev[curr] || 1;
-                return prev;
-            }, {});
+                return arr.reduce((prev, curr) => {
+                    prev[curr] = ++prev[curr] || 1;
+                    return prev;
+                }, {});
             };
-            tmp = countByArray(dumArr)
-            var keys=Object.keys(tmp)
-            for(var key of keys){
-                body.push({itemName:key,count:tmp[key]})
+            tmp = countByArray(dumArr);
+            var keys = Object.keys(tmp);
+            for (var key of keys) {
+                body.push({ itemName: key, count: tmp[key] });
             }
-            for(var dum of body)           
-            pushDum(orderNo,dum,
-            (res)=>{
-                console.log(res)
-            },
-            ()=>{})
+            for (var dum of body)
+                pushDum(
+                    orderNo,
+                    dum,
+                    (res) => {
+                        console.log(res);
+                    },
+                    () => {}
+                );
             ElNotification({
-                    title: '덤 추가 완료!',
-                    message: `${dumArr[0]} 외 ${body.length-1} 개의 덤 증정! `,
-                    type: 'success',
-                    })
-            clearDum()
+                title: "덤 추가 완료!",
+                message: `${dumArr[0]} 외 ${body.length - 1} 개의 덤 증정! `,
+                type: "success",
+            });
+            clearDum();
 
-            
             //onboard 덤메뉴 add
         }
         function showDum(data) {
             innerDrawer.value = true;
-            this.dumOrderNo=data;
-            console.log(this.dumOrderNo)
+            this.dumOrderNo = data;
+            console.log(this.dumOrderNo);
         }
 
         /* 호출스택관리. */
@@ -696,14 +706,14 @@ export default {
         }
         //다음손님받기
         function nextCall() {
-            if(this.callQueue.length==0){ //호출고객없을땐 x
+            if (this.callQueue.length == 0) {
+                //호출고객없을땐 x
                 ElMessage({
-                message: `호출중인 손님이 없습니다`,
-                type: "message",
-            });
+                    message: `호출중인 손님이 없습니다`,
+                    type: "message",
+                });
             }
             this.connectCustomer(this.callQueue.shift());
-            
         }
         //연결시.
 
@@ -720,7 +730,7 @@ export default {
 
         //호출알림 start
         function callNotificationPlay() {
-           this.callsound.loop=true;
+            this.callsound.loop = true;
             this.callsound.play();
         }
 

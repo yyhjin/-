@@ -26,10 +26,6 @@ async function updateCustomer(no, params, success, fail) {
 async function getCustomer(no, success, fail) {
     await api.get(`/${no}`).then(success).catch(fail);
 }
-
-async function getOrderList(no, success, fail) {
-    await api.get(`/${no}/ordrs`).then(success).catch(fail);
-}
 //찜등록
 async function setJJim(no, params, success, fail) {
     await api.post(`/${no}/interstore`, params).then(success).catch(fail);
@@ -45,4 +41,4 @@ async function setPass(no, params, success, fail) {
     await api.put(`/change_pwd/${no}`, params).then(success).catch(fail);
 }
 
-export { getId, joinCustomer, loginCustomer, updateCustomer, getCustomer, getOrderList, setJJim, getJJim, setPass };
+export { getId, joinCustomer, loginCustomer, updateCustomer, getCustomer, setJJim, getJJim, setPass };

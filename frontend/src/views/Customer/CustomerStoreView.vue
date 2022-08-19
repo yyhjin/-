@@ -45,13 +45,9 @@
         <el-card shadow="never" style="margin-top: 10px">
             <el-scrollbar>
                 <div class="scrollbar-flex-content">
-                    <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item" >
-                            <div v-if="!menu.soldout" @click="cl_item(menu)">
-                                {{menu.itemName}}/{{menu.price}}원
-                            </div>
-                            <div v-else style="color:#b7b9bd">{{menu.itemName}}/품절
-                            </div>
-
+                    <div v-for="(menu, idx) in menus" :key="idx" class="scrollbar-demo-item">
+                        <div v-if="!menu.soldout" @click="cl_item(menu)">{{ menu.itemName }}/{{ menu.price }}원</div>
+                        <div v-else style="color: #b7b9bd">{{ menu.itemName }}/품절</div>
                     </div>
                 </div>
             </el-scrollbar>
@@ -143,7 +139,6 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 const OPENVIDU_SERVER_URL = "https://" + "i7a602.p.ssafy.io" + ":4443";
 const OPENVIDU_SERVER_SECRET = "jangbo602";
 
-
 window.onbeforeunload = () => {
     // Gracefully leave session
     if (this.session) {
@@ -174,7 +169,7 @@ export default {
         this.storeName = this.$route.params.storeName;
         //this.sellerNo = this.$route.path.no (판매자 번호 받기)
         //this.storeName = this.$route.params.storeName (가게 이름 받ㄱ기)
-        console.log(this.userId);
+        //console.log(this.userId);
 
         getJJim(
             this.myUserNo,
@@ -249,12 +244,8 @@ export default {
         const number = ref("");
         //찜 버튼용
         const jjim = ref(false);
-        const menus = ref([
-
-        ]);
-        const orderItems = ref([
-
-        ]);
+        const menus = ref([]);
+        const orderItems = ref([]);
 
         const selected = ref({
             itemName: "",
@@ -273,7 +264,14 @@ export default {
         };
 
         const open = (message) => {
-            ElMessage.success(message);
+            ElMessage.error(message);
+        };
+
+        const open2 = (message) => {
+            ElMessage({
+                message: message,
+                type: "success",
+            });
         };
 
         const centerDialogVisible = ref(false);
@@ -300,6 +298,7 @@ export default {
             content,
             deleteRow,
             open,
+            open2,
             sellerConnectionId,
             sellerSubs,
             sellerConnection,
@@ -331,7 +330,7 @@ export default {
             this.session.on("streamCreated", ({ stream }) => {
                 this.count++;
                 const subscriber = this.session.subscribe(stream);
-                console.log(JSON.parse(stream.connection.data));
+                //console.log(JSON.parse(stream.connection.data));
 
                 //판매자만 subscribers에 넣기,판매자 정보 저장.
                 if (JSON.parse(stream.connection.data).clientData.type == 0) {
@@ -383,7 +382,7 @@ export default {
             this.session.on("signal:linkCall", (event) => {
                 console.log("호출변경");
                 console.log(event.data);
-                console.log(this.isConnected);
+                //console.log(this.isConnected);
                 this.isConnected = !this.isConnected;
                 this.publisher.publishAudio(this.isConnected); //false
                 this.publisher.publishVideo(this.isConnected); //false
@@ -396,12 +395,12 @@ export default {
             });
             this.session.on("signal:loadMenu", (event) => {
                 console.log("메뉴변경감지!");
-                console.log(JSON.parse(event.data));
+                //console.log(JSON.parse(event.data));
                 this.menus = JSON.parse(event.data);
             });
             this.session.on("signal:callCount", (event) => {
                 console.log("호출카운트최신화.!");
-                console.log(JSON.parse(event.data));
+                //console.log(JSON.parse(event.data));
                 this.number = event.data;
             });
 
@@ -460,7 +459,8 @@ export default {
         btn_out() {
             //this.cl_cancleho();
             this.leaveSession();
-            this.$router.push({ name: "home" });
+            this.$router.go(-1);
+            //this.$router.push({ name: "home" });
         },
         btn_preorder() {
             this.centerDialogVisible = true;
@@ -489,8 +489,9 @@ export default {
                 this.mySessionId,
                 this.params,
                 (response) => {
-                    console.log(response);
-                    this.open("주문이 완료되었습니다");
+                    response;
+                    this.open2("주문이 완료되었습니다");
+                    this.centerDialogVisible = false;
                 },
                 (error) => {
                     console.log(error);
@@ -508,11 +509,11 @@ export default {
             getCall(
                 this.mySessionId,
                 (response) => {
-                    console.log(response.data);
+                    //console.log(response.data);
                     for (var i = 0; i < response.data.length; i++) {
                         if (response.data[i].customerId == this.userId) {
                             this.number = response.data[i].orderNo;
-                            console.log(this.number);
+                            //console.log(this.number);
                         }
                     }
                 },
@@ -524,12 +525,12 @@ export default {
         //호출하기
         cl_hochul() {
             console.log("호출");
-            console.log(this.userId + " " + this.mySessionId);
+            //console.log(this.userId + " " + this.mySessionId);
             makeCall(
                 this.userId,
                 this.mySessionId,
                 (response) => {
-                    console.log(response);
+                    response;
                     this.number = response.data;
                     this.hochul = true;
                 },
@@ -541,12 +542,12 @@ export default {
         //호출 취소
         cl_cancleho() {
             console.log("호출취소");
-            console.log(this.userId + " " + this.mySessionId);
+            //console.log(this.userId + " " + this.mySessionId);
             deleteCall(
                 this.userId,
                 this.mySessionId,
                 (response) => {
-                    console.log(response);
+                    response;
                     this.hochul = false;
                 },
                 (error) => {
@@ -557,12 +558,12 @@ export default {
         // 장바구니보기
         btn_jang() {
             this.content = true;
-            console.log("jang");
+            //console.log("jang");
         },
         //채팅보기
         btn_chat() {
             this.content = false;
-            console.log("chat");
+            //console.log("chat");
         },
         //장바구니에 추가하기
         btn_add() {

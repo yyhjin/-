@@ -111,7 +111,7 @@ export default {
                     this.id,
                     (response) => {
                         if (response.data.check) {
-                            console.log(response);
+                            //console.log(response);
                             this.open("사용 가능합니다.");
                         } else if (!response.data.check) {
                             this.open2("중복된 아이디입니다.");

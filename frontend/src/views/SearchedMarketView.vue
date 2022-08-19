@@ -64,12 +64,10 @@ export default {
             this.$router.push({ name: "search" });
         },
         enterKey() {
-            console.log(this.storeName);
             searchName(
                 this.marketno,
                 this.storeName,
                 (success) => {
-                    console.log(success.data);
                     this.clearlist();
                     this.name_stores(success.data);
                 },

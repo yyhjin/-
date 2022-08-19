@@ -68,7 +68,7 @@ export default {
             return passwordRules.test(this.news);
         },
         cl_mo() {
-            console.log(this.userNo);
+            //console.log(this.userNo);
             setPass(
                 this.userNo,
                 { password: this.olds, passwordUpdate: this.news },

@@ -8,13 +8,13 @@
                 <el-row :gutter="10">
                     <el-col :span="12"> <el-input v-model="input.itemName" placeholder="품목 이름 ex)사과 1상자" /></el-col>
                     <el-col :span="7">
-                        <el-input v-model="input.price" placeholder="가격 ex)1000"  @keyup.enter="addItem(this.$route.params.storeNo, input)" />
+                        <el-input v-model="input.price" placeholder="가격 ex)1000" @keyup.enter="addItem(this.$route.params.storeNo, input)" />
                     </el-col>
                     <el-col :span="2">
                         <el-button link style="font-size: 33px; margin-left: 10px; margin-top: -4px" :icon="CirclePlus" @click="addItem(this.$route.params.storeNo, input)"></el-button>
                     </el-col>
                 </el-row>
-            </div>  
+            </div>
         </el-card>
 
         <!-- <div class="input_item">
@@ -91,7 +91,7 @@ export default {
                 storeNo,
                 input,
                 () => {
-                    console.log("등록");
+                    //console.log("등록");
                     this.loadItems(storeNo);
                 },
                 (err) => {
@@ -118,7 +118,7 @@ export default {
                     //dummy
                     // res.data=[{item_name:"사과",price:3000,recent:0 },{item_name:"배",price:2000,recent:0 },{item_name:"수박",price:10000,recent:0}]
                     this.itemList = res.data;
-                    console.log(JSON.stringify(this.itemList));
+                    // console.log(JSON.stringify(this.itemList));
                 },
                 (err) => {
                     console.log(err);

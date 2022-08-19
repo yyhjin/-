@@ -82,7 +82,7 @@ export default {
                 marketByNo(
                     this.form.marketNo,
                     (res) => {
-                        console.log(res);
+                        res;
                         this.form.marketName = res.data.marketName;
                     },
                     (err) => {
@@ -171,8 +171,7 @@ export default {
                 storeNo,
                 form,
                 (response) => {
-                    console.log(response);
-
+                    response;
                     if (this.img_change == true) {
                         let formdata = new FormData();
                         formdata.append("file", this.img);
