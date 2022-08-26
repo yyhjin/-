@@ -45,9 +45,14 @@ const beforeAuth = (isAuth) => (from, to, next) => {
 
 const routes = [
     {
+        path: "/test",
+        name: "test",
+        component: TestTwo,
+    },
+    {
         path: "/",
         name: "home",
-        component: TestTwo,
+        component: SelectState,
     },
     {
         path: "/selectjoin",

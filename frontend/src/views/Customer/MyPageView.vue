@@ -141,11 +141,12 @@ export default {
         };
     },
     created() {
+        getOrder(this.userNo),
         getCustomer(
             this.userNo,
             (response) => {
-                //console.log(response);
-                //console.log(this.userNo);
+                console.log(response);
+                console.log(this.userNo);
                 this.userinfo.id = response.data.customerId;
                 this.userinfo.name = response.data.customerName;
             },
@@ -156,7 +157,7 @@ export default {
             getJJim(
                 this.userNo,
                 (response) => {
-                    //console.log(response.data);
+                    console.log(response.data);
                     response.data.forEach((store) => {
                         this.zzimlist.push({
                             storeNo: store.storeNo,
@@ -169,7 +170,7 @@ export default {
                     console.log(error);
                 }
             );
-        this.getOrder(this.userNo);
+        //this.getOrder(1);
     },
     methods: {
         confirm() {

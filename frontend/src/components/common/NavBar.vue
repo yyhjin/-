@@ -126,8 +126,14 @@ export default {
       this.out();
       this.$router.push({ name: "login" });
     },
+    //비로그인=>로그인 구매자=>마이페이지 판매자=> 내가게
     cl_img() {
+      if(this.userType=="")
       return this.$router.push("/");
+      if (this.userType=="구매자")
+      return this.$router.push("/mypage");
+      else
+      return this.$router.push("/mystore");
     },
   },
 };
