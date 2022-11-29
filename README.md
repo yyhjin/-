@@ -3,6 +3,7 @@
 <div align="center">
 <img align="center" src="https://user-images.githubusercontent.com/26956570/194744631-f38e6131-0969-48db-b447-b5bc7381fd4b.png" width="400" />  
 </div>
+<br />
 <div align="left">
     <h1 align="left">
       <font align="left" size="6" color="#ffffff"> 👛장보장</font>
@@ -12,15 +13,18 @@
 ### 목차
 
 1. [**웹 서비스 소개**](#1)    
-2 [**기술 스택**](#2)     
-3 [**주요 기능**](#3)      
-4 [**프로젝트 구성도**](#4)     
-5 [**데모 영상**](#5)     
-6 [**개발 팀 소개**](#6)       
-1. [**개발 기간 및 일정**](#8)
-1. [**실행 방법**](#9)
+2. [**기술 스택**](#2)     
+3. [**주요 기능**](#3)      
+4. [**프로젝트 구성도**](#4)     
+5. [**데모 영상**](#5)     
+6. [**개발 팀 소개**](#6)       
+7. [**개발 기간 및 일정**](#7)
+8. [**Git convention**](#8)
+9. [**실행 방법**](#9)
 <hr />
 
+
+<br />
 <div id="1"></div>
 
 ## 👛 웹 서비스 소개
@@ -34,6 +38,7 @@
 <div id="2"></div>
 
 ## 🛠 기술 스택
+
 
 <table align="center">
   <tr>
@@ -77,11 +82,13 @@
       </a>
     </td>
   </tr>
-<table>
-  <br />
+</table>
+
+<br />
   
 <div id="3"></div>
-<strong>💡 주요 기능</strong>
+
+## 💡 주요 기능
 
 <table align="center">
 <thead>
@@ -155,17 +162,18 @@
       </td>
     </tr>
   </tbody>
-<table>
+</table>
 
 <br />
 <div id="4"></div>
-<strong>📂 프로젝트 구성도</strong>
+    
+## 📂 프로젝트 구성도
 
 |                                               <div align="center">아키텍쳐(Archtecture)</div>                                                |
 | :------------------------------------------------------------------------------------------------------------------------------------------: |
-|        <img src="" width="700"/>        |
+|        <img src="https://user-images.githubusercontent.com/99111030/204457563-cbff0786-43ed-4b59-b84e-184e7a26f523.jpg" width="700"/>        |
 |                                                           **개체-관계 모델 (ERD)**                                                           |
-| <img src="https://user-images.githubusercontent.com/26956570/203716058-c080d692-1141-499e-8955-03a4826a5fe0.png" width="600" height="500" /> |
+| <img src="https://user-images.githubusercontent.com/26956570/203716058-c080d692-1141-499e-8955-03a4826a5fe0.png" height="500" /> |
 
 
 <br />
@@ -174,9 +182,10 @@
 
 <br />
 <div id="6"></div>
-<strong>👨‍👩‍👧‍👦 개발 팀 소개</strong>
 
-<table>
+## 👨‍👩‍👧‍👦 개발 팀 소개
+
+<table align="center">
   <tr>
     <td align="center" width="150px">
       <a href="https://github.com/PJSliable" target="_blank">
@@ -211,7 +220,7 @@
       </a>
     </td>
         <td align="center">
-      <a href="https://github.com/yyhjin" target="_blank">
+      <a href="https://github.com/yyhjin">
         윤혜진<br />(Back-end)
       </a>
     </td>
@@ -237,28 +246,108 @@
 </table>
 
 <br />
-<div id="7"></div>
+    
+<table align="center">
+<thead>
+  <tr>
+    <td align="center"><strong>이름</strong></th>
+    <td align="center"><strong>역할</strong></th>
+    <td align="center"><strong>개발 내용</strong></th>
+  </tr>
+</thead>
+  <tbody>
+    <tr>
+      <td>
+        박종선
+      </td>
+      <td>
+        Back-end<br />팀장
+      </td>
+      <td>
+          <strong>Back-end</strong><br />- DB 설계<br /> - 회원 (판매자/구매자) 관련 API 작성<br /> - JWT 로그인 구현<br/>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        윤혜진
+      </td>
+      <td>
+        Back-end
+      </td>
+      <td>
+          <strong>Back-end</strong><br />
+          - DB 설계<br /> 
+          - 공공API를 활용한 전통시장, 지역 데이터 처리<br /> 
+          - Market 관련 API 작성<br/> 
+          - Order 관련 API 작성<br/> 
+          <strong>Front-end</strong><br />
+          - Openvidu 채팅 기능<br/> 
+          - 전체적인 디자인 담당
+      </td>
+    </tr>
+    <tr>
+      <td>
+        허설
+      </td>
+      <td>
+        Back-end
+      </td>
+      <td>
+          <strong>Back-end</strong><br />
+          - DB 설계<br /> 
+          - Store 관련 API 작성<br /> 
+          - Item 관련 API 작성<br/> 
+          <strong>CI/CD</strong><br /> 
+          - AWS 배포 환경 구축
+      </td>
+    </tr>
+    <tr>
+      <td>
+        이경무
+      </td>
+      <td>
+        Front-end
+      </td>
+      <td>
+          <strong>Front-end</strong><br />
+          - 판매자 회원 관련 기능 구현<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;- 메뉴 등록, 가게 등록/오픈, 거래내역<br /> 
+          - Openvidu 활용 실시간 화상스토어 구현(판매자)<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;- 호출 연결, 덤 증정, 주문 확인
+      </td>
+    </tr>
+    <tr>
+      <td>
+        한재승
+      </td>
+      <td>
+        Front-end
+      </td>
+      <td>
+          <strong>Front-end</strong><br />
+          - 구매자 회원 관련 기능 구현<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;- 회원가입, 회원정보 수정, 로그인<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;- 시장 검색, 가게 찜 등록<br /> 
+          - 판매자 회원 관련 기능 구현<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;- 회원가입, 로그인<br /> 
+          - Openvidu 활용 실시간 구매 구현(구매자)<br />
+          &nbsp;&nbsp;&nbsp;&nbsp;- 메뉴 확인, 주문서 작성 및 신청
+      </td>
+    </tr>
+  </tbody>
+</table>
 
-
-
-|  이름  |          역할          | <div align="center">개발 내용</div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    |
-| :----: | :--------------------: | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 박종선 |  Back-end<br />팀장   | **Back-end**<br />- DB 설계<br /> - 회원 (판매자/구매자) 관련 API 작성<br /> - JWT 로그인 구현<br/>  |
-| 윤혜진 | Back-end | **Back-end**<br />- DB 설계<br /> - 공공API를 활용한 전통시장, 지역 데이터 처리<br /> - Market 관련 API 작성<br/> - Order 관련 API 작성<br/> **Front-end**<br />- Openvidu 채팅 기능<br/> - 전체적인 디자인 담당  |
-|  허설  | Back-end | **Back-end**<br />- DB 설계<br /> - Store 관련 API 작성<br /> - Item 관련 API 작성<br/> **CI/CD**<br /> - AWS 배포 환경 구축  |
-| 이경무 | Front-end | **Front-end**<br />- 판매자 회원 관련 기능 구현<br />&nbsp;&nbsp;&nbsp;&nbsp;- 메뉴 등록, 가게 등록/오픈, 거래내역<br /> - Openvidu 활용 실시간 화상스토어(판매자) 구현<br />&nbsp;&nbsp;&nbsp;&nbsp;- 호출 연결, 덤 증정, 주문 확인<br />   |
-| 한재승 | Front-end | **Front-end**<br />- 구매자 회원 관련 기능 구현<br />&nbsp;&nbsp;&nbsp;&nbsp;- 회원가입, 회원정보 수정, 로그인<br />&nbsp;&nbsp;&nbsp;&nbsp;- 시장 검색, 가게 찜 등록<br /> - 판매자 회원 관련 기능 구현<br />&nbsp;&nbsp;&nbsp;&nbsp;- 회원가입, 로그인<br /> - Openvidu 활용 실시간 구매 구현(구매자)<br />&nbsp;&nbsp;&nbsp;&nbsp;- 메뉴 확인, 주문서 작성 및 신청<br />                                                                                                                                                                                                                                                            |
-                                                                                                                                                                                                                   |
-
+    
 <br />
-<div id="8"></div>
+<div id="7"></div>
 
 ## 📅 개발 기간
 
 22.07.05. ~ 22.08.19
 
 <br />
-<div id="9"></div>
+
+<div id="8"></div>
     
 ## 🦊 git convention
 
@@ -278,7 +367,7 @@
 
 
 <br />
-
+<div id="9"></div>
     
 ## 💻 실행 방법
 
