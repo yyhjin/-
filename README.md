@@ -37,7 +37,7 @@
 
 <table align="center">
   <tr>
-    <td align="center" width="165"><strong>Front-end 기술 스택</strong></td>
+    <td align="center"><strong>Front-end 기술 스택</strong></td>
     <td>
       <div>
         <img src="https://img.shields.io/badge/Vue.js-3178C6?&logo=vue.js&logoColor=white"/>
@@ -47,7 +47,7 @@
     </td>
   </tr>
   <tr>
-    <td align="center" width="165"><strong>Back-end 기술 스택</strong></td>
+    <td align="center"><strong>Back-end 기술 스택</strong></td>
     <td>
         <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=  &logo=springboot&logoColor=white"/>
         <img src="https://img.shields.io/badge/MySQL-4479A1?style=  &logo=mysql&logoColor=white"/>
@@ -56,7 +56,7 @@
     </td>
   </tr>
   <tr>
-    <td align="center" width="165"><strong>Server 기술 스택</strong></td>
+    <td align="center"><strong>Server 기술 스택</strong></td>
     <td>
         <img src="https://img.shields.io/badge/NGINX-009639?style=  &logo=nginx&logoColor=white"/>
         <img src="https://img.shields.io/badge/Docker-2496ED?style=  &logo=docker&logoColor=white"/>
@@ -67,7 +67,7 @@
   </tr>
   <tr>
     <td align="center"><strong>배포</strong></td>
- <strong>현재는 중단</strong>
+    <td>현재는 중단
   </tr>
   <tr>
     <td align="center"><strong>노션</strong></td>
