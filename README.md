@@ -76,7 +76,7 @@
   <tr>
     <td align="center"><strong>노션</strong></td>
     <td>
-      <a href="https://www.notion.so/74c6b74788fc45a9bb116f95732ec3b4">
+      <a href="https://sly-hexagon-e43.notion.site/74c6b74788fc45a9bb116f95732ec3b4">
         👉 노션 바로가기
       </a>
     </td>
