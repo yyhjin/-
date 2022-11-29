@@ -77,7 +77,7 @@
   <tr>
     <td align="center"><strong>노션</strong></td>
     <td>
-      <a href="#">
+      <a href="https://www.notion.so/74c6b74788fc45a9bb116f95732ec3b4">
         👉 노션 바로가기
       </a>
     </td>
