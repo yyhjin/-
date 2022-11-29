@@ -259,7 +259,27 @@
 
 <br />
 <div id="9"></div>
+    
+## 🦊 git convention
 
+| Emoji | Code                          | 기능     | Description              |
+| ----- | ----------------------------- | -------- | ------------------------ |
+| ✨    | `:sparkles:`                  | Feat     | 새 기능                  |
+| ♻️    | `:recycle:`                   | Refactor | 코드 리팩토링            |
+| 🔧    | `:wrench:`                    | Chore    | 리소스 수정/삭제         |
+| 🐛    | `:bug:`                       | Fix      | 버그 수정                |
+| 📝    | `:memo:`                      | Docs     | 문서 추가/수정           |
+| 💄    | `:lipstick:`                  | Style    | UI/스타일 파일 추가/수정 |
+| 🎉    | `:tada:`                      | Init     | 프로젝트 시작 / Init     |
+| 🔀    | `:twisted_rightwards_arrows:` | Merge    | 브랜치 합병              |
+| 👷    | `:construction_worker: `      |          | CI 빌드 시스템 추가/수정 |
+| 🚀    | `:rocket:`                    | Deploy   | 배포                     |   
+    
+
+
+<br />
+
+    
 ## 💻 실행 방법
 
 ### Client 실행
@@ -291,19 +311,4 @@ $ npm run serve
 ### Server 실행
 
 
-<br />
 
-## 🦊 git convention
-
-| Emoji | Code                          | 기능     | Description              |
-| ----- | ----------------------------- | -------- | ------------------------ |
-| ✨    | `:sparkles:`                  | Feat     | 새 기능                  |
-| ♻️    | `:recycle:`                   | Refactor | 코드 리팩토링            |
-| 🔧    | `:wrench:`                    | Chore    | 리소스 수정/삭제         |
-| 🐛    | `:bug:`                       | Fix      | 버그 수정                |
-| 📝    | `:memo:`                      | Docs     | 문서 추가/수정           |
-| 💄    | `:lipstick:`                  | Style    | UI/스타일 파일 추가/수정 |
-| 🎉    | `:tada:`                      | Init     | 프로젝트 시작 / Init     |
-| 🔀    | `:twisted_rightwards_arrows:` | Merge    | 브랜치 합병              |
-| 👷    | `:construction_worker: `      |          | CI 빌드 시스템 추가/수정 |
-| 🚀    | `:rocket:`                    | Deploy   | 배포                     |   
