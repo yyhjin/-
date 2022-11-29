@@ -81,7 +81,7 @@
   <br />
   
 <div id="3"></div>
-## 💡 주요 기능
+##💡 주요 기능
 
 <table align="center">
 <thead>
